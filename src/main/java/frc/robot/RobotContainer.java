@@ -4,19 +4,15 @@
 
 package frc.robot;
 
-import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.AutoShoot;
-import frc.robot.commands.DriveForwardTimed;
 import frc.robot.commands.DriveWithJoysticks;
 import frc.robot.commands.IntakeBall;
 import frc.robot.commands.ShootBall;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -33,7 +29,6 @@ public class RobotContainer {
   // DriveTrain Declare
     private final DriveTrain driveTrain;
     private final DriveWithJoysticks driveWithJoysticks;
-    private final DriveForwardTimed driveForwardTimed;
     public static XboxController driverJoystick;
 
     private final Shooter shooter;
@@ -52,8 +47,6 @@ public class RobotContainer {
     driveWithJoysticks.addRequirements(driveTrain);
     driveTrain.setDefaultCommand(driveWithJoysticks);
 
-    driveForwardTimed = new DriveForwardTimed(driveTrain);
-    driveForwardTimed.addRequirements(driveTrain);
 
     driverJoystick = new XboxController(Constants.JOYSTICK_NUMBER); 
 
@@ -69,9 +62,7 @@ public class RobotContainer {
     intakeBall.addRequirements(intake);
     intake.setDefaultCommand(intakeBall);
 
-    // Initialize Camera
-    UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
-    camera.setResolution(Constants.CAMERA_RES_X, Constants.CAMERA_RES_Y);
+  
 
     // Configure the button bindings
     configureButtonBindings();
@@ -93,8 +84,9 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
+  
+  // public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return driveForwardTimed;
+    
   }
-}
+

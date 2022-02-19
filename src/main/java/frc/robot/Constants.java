@@ -14,18 +14,18 @@ package frc.robot;
  */
 public final class Constants {
     // Talon Can ID's (NOT REAL VALUES YET) 
-    public static final int RIGHT_MOTOR_1 = 0;
-    public static final int RIGHT_MOTOR_2 = 1;
-    public static final int RIGHT_MOTOR_3 = 2;
-    public static final int LEFT_MOTOR_1 = 3;
-    public static final int LEFT_MOTOR_2 = 4;
-    public static final int lEFT_MOTOR_3 = 5;
+    public static final int RIGHT_MOTOR_1 = 3;
+    public static final int RIGHT_MOTOR_2 = 2;
+    public static final int RIGHT_MOTOR_3 = 1;
+    public static final int LEFT_MOTOR_1 = 4;
+    public static final int LEFT_MOTOR_2 = 5;
+    public static final int LEFT_MOTOR_3 = 6;
     public static final int SHOOTER1 = 6;
     public static final int INTAKE1 = 7;
 
     // XboxController Axis values
     public static final int XBOX_LEFT_Y_AXIS = 1;
-    public static final int XBOX_LEFT_X_AXIS = 0;
+    public static final int XBOX_RIGHT_Y_AXIS = 5;
     public static final int RIGHT_TRIGGER = 3;
 
     // Drivetrain Speed
@@ -45,10 +45,6 @@ public final class Constants {
 
     // Intake Speed
     public static final double INTAKE_SPEED = 0.75;
-
-    // Camera Resolutions
-    public static final int CAMERA_RES_X = 320;
-    public static final int CAMERA_RES_Y = 240;
 
     
     public static final double AUTO_SHOOT_TIME = 2.0;

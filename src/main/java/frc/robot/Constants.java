@@ -43,6 +43,8 @@ public final class Constants {
 
     // XboxController Port Number
     public static final int JOYSTICK_NUMBER = 0;
+    public static final int LEFT_STICK = 0;
+    public static final int RIGHT_STICK = 1;
 
     // Shoot Speed
     public static final double SHOOT_SPEED = 1;

@@ -5,29 +5,27 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Shooter extends SubsystemBase {
+	WPI_TalonFX shooter1;
 
-  WPI_TalonFX shooter1;
-  
-  public Shooter() {
+	public Shooter() {
+		shooter1 = new WPI_TalonFX(Constants.SHOOTER1);
+	}
 
-    shooter1 = new WPI_TalonFX(Constants.SHOOTER1);
-  }
+	@Override
+	public void periodic() {
+		// This method will be called once per scheduler run
+	}
 
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-  }
-  public void shootBall(double speed)
-  {
-    shooter1.set(speed);
-  }
+	public void shootBall(double speed) {
+		shooter1.set(speed);
+	}
 
-  public void stop()
-  {
-    shooter1.set(0);
-  }
+	public void stop() {
+		shooter1.set(0);
+	}
 }

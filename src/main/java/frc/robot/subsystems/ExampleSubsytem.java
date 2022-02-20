@@ -11,13 +11,16 @@ public class ExampleSubsytem extends SubsystemBase {
 	private final DoubleSolenoid piston;
 
 	public ExampleSubsytem() {
-		Compressor comp = new Compressor(Constants.PNEUMATICS_MODULE_ID, PneumaticsModuleType.REVPH);
-		piston = new DoubleSolenoid(Constants.PNEUMATICS_MODULE_ID, PneumaticsModuleType.REVPH,
-		  Constants.PISTON_FORWARD_CHANNEL, Constants.PISTON_REVERSE_CHANNEL);
+		Compressor comp = new Compressor(Constants.PNEUMATICS_MODULE_ID,
+		  PneumaticsModuleType.REVPH);
+		piston = new DoubleSolenoid(Constants.PNEUMATICS_MODULE_ID,
+		  PneumaticsModuleType.REVPH, Constants.PISTON_FORWARD_CHANNEL,
+		  Constants.PISTON_REVERSE_CHANNEL);
 	}
 
 	public void togglePiston() {
-		Value oppositeValue = piston.get() == Value.kForward ? Value.kReverse : Value.kForward;
+		Value oppositeValue = piston.get() == Value.kForward ? Value.kReverse
+		  : Value.kForward;
 		piston.set(oppositeValue);
 	}
 }

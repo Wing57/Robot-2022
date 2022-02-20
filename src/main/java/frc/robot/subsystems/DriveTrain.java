@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.kauailabs.navx.frc.AHRS;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
@@ -21,87 +22,80 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class DriveTrain extends SubsystemBase {
-    // Local Talon Variables
-    private final WPI_TalonFX rightMaster;
-    private final WPI_TalonFX leftMaster;
+	// Local Talon Variables
+	private final WPI_TalonFX rightMaster;
+	private final WPI_TalonFX leftMaster;
 
-    private final DifferentialDrive drive;
+	private final DifferentialDrive drive;
 
-    AHRS gyro = new AHRS(SPI.Port.kMXP);
+	AHRS gyro = new AHRS(SPI.Port.kMXP);
 
-    Pose2d pose;
+	Pose2d pose;
 
-    // UPDATE WHEEL TO WHEEL LENGTH
-    DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(
-            Units.inchesToMeters(20));
-    DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(
-            getHeading());
+	// UPDATE WHEEL TO WHEEL LENGTH
+	DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Units.inchesToMeters(
+	  20));
+	DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(getHeading());
 
-    /**
-     * Creates a new DriveTrain.
-     */
-    public DriveTrain() {
-        // Talons
-        rightMaster = new WPI_TalonFX(Constants.RIGHT_MOTOR_1);
-        WPI_TalonFX rightMotor2 = new WPI_TalonFX(Constants.RIGHT_MOTOR_2);
-        WPI_TalonFX rightMotor3 = new WPI_TalonFX(Constants.RIGHT_MOTOR_3);
+	/**
+	 * Creates a new DriveTrain.
+	 */
+	public DriveTrain() {
+		// Talons
+		rightMaster = new WPI_TalonFX(Constants.RIGHT_MOTOR_1);
+		WPI_TalonFX rightMotor2 = new WPI_TalonFX(Constants.RIGHT_MOTOR_2);
+		WPI_TalonFX rightMotor3 = new WPI_TalonFX(Constants.RIGHT_MOTOR_3);
 
-        leftMaster = new WPI_TalonFX(Constants.LEFT_MOTOR_1);
-        WPI_TalonFX leftMotor2 = new WPI_TalonFX(Constants.LEFT_MOTOR_2);
-        WPI_TalonFX leftMotor3 = new WPI_TalonFX(Constants.LEFT_MOTOR_3);
+		leftMaster = new WPI_TalonFX(Constants.LEFT_MOTOR_1);
+		WPI_TalonFX leftMotor2 = new WPI_TalonFX(Constants.LEFT_MOTOR_2);
+		WPI_TalonFX leftMotor3 = new WPI_TalonFX(Constants.LEFT_MOTOR_3);
 
-        rightMotor2.follow(rightMaster);
-        rightMotor2.setInverted(InvertType.FollowMaster);
-        rightMotor3.follow(rightMaster);
-        rightMotor3.setInverted(InvertType.FollowMaster);
+		rightMotor2.follow(rightMaster);
+		rightMotor2.setInverted(InvertType.FollowMaster);
+		rightMotor3.follow(rightMaster);
+		rightMotor3.setInverted(InvertType.FollowMaster);
 
-        leftMotor2.follow(leftMaster);
-        leftMotor3.follow(leftMaster);
+		leftMotor2.follow(leftMaster);
+		leftMotor3.follow(leftMaster);
 
-        // Same as set invert = false
-      TalonFXInvertType m_left_invert = TalonFXInvertType.CounterClockwise;
+		// Same as set invert = false
+		TalonFXInvertType m_left_invert = TalonFXInvertType.CounterClockwise;
 
-        //Same as set invert = true
-      TalonFXInvertType m_right_invert = TalonFXInvertType.Clockwise;
+		// Same as set invert = true
+		TalonFXInvertType m_right_invert = TalonFXInvertType.Clockwise;
 
-        leftMaster.setInverted(m_left_invert);
-        rightMaster.setInverted(m_right_invert);
+		leftMaster.setInverted(m_left_invert);
+		rightMaster.setInverted(m_right_invert);
 
-        //DifferentialDrive
-        drive = new DifferentialDrive(leftMaster, rightMaster);
-    }
+		// DifferentialDrive
+		drive = new DifferentialDrive(leftMaster, rightMaster);
+	}
 
-    public Rotation2d getHeading() {
-        return Rotation2d.fromDegrees(-gyro.getAngle());
-    }
+	public Rotation2d getHeading() {
+		return Rotation2d.fromDegrees(-gyro.getAngle());
+	}
 
-    // ADJUST GEAR RATIO AND WHEEL DIAMETER!
-    public DifferentialDriveWheelSpeeds getSpeeds() {
-        return new DifferentialDriveWheelSpeeds(
-                leftMaster.getSelectedSensorVelocity() * 600 / 2048 / 7.29 * 2 *
-                Math.PI * Units.inchesToMeters(3.0) / 60,
-                rightMaster.getSelectedSensorVelocity() * 600 / 2048 / 7.29 *
-                2 * Math.PI * Units.inchesToMeters(3.0) / 60);
-    }
+	// ADJUST GEAR RATIO AND WHEEL DIAMETER!
+	public DifferentialDriveWheelSpeeds getSpeeds() {
+		return new DifferentialDriveWheelSpeeds(leftMaster.getSelectedSensorVelocity()
+		  * 600 / 2048 / 7.29 * 2 * Math.PI * Units.inchesToMeters(3.0) / 60, rightMaster
+		    .getSelectedSensorVelocity()
+		    * 600 / 2048 / 7.29 * 2 * Math.PI * Units.inchesToMeters(3.0) / 60);
+	}
 
-    @Override
-    public void periodic() {
-        pose = odometry.update(
-                getHeading(),
-                leftMaster.getSelectedSensorVelocity() / 7.29 * 2 * Math.PI *
-                Units.inchesToMeters(3.0) / 60,
-                rightMaster.getSelectedSensorVelocity() / 7.29 * 2 * Math.PI *
-                Units.inchesToMeters(3.0) / 60);
-    }
+	@Override
+	public void periodic() {
+		pose = odometry.update(getHeading(), leftMaster.getSelectedSensorVelocity()
+		  / 7.29 * 2 * Math.PI * Units.inchesToMeters(3.0) / 60, rightMaster.getSelectedSensorVelocity()
+		    / 7.29 * 2 * Math.PI * Units.inchesToMeters(3.0) / 60);
+	}
 
+	public void driveWithJoysticks(XboxController controller, double speed) {
+		drive.tankDrive(controller.getRawAxis(Constants.XBOX_LEFT_Y_AXIS), controller.getRawAxis(
+		  Constants.XBOX_RIGHT_Y_AXIS) * -1);
+	}
 
-    public void driveWithJoysticks(XboxController controller, double speed) {
-        drive.tankDrive(
-                controller.getRawAxis(Constants.XBOX_LEFT_Y_AXIS),
-                controller.getRawAxis(Constants.XBOX_RIGHT_Y_AXIS) * -1);
-    }
-
-    public void drive(double left, double right) {
-      drive.tankDrive(left, right);
-    }
-} 
+	public void drive(double left, double right) {
+		drive.tankDrive(left, right);
+	}
+}

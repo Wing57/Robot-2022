@@ -32,7 +32,8 @@ public class RobotContainer {
 	// The robot's subsystems and commands are defined here...
 
 	// joysticks
-	public static final XboxController driverJoystick = new XboxController(Constants.JOYSTICK_NUMBER);
+	public static final XboxController driverJoystick = new XboxController(
+	  Constants.JOYSTICK_NUMBER);
 	public static final DriveStick leftStick = new DriveStick(Constants.LEFT_STICK);
 	public static final DriveStick rightStick = new DriveStick(Constants.RIGHT_STICK);
 

@@ -19,7 +19,8 @@ public class TankDriveCommand extends CommandBase {
 
 	@Override
 	public void execute() {
-		driveTrain.drive(RobotContainer.leftStick.getYAxis(), RobotContainer.rightStick.getYAxis());
+		driveTrain.drive(RobotContainer.leftStick.getYAxis(), RobotContainer.rightStick
+		  .getYAxis());
 	}
 
 	@Override

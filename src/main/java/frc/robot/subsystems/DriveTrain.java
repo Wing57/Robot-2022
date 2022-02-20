@@ -33,8 +33,8 @@ public class DriveTrain extends SubsystemBase {
 	Pose2d pose;
 
 	// UPDATE WHEEL TO WHEEL LENGTH
-	DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Units.inchesToMeters(
-	  20));
+	DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Units
+	  .inchesToMeters(20));
 	DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(getHeading());
 
 	/**
@@ -86,13 +86,15 @@ public class DriveTrain extends SubsystemBase {
 	@Override
 	public void periodic() {
 		pose = odometry.update(getHeading(), leftMaster.getSelectedSensorVelocity()
-		  / 7.29 * 2 * Math.PI * Units.inchesToMeters(3.0) / 60, rightMaster.getSelectedSensorVelocity()
+		  / 7.29 * 2 * Math.PI * Units.inchesToMeters(3.0) / 60, rightMaster
+		    .getSelectedSensorVelocity()
 		    / 7.29 * 2 * Math.PI * Units.inchesToMeters(3.0) / 60);
 	}
 
 	public void driveWithJoysticks(XboxController controller, double speed) {
-		drive.tankDrive(controller.getRawAxis(Constants.XBOX_LEFT_Y_AXIS), controller.getRawAxis(
-		  Constants.XBOX_RIGHT_Y_AXIS) * -1);
+		drive.tankDrive(controller.getRawAxis(Constants.XBOX_LEFT_Y_AXIS), controller
+		  .getRawAxis(Constants.XBOX_RIGHT_Y_AXIS)
+		  * -1);
 	}
 
 	public void drive(double left, double right) {

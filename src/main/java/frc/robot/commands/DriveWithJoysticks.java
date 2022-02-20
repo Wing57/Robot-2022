@@ -27,7 +27,8 @@ public class DriveWithJoysticks extends CommandBase {
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
-		driveTrain.driveWithJoysticks(RobotContainer.driverJoystick, Constants.DRIVETRAINSPEED);
+		driveTrain.driveWithJoysticks(RobotContainer.driverJoystick,
+		  Constants.DRIVETRAINSPEED);
 	}
 
 	// Called once the command ends or is interrupted.

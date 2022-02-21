@@ -40,10 +40,10 @@ public final class Constants {
 	// Speed During AUTO
 	public static final double AUTONOMOUS_SPEED = 0.4;
 
-	// XboxController Port Number
-	public static final int JOYSTICK_NUMBER = 0;
-	public static final int LEFT_STICK = 0;
-	public static final int RIGHT_STICK = 1;
+	// Controller Port Numbers
+	public static final int LEFT_JOY = 0;
+	public static final int RIGHT_JOY = 1;
+	public static final int XBOXCONTROLLER = 2;
 
 	// Shoot Speed
 	public static final double SHOOT_SPEED = 1;
@@ -52,9 +52,4 @@ public final class Constants {
 	public static final double INTAKE_SPEED = 0.75;
 
 	public static final double AUTO_SHOOT_TIME = 2.0;
-
-	// pneumatics
-	public static final int PNEUMATICS_MODULE_ID = 2;
-	public static final int PISTON_FORWARD_CHANNEL = 1;
-	public static final int PISTON_REVERSE_CHANNEL = 0;
 }

@@ -7,17 +7,10 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import com.kauailabs.navx.frc.AHRS;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
-import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
-import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
-import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -27,15 +20,6 @@ public class DriveTrain extends SubsystemBase {
 	private final WPI_TalonFX leftMaster;
 
 	private final DifferentialDrive drive;
-
-	AHRS gyro = new AHRS(SPI.Port.kMXP);
-
-	Pose2d pose;
-
-	// UPDATE WHEEL TO WHEEL LENGTH
-	DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Units
-	  .inchesToMeters(20));
-	DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(getHeading());
 
 	/**
 	 * Creates a new DriveTrain.
@@ -71,30 +55,12 @@ public class DriveTrain extends SubsystemBase {
 		drive = new DifferentialDrive(leftMaster, rightMaster);
 	}
 
-	public Rotation2d getHeading() {
-		return Rotation2d.fromDegrees(-gyro.getAngle());
-	}
-
-	// ADJUST GEAR RATIO AND WHEEL DIAMETER!
-	public DifferentialDriveWheelSpeeds getSpeeds() {
-		return new DifferentialDriveWheelSpeeds(leftMaster.getSelectedSensorVelocity()
-		  * 600 / 2048 / 7.29 * 2 * Math.PI * Units.inchesToMeters(3.0) / 60, rightMaster
-		    .getSelectedSensorVelocity()
-		    * 600 / 2048 / 7.29 * 2 * Math.PI * Units.inchesToMeters(3.0) / 60);
-	}
-
 	@Override
 	public void periodic() {
-		pose = odometry.update(getHeading(), leftMaster.getSelectedSensorVelocity()
-		  / 7.29 * 2 * Math.PI * Units.inchesToMeters(3.0) / 60, rightMaster
-		    .getSelectedSensorVelocity()
-		    / 7.29 * 2 * Math.PI * Units.inchesToMeters(3.0) / 60);
 	}
 
-	public void driveWithJoysticks(XboxController controller, double speed) {
-		drive.tankDrive(controller.getRawAxis(Constants.XBOX_LEFT_Y_AXIS), controller
-		  .getRawAxis(Constants.XBOX_RIGHT_Y_AXIS)
-		  * -1);
+	public void driveWithJoysticks(Joystick leftJoystick, Joystick rightJoystick) {
+		drive.tankDrive(leftJoystick.getRawAxis(1), -rightJoystick.getRawAxis(1));
 	}
 
 	public void drive(double left, double right) {

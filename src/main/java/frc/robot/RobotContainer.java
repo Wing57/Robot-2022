@@ -7,6 +7,7 @@ package frc.robot;
 import com.rambots4571.rampage.joystick.DriveStick;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -17,6 +18,7 @@ import frc.robot.commands.TankDriveCommand;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.ExampleSubsytem;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.IntakeExtend;
 import frc.robot.subsystems.Shooter;
 
 /**
@@ -29,72 +31,84 @@ import frc.robot.subsystems.Shooter;
  * declared here.
  */
 public class RobotContainer {
-	// The robot's subsystems and commands are defined here...
+  // The robot's subsystems and commands are defined here...
 
-	// joysticks
-	public static final XboxController driverJoystick = new XboxController(
-	  Constants.JOYSTICK_NUMBER);
-	public static final DriveStick leftStick = new DriveStick(Constants.LEFT_STICK);
-	public static final DriveStick rightStick = new DriveStick(Constants.RIGHT_STICK);
+  // joysticks
+  public static final XboxController gamepad = new XboxController(Constants.XBOXCONTROLLER);
+  public static final DriveStick leftStick = new DriveStick(Constants.LEFT_JOY);
+  public static final DriveStick rightStick = new DriveStick(Constants.RIGHT_JOY);
 
-	// subsystems
-	private final DriveTrain driveTrain;
-	private final Shooter shooter;
-	private final Intake intake;
-	private final ExampleSubsytem subsytem;
+  // subsystems
+  private final DriveTrain driveTrain;
+  private final Shooter shooter;
+  private final Intake intake;
+  private final IntakeExtend intakeExtend;
 
-	// commands
-	// private final DriveWithJoysticks driveWithJoysticks;
-	private final TankDriveCommand tankDriveCommand;
-	private final ShootBall shootBall;
-	private final AutoShoot autoShoot;
-	private final IntakeBall intakeBall;
+  // commands
+  // private final DriveWithJoysticks driveWithJoysticks;
+  private final TankDriveCommand tankDriveCommand;
+  private final ShootBall shootBall;
+  private final AutoShoot autoShoot;
+  private final IntakeBall intakeBall;
 
-	/**
-	 * The container for the robot. Contains subsystems, OI devices, and
-	 * commands.
-	 */
-	public RobotContainer() {
-		driveTrain = new DriveTrain();
-		shooter = new Shooter();
-		intake = new Intake();
-		subsytem = new ExampleSubsytem();
+  /**
+   * The container for the robot. Contains subsystems, OI devices, and
+   * commands.
+   */
+  public RobotContainer() {
+    driveTrain = new DriveTrain();
+    shooter = new Shooter();
+    intake = new Intake();
+    intakeExtend = new IntakeExtend();
 
-		// driveWithJoysticks = new DriveWithJoysticks(driveTrain);
-		// driveWithJoysticks.addRequirements(driveTrain);
-		tankDriveCommand = new TankDriveCommand(driveTrain);
+    // driveWithJoysticks = new DriveWithJoysticks(driveTrain);
+    // driveWithJoysticks.addRequirements(driveTrain);
+    // driveTrain.setDefaultCommand(driveWithJoysticks);
+    tankDriveCommand = new TankDriveCommand(driveTrain);
 
-		driveTrain.setDefaultCommand(tankDriveCommand);
+    driveTrain.setDefaultCommand(tankDriveCommand);
 
-		shootBall = new ShootBall(shooter);
-		shootBall.addRequirements(shooter);
+    shootBall = new ShootBall(shooter);
+    shootBall.addRequirements(shooter);
 
-		autoShoot = new AutoShoot(shooter);
-		autoShoot.addRequirements(shooter);
+    autoShoot = new AutoShoot(shooter);
+    autoShoot.addRequirements(shooter);
 
-		intakeBall = new IntakeBall(intake);
-		intakeBall.addRequirements(intake);
-		intake.setDefaultCommand(intakeBall);
+    intakeBall = new IntakeBall(intake);
+    intakeBall.addRequirements(intake);
+    intake.setDefaultCommand(intakeBall);
 
-		// Configure the button bindings
-		configureButtonBindings();
-	}
+    // Configure the button bindings
+    configureButtonBindings();
+  }
 
-	/**
-	 * Use this method to define your button->command mappings. Buttons can be
-	 * created by
-	 * instantiating a {@link GenericHID} or one of its subclasses ({@link
-	 * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then
-	 * passing it to a {@link
-	 * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
-	 */
-	private void configureButtonBindings() {
-		JoystickButton shootButton = new JoystickButton(driverJoystick,
-		  XboxController.Button.kRightBumper.value);
-		shootButton.whileHeld(new ShootBall(shooter));
+  /**
+   * Use this method to define your button->command mappings. Buttons can be
+   * created by
+   * instantiating a {@link GenericHID} or one of its subclasses ({@link
+   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then
+   * passing it to a {@link
+   * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
+   */
+  private void configureButtonBindings() {
+    JoystickButton shootButton = new JoystickButton(gamepad,
+        XboxController.Button.kRightBumper.value);
+    shootButton.whileHeld(new ShootBall(shooter));
 
-		JoystickButton toggleButton = new JoystickButton(driverJoystick,
-		  XboxController.Button.kLeftBumper.value);
-		toggleButton.whenPressed(subsytem::togglePiston, subsytem);
-	}
+    JoystickButton intakeButton = new JoystickButton(gamepad, XboxController.Button.kA.value);
+    intakeButton.whileHeld(new IntakeBall(intake));
+
+    JoystickButton toggleButton = new JoystickButton(shootStick, XboxController.Button.kLeftBumper.value);
+    toggleButton.whenPressed(intakeExtend::togglePiston, intakeExtend);
+  }
+
+  /**
+   * Use this to pass the autonomous command to the main {@link Robot} class.
+   *
+   * @return the command to run in autonomous
+   */
+
+  public Command getAutonomousCommand() {
+    // An ExampleCommand will run in autonomous
+  }
 }

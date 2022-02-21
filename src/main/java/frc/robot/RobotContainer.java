@@ -5,15 +5,18 @@
 package frc.robot;
 
 import com.rambots4571.rampage.joystick.DriveStick;
+import com.rambots4571.rampage.joystick.Gamepad;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import frc.robot.commands.AutoShoot;
 import frc.robot.commands.IntakeBall;
 import frc.robot.commands.ShootBall;
 import frc.robot.commands.TankDriveCommand;
+import frc.robot.commands.TestCommandGroup;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.IntakeExtend;
@@ -31,7 +34,8 @@ public class RobotContainer {
 
 	// joysticks
 	public static final XboxController gamepad = new XboxController(
-	  Constants.XBOXCONTROLLER);
+			Constants.XBOXCONTROLLER);
+	public static final Gamepad controller = new Gamepad(Constants.XBOXCONTROLLER);
 	public static final DriveStick leftStick = new DriveStick(Constants.LEFT_JOY);
 	public static final DriveStick rightStick = new DriveStick(Constants.RIGHT_JOY);
 
@@ -47,6 +51,7 @@ public class RobotContainer {
 	private final ShootBall shootBall;
 	private final AutoShoot autoShoot;
 	private final IntakeBall intakeBall;
+	private final TestCommandGroup group;
 
 	/**
 	 * The container for the robot. Contains subsystems, OI devices, and
@@ -58,6 +63,7 @@ public class RobotContainer {
 		intake = new Intake();
 		intakeExtend = new IntakeExtend();
 
+		group = new TestCommandGroup(driveTrain, shooter);
 		// driveWithJoysticks = new DriveWithJoysticks(driveTrain);
 		// driveTrain.setDefaultCommand(driveWithJoysticks);
 		tankDriveCommand = new TankDriveCommand(driveTrain);
@@ -102,7 +108,7 @@ public class RobotContainer {
 	 * @return the command to run in autonomous
 	 */
 
-	// public Command getAutonomousCommand() {
-	// // An ExampleCommand will run in autonomous
-	// }
+	public Command getAutonomousCommand() {
+		return group;
+	}
 }

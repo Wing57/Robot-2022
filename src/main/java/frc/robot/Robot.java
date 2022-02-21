@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 
@@ -18,6 +19,8 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  * project.
  */
 public class Robot extends TimedRobot {
+	private RobotContainer container;
+	private Command autoCommand;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -29,7 +32,7 @@ public class Robot extends TimedRobot {
 		// Instantiate our RobotContainer. This will perform all our button
 		// bindings, and put our
 		// autonomous chooser on the dashboard.
-
+		container = new RobotContainer();
 	}
 
 	/**
@@ -71,6 +74,10 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
+		autoCommand = container.getAutonomousCommand();
+		if (autoCommand != null) {
+			autoCommand.schedule();
+		}
 	}
 
 	/** This function is called periodically during autonomous. */
@@ -84,7 +91,9 @@ public class Robot extends TimedRobot {
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
-
+		if (autoCommand != null) {
+			autoCommand.cancel();
+		}
 	}
 
 	/** This function is called periodically during operator control. */

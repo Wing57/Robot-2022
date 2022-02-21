@@ -20,7 +20,6 @@ public class AutoShoot extends CommandBase {
 		shooter = s;
 		addRequirements(shooter);
 		timer = new Timer();
-		// Use addRequirements() here to declare subsystem dependencies.
 	}
 
 	// Called when the command is initially scheduled.

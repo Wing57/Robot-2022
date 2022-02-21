@@ -21,12 +21,10 @@ import frc.robot.subsystems.Shooter;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
- * Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in
- * the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of
- * the robot (including subsystems, commands, and button mappings) should be
- * declared here.
+ * Command-based is a "declarative" paradigm, very little robot logic should
+ * actually be handled in the {@link Robot} periodic methods (other than the
+ * scheduler calls). Instead, the structure of the robot (including subsystems,
+ * commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
 	// The robot's subsystems and commands are defined here...
@@ -61,20 +59,16 @@ public class RobotContainer {
 		intakeExtend = new IntakeExtend();
 
 		// driveWithJoysticks = new DriveWithJoysticks(driveTrain);
-		// driveWithJoysticks.addRequirements(driveTrain);
 		// driveTrain.setDefaultCommand(driveWithJoysticks);
 		tankDriveCommand = new TankDriveCommand(driveTrain);
 
 		driveTrain.setDefaultCommand(tankDriveCommand);
 
 		shootBall = new ShootBall(shooter);
-		shootBall.addRequirements(shooter);
 
 		autoShoot = new AutoShoot(shooter);
-		autoShoot.addRequirements(shooter);
 
 		intakeBall = new IntakeBall(intake);
-		intakeBall.addRequirements(intake);
 		intake.setDefaultCommand(intakeBall);
 
 		// Configure the button bindings
@@ -83,11 +77,10 @@ public class RobotContainer {
 
 	/**
 	 * Use this method to define your button->command mappings. Buttons can be
-	 * created by
-	 * instantiating a {@link GenericHID} or one of its subclasses ({@link
-	 * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then
-	 * passing it to a {@link
-	 * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
+	 * created by instantiating a {@link GenericHID} or one of its subclasses
+	 * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and
+	 * then passing it to a
+	 * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
 	 */
 	private void configureButtonBindings() {
 		JoystickButton shootButton = new JoystickButton(gamepad,

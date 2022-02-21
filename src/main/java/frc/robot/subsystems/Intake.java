@@ -5,8 +5,6 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -22,9 +20,9 @@ public class Intake extends SubsystemBase {
   public void periodic() {
     
   }
-  public void intakeBall(XboxController controller, double speed)
+  public void intakeBall(double speed)
   {
-    intake.set(controller.getRawAxis(Constants.RIGHT_TRIGGER)*speed);
+    intake.set(speed);
   }
   public void stop() {
     

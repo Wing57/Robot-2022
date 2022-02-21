@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.AutoShoot;
 import frc.robot.commands.DriveWithJoysticks;
@@ -12,6 +13,7 @@ import frc.robot.commands.IntakeBall;
 import frc.robot.commands.ShootBall;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.IntakeExtend;
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -29,8 +31,11 @@ public class RobotContainer {
   // DriveTrain Declare
     private final DriveTrain driveTrain;
     private final DriveWithJoysticks driveWithJoysticks;
-    public static XboxController driverJoystick;
 
+    public static Joystick leftJoystick;
+    public static Joystick rightJoystick;
+    public static XboxController shootStick;
+    
     private final Shooter shooter;
     private final ShootBall shootBall;
 
@@ -38,6 +43,8 @@ public class RobotContainer {
 
     private final Intake intake;
     private final IntakeBall intakeBall;
+
+    private final IntakeExtend intakeExtend;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -48,7 +55,10 @@ public class RobotContainer {
     driveTrain.setDefaultCommand(driveWithJoysticks);
 
 
-    driverJoystick = new XboxController(Constants.JOYSTICK_NUMBER); 
+    shootStick = new XboxController(Constants.XBOXCONTROLLER);
+    rightJoystick = new Joystick(Constants.RIGHT_JOY); 
+    leftJoystick = new Joystick(Constants.LEFT_JOY);
+
 
     shooter = new Shooter();
     shootBall = new ShootBall(shooter);
@@ -62,6 +72,7 @@ public class RobotContainer {
     intakeBall.addRequirements(intake);
     intake.setDefaultCommand(intakeBall);
 
+    intakeExtend = new IntakeExtend();
   
 
     // Configure the button bindings
@@ -75,8 +86,14 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    JoystickButton shootButton = new JoystickButton(driverJoystick, XboxController.Button.kRightBumper.value);
+    JoystickButton shootButton = new JoystickButton(shootStick, XboxController.Button.kRightBumper.value);
     shootButton.whileHeld(new ShootBall(shooter));
+
+    JoystickButton intakeButton = new JoystickButton(shootStick, XboxController.Button.kA.value);
+    intakeButton.whileHeld(new IntakeBall(intake));
+
+    JoystickButton toggleButton = new JoystickButton(shootStick, XboxController.Button.kLeftBumper.value);
+    toggleButton.whenPressed(intakeExtend::togglePiston, intakeExtend);
   } 
 
   /**

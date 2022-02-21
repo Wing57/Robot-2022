@@ -37,8 +37,10 @@ public final class Constants {
     // Speed During AUTO
     public static final double AUTONOMOUS_SPEED = 0.4;
 
-    // XboxController Port Number
-    public static final int JOYSTICK_NUMBER = 0;
+    // Controller Port Numbers
+    public static final int LEFT_JOY = 0;
+    public static final int RIGHT_JOY = 1;
+    public static final int XBOXCONTROLLER = 2;
 
     // Shoot Speed
     public static final double SHOOT_SPEED = 1;

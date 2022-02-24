@@ -4,19 +4,21 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Shooter extends SubsystemBase {
-	WPI_TalonFX shooter1;
-	WPI_TalonFX shooter2;
+	private final WPI_TalonFX shooterMotor, followerMotor;
 
 	public Shooter() {
-		shooter1 = new WPI_TalonFX(Constants.SHOOTER1);
-		shooter2 = new WPI_TalonFX(Constants.SHOOTER2);
+		shooterMotor = new WPI_TalonFX(Constants.SHOOTER1);
+		followerMotor = new WPI_TalonFX(Constants.SHOOTER2);
 
+		followerMotor.follow(shooterMotor);
+		followerMotor.setInverted(InvertType.OpposeMaster);
 	}
 
 	@Override
@@ -25,12 +27,10 @@ public class Shooter extends SubsystemBase {
 	}
 
 	public void shootBall(double speed) {
-		shooter1.set(speed);
-		shooter2.set(speed);
+		shooterMotor.set(speed);
 	}
 
 	public void stop() {
-		shooter1.set(0);
-		shooter2.set(0);
+		shooterMotor.set(0);
 	}
 }

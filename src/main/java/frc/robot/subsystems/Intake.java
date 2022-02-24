@@ -20,12 +20,11 @@ public class Intake extends SubsystemBase {
 	public void periodic() {
 	}
 
-	public void intakeBall(double speed) {
+	public void setIntakeMotor(double speed) {
 		intakeMotor.set(speed);
 	}
 
 	public void stop() {
-
 		intakeMotor.set(0);
 	}
 }

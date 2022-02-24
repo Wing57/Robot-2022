@@ -12,9 +12,9 @@ import frc.robot.subsystems.Intake;
 public class IntakeBall extends CommandBase {
 	Intake intake;
 
-	public IntakeBall(Intake i) {
-		intake = i;
-		addRequirements(intake);
+	public IntakeBall(Intake intake) {
+		this.intake = intake;
+		addRequirements(this.intake);
 	}
 
 	// Called when the command is initially scheduled.
@@ -25,12 +25,13 @@ public class IntakeBall extends CommandBase {
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
-		intake.intakeBall(Constants.INTAKE_SPEED);
+		intake.setIntakeMotor(Constants.INTAKE_SPEED);
 	}
 
 	// Called once the command ends or is interrupted.
 	@Override
 	public void end(boolean interrupted) {
+		intake.stop();
 	}
 
 	// Returns true when the command should end.

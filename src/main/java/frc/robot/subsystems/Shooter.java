@@ -11,9 +11,12 @@ import frc.robot.Constants;
 
 public class Shooter extends SubsystemBase {
 	WPI_TalonFX shooter1;
+	WPI_TalonFX shooter2;
 
 	public Shooter() {
 		shooter1 = new WPI_TalonFX(Constants.SHOOTER1);
+		shooter2 = new WPI_TalonFX(Constants.SHOOTER2);
+
 	}
 
 	@Override
@@ -23,9 +26,11 @@ public class Shooter extends SubsystemBase {
 
 	public void shootBall(double speed) {
 		shooter1.set(speed);
+		shooter2.set(speed);
 	}
 
 	public void stop() {
 		shooter1.set(0);
+		shooter2.set(0);
 	}
 }

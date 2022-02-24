@@ -34,7 +34,7 @@ public class RobotContainer {
 
 	// joysticks
 	public static final XboxController gamepad = new XboxController(
-			Constants.XBOXCONTROLLER);
+	  Constants.XBOXCONTROLLER);
 	public static final Gamepad controller = new Gamepad(Constants.XBOXCONTROLLER);
 	public static final DriveStick leftStick = new DriveStick(Constants.LEFT_JOY);
 	public static final DriveStick rightStick = new DriveStick(Constants.RIGHT_JOY);

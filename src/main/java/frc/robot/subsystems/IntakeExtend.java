@@ -14,9 +14,9 @@ public class IntakeExtend extends SubsystemBase {
 	/** Creates a new IntakeExtend. */
 	private final DoubleSolenoid piston;
 	private final Compressor comp;
-	
+
 	public IntakeExtend() {
-	    comp = new Compressor(2, PneumaticsModuleType.REVPH);
+		comp = new Compressor(2, PneumaticsModuleType.REVPH);
 		piston = new DoubleSolenoid(2, PneumaticsModuleType.REVPH, 1, 0);
 
 		comp.enableDigital();

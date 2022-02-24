@@ -23,8 +23,8 @@ public final class Constants {
 	public static final int LEFT_MOTOR_1 = 4;
 	public static final int LEFT_MOTOR_2 = 5;
 	public static final int LEFT_MOTOR_3 = 6;
-	public static final int SHOOTER1 = 6;
-	public static final int INTAKE1 = 7;
+	public static final int SHOOTER1 = 7;
+	public static final int INTAKE1 = 9;
 
 	// XboxController Axis values
 	public static final int XBOX_LEFT_Y_AXIS = 1;
@@ -52,4 +52,5 @@ public final class Constants {
 	public static final double INTAKE_SPEED = 0.75;
 
 	public static final double AUTO_SHOOT_TIME = 2.0;
+	public static final int SHOOTER2 = 8;
 }

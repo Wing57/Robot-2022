@@ -26,11 +26,11 @@ public class Shooter extends SubsystemBase {
 		// This method will be called once per scheduler run
 	}
 
-	public void shootBall(double speed) {
+	public void setShooterSpeed(double speed) {
 		shooterMotor.set(speed);
 	}
 
-	public void stop() {
+	public void stopMotors() {
 		shooterMotor.set(0);
 	}
 }

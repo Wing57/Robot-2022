@@ -38,6 +38,7 @@ public class DriveTimedCommand extends CommandBase {
 	// Called once the command ends or is interrupted.
 	@Override
 	public void end(boolean interrupted) {
+		drivetrain.stopMotors();
 	}
 
 	// Returns true when the command should end.

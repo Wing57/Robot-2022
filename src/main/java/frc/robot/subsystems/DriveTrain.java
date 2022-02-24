@@ -70,4 +70,8 @@ public class DriveTrain extends SubsystemBase {
 	public void drive(double left, double right) {
 		drive.tankDrive(left, right);
 	}
+
+	public void stopMotors() {
+		drive.stopMotor();
+	}
 }

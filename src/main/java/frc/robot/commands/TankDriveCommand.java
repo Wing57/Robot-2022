@@ -1,6 +1,6 @@
 package frc.robot.commands;
 
-import com.rambots4571.rampage.joystick.DriveStick.Axis;
+import com.rambots4571.rampage.joystick.DriveStick;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
@@ -21,8 +21,8 @@ public class TankDriveCommand extends CommandBase {
 
 	@Override
 	public void execute() {
-		driveTrain.drive(RobotContainer.leftStick.getAxisValue(Axis.yAxis),
-		  RobotContainer.rightStick.getAxisValue(Axis.yAxis));
+		driveTrain.drive(RobotContainer.leftStick.getAxisValue(DriveStick.Axis.yAxis),
+		  RobotContainer.rightStick.getAxisValue(DriveStick.Axis.yAxis));
 	}
 
 	@Override

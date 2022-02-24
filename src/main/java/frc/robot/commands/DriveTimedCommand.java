@@ -43,6 +43,6 @@ public class DriveTimedCommand extends CommandBase {
 	// Returns true when the command should end.
 	@Override
 	public boolean isFinished() {
-		return timer.get() > timeInSeconds;
+		return timer.get() >= timeInSeconds;
 	}
 }

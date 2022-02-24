@@ -11,9 +11,8 @@ import frc.robot.Constants;
 import frc.robot.subsystems.Shooter;
 
 public class AutoShoot extends CommandBase {
-	Shooter shooter;
-	Timer timer;
-	private boolean finish = false;
+	private Shooter shooter;
+	private Timer timer;
 
 	/** Creates a new AutoShoot. */
 	public AutoShoot(Shooter s) {
@@ -27,16 +26,12 @@ public class AutoShoot extends CommandBase {
 	public void initialize() {
 		timer.reset();
 		timer.start();
-
-		while (timer.get() < Constants.AUTO_SHOOT_TIME) {
-			shooter.shootBall(Constants.SHOOT_SPEED);
-		}
-		finish = true;
 	}
 
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
+			shooter.shootBall(Constants.SHOOT_SPEED);
 	}
 
 	// Called once the command ends or is interrupted.
@@ -48,6 +43,6 @@ public class AutoShoot extends CommandBase {
 	// Returns true when the command should end.
 	@Override
 	public boolean isFinished() {
-		return finish;
+		return !(timer.get() < Constants.AUTO_SHOOT_TIME);
 	}
 }

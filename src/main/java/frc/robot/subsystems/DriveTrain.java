@@ -18,6 +18,11 @@ public class DriveTrain extends SubsystemBase {
 	private final WPI_TalonFX rightMaster;
 	private final WPI_TalonFX leftMaster;
 
+	private final WPI_TalonFX rightMotor2;
+	private final WPI_TalonFX rightMotor3;
+	private final WPI_TalonFX leftMotor2;
+	private final WPI_TalonFX leftMotor3;
+
 	private final DifferentialDrive drive;
 
 	/**
@@ -26,12 +31,12 @@ public class DriveTrain extends SubsystemBase {
 	public DriveTrain() {
 		// Talons
 		rightMaster = new WPI_TalonFX(Constants.RIGHT_MOTOR_1);
-		WPI_TalonFX rightMotor2 = new WPI_TalonFX(Constants.RIGHT_MOTOR_2);
-		WPI_TalonFX rightMotor3 = new WPI_TalonFX(Constants.RIGHT_MOTOR_3);
+		rightMotor2 = new WPI_TalonFX(Constants.RIGHT_MOTOR_2);
+		rightMotor3 = new WPI_TalonFX(Constants.RIGHT_MOTOR_3);
 
 		leftMaster = new WPI_TalonFX(Constants.LEFT_MOTOR_1);
-		WPI_TalonFX leftMotor2 = new WPI_TalonFX(Constants.LEFT_MOTOR_2);
-		WPI_TalonFX leftMotor3 = new WPI_TalonFX(Constants.LEFT_MOTOR_3);
+		leftMotor2 = new WPI_TalonFX(Constants.LEFT_MOTOR_2);
+		leftMotor3 = new WPI_TalonFX(Constants.LEFT_MOTOR_3);
 
 		rightMotor2.follow(rightMaster);
 		rightMotor2.setInverted(InvertType.FollowMaster);
@@ -59,7 +64,7 @@ public class DriveTrain extends SubsystemBase {
 	}
 
 	public void driveWithJoysticks(Joystick leftJoystick, Joystick rightJoystick) {
-		drive.tankDrive(leftJoystick.getRawAxis(1), -rightJoystick.getRawAxis(1));
+		drive.tankDrive(leftJoystick.getRawAxis(1), rightJoystick.getRawAxis(1));
 	}
 
 	public void drive(double left, double right) {

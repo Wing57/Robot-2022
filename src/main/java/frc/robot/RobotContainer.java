@@ -48,8 +48,8 @@ public class RobotContainer {
 	// commands
 	// private final DriveWithJoysticks driveWithJoysticks;
 	private final TankDriveCommand tankDriveCommand;
-	private final ShootBall shootBall;
-	private final AutoShoot autoShoot;
+	public static ShootBall shootBall;
+	public static AutoShoot autoShoot;
 	private final IntakeBall intakeBall;
 	private final TestCommandGroup group;
 

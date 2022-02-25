@@ -91,7 +91,7 @@ public class RobotContainer {
 	private void configureButtonBindings() {
 		JoystickButton shootButton = new JoystickButton(gamepad,
 		  XboxController.Button.kRightBumper.value);
-		shootButton.whileHeld(new ShootBall(shooter));
+		shootButton.whileHeld(new ShootBall(shooter), false);
 
 		JoystickButton intakeButton = new JoystickButton(gamepad,
 		  XboxController.Button.kA.value);

@@ -8,7 +8,8 @@ import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
-import edu.wpi.first.wpilibj.Joystick;
+import com.rambots4571.rampage.joystick.DriveStick;
+
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -63,8 +64,9 @@ public class DriveTrain extends SubsystemBase {
 	public void periodic() {
 	}
 
-	public void driveWithJoysticks(Joystick leftJoystick, Joystick rightJoystick) {
-		drive.tankDrive(leftJoystick.getRawAxis(1), rightJoystick.getRawAxis(1));
+	public void driveWithJoysticks(DriveStick leftJoystick, DriveStick rightJoystick) {
+		drive.tankDrive(leftJoystick.getAxisValue(DriveStick.Axis.yAxis), rightJoystick
+		  .getAxisValue(DriveStick.Axis.yAxis));
 	}
 
 	public void drive(double left, double right) {

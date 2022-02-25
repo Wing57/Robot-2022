@@ -10,7 +10,6 @@ import com.rambots4571.rampage.joystick.Gamepad;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import frc.robot.commands.AutoShoot;
 import frc.robot.commands.IntakeBall;
@@ -33,9 +32,7 @@ public class RobotContainer {
 	// The robot's subsystems and commands are defined here...
 
 	// joysticks
-	public static final XboxController gamepad = new XboxController(
-	  Constants.XBOXCONTROLLER);
-	public static final Gamepad controller = new Gamepad(Constants.XBOXCONTROLLER);
+	public static final Gamepad gamepad = new Gamepad(Constants.XBOXCONTROLLER);
 	public static final DriveStick leftStick = new DriveStick(Constants.LEFT_JOY);
 	public static final DriveStick rightStick = new DriveStick(Constants.RIGHT_JOY);
 
@@ -89,17 +86,14 @@ public class RobotContainer {
 	 * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
 	 */
 	private void configureButtonBindings() {
-		JoystickButton shootButton = new JoystickButton(gamepad,
-		  XboxController.Button.kRightBumper.value);
-		shootButton.whileHeld(new ShootBall(shooter), false);
-
-		JoystickButton intakeButton = new JoystickButton(gamepad,
-		  XboxController.Button.kA.value);
-		intakeButton.whileHeld(new IntakeBall(intake));
-
-		JoystickButton toggleButton = new JoystickButton(gamepad,
-		  XboxController.Button.kLeftBumper.value);
-		toggleButton.whenPressed(intakeExtend::togglePiston, intakeExtend);
+		// right bumper -> shoot ball
+		gamepad.getButton(Gamepad.ButtonType.RightBumper).whileHeld(new ShootBall(shooter),
+		  false);
+		// A -> intake ball
+		gamepad.getButton(Gamepad.ButtonType.A).whileHeld(new IntakeBall(intake), false);
+		// left bumper -> toggle piston
+		gamepad.getButton(Gamepad.ButtonType.LeftBumper).whenPressed(
+		  intakeExtend::togglePiston, intakeExtend);
 	}
 
 	/**

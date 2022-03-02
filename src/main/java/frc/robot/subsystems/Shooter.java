@@ -14,8 +14,8 @@ public class Shooter extends SubsystemBase {
 	private final WPI_TalonFX shooterMotor, followerMotor;
 
 	public Shooter() {
-		shooterMotor = new WPI_TalonFX(Constants.SHOOTER1);
-		followerMotor = new WPI_TalonFX(Constants.SHOOTER2);
+		shooterMotor = new WPI_TalonFX(Constants.SHOOTER_MOTOR_1);
+		followerMotor = new WPI_TalonFX(Constants.SHOOTER_MOTOR_2);
 
 		followerMotor.follow(shooterMotor);
 		followerMotor.setInverted(InvertType.OpposeMaster);

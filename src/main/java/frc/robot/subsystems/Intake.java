@@ -13,7 +13,7 @@ public class Intake extends SubsystemBase {
 	private final WPI_TalonFX intakeMotor;
 
 	public Intake() {
-		intakeMotor = new WPI_TalonFX(Constants.INTAKE1);
+		intakeMotor = new WPI_TalonFX(Constants.INTAKE_MOTOR_1);
 	}
 
 	@Override

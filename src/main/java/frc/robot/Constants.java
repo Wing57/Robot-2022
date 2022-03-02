@@ -16,20 +16,17 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-	// Talon Can ID's (NOT REAL VALUES YET)
+
+	// *****************************************
+	// ********** DRIVE TRAIN ******************
+	// *****************************************
 	public static final int RIGHT_MOTOR_1 = 3;
 	public static final int RIGHT_MOTOR_2 = 2;
-	public static final int RIGHT_MOTOR_3 = 1;
+	public static final int RIGHT_MOTOR_3 = 1; // make negative number instead of
+	                                           // commenting it out (or error)
 	public static final int LEFT_MOTOR_1 = 4;
 	public static final int LEFT_MOTOR_2 = 5;
 	public static final int LEFT_MOTOR_3 = 6;
-	public static final int SHOOTER1 = 6;
-	public static final int INTAKE1 = 7;
-
-	// XboxController Axis values
-	public static final int XBOX_LEFT_Y_AXIS = 1;
-	public static final int XBOX_RIGHT_Y_AXIS = 5;
-	public static final int RIGHT_TRIGGER = 3;
 
 	// Drivetrain Speed
 	public static final double DRIVETRAINSPEED = 0.75;
@@ -40,16 +37,27 @@ public final class Constants {
 	// Speed During AUTO
 	public static final double AUTONOMOUS_SPEED = 0.4;
 
-	// Controller Port Numbers
+	// *****************************************
+	// ************** SHOOTER ******************
+	// *****************************************
+	public static final int SHOOTER_MOTOR_1 = 6;
+	public static final int SHOOTER_MOTOR_2 = 8;
+	public static final int ROTATOR_MOTOR = -1;
+
+	public static final double AUTO_SHOOT_TIME = 2.0;
+	public static final double LL_SHOT_HEIGHT = 5;
+	public static final double SHOOT_SPEED = 1;
+
+	// *****************************************
+	// ************** INTAKE *******************
+	// *****************************************
+	public static final int INTAKE_MOTOR_1 = 7;
+	public static final double INTAKE_SPEED = 0.75;
+
+	// *****************************************
+	// ************** JOYSTICKS ****************
+	// *****************************************
 	public static final int LEFT_JOY = 0;
 	public static final int RIGHT_JOY = 1;
 	public static final int XBOXCONTROLLER = 2;
-
-	// Shoot Speed
-	public static final double SHOOT_SPEED = 1;
-
-	// Intake Speed
-	public static final double INTAKE_SPEED = 0.75;
-
-	public static final double AUTO_SHOOT_TIME = 2.0;
 }

@@ -13,7 +13,7 @@ public class Shooter extends SubsystemBase {
 	WPI_TalonFX shooter1;
 
 	public Shooter() {
-		shooter1 = new WPI_TalonFX(Constants.SHOOTER1);
+		shooter1 = new WPI_TalonFX(Constants.SHOOTER_MOTOR_1);
 	}
 
 	@Override

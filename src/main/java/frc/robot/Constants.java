@@ -27,6 +27,9 @@ public final class Constants {
 	public static final int LEFT_MOTOR_2 = 5;
 	public static final int LEFT_MOTOR_3 = 6;
 
+	public static final int SHIFTER_FORWARD_CHANNEL = 8;
+	public static final int SHIFTER_REVERSE_CHANNEL = 9;
+
 	// Drivetrain Speed
 	public static final double DRIVETRAINSPEED = 0.75;
 
@@ -51,7 +54,15 @@ public final class Constants {
 	// ************** INTAKE *******************
 	// *****************************************
 	public static final int INTAKE_MOTOR_1 = 7;
+	public static final int MODULE_NUMBER = 2;
+
 	public static final double INTAKE_SPEED = 0.75;
+
+	// *****************************************
+	// *********** INTAKE EXTEND ***************
+	// *****************************************
+	public static final int INTAKE_PISTON_FORWARD_CHANNEL = 1;
+	public static final int INTAKE_PISTON_REVERSE_CHANNEL = 0;
 
 	// *****************************************
 	// ************** JOYSTICKS ****************

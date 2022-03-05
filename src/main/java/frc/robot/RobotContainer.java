@@ -10,6 +10,7 @@ import com.rambots4571.rampage.joystick.Gamepad;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 
 import frc.robot.commands.AutoShoot;
 import frc.robot.commands.IntakeBall;
@@ -20,6 +21,7 @@ import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.IntakeExtend;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Turret;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -41,6 +43,7 @@ public class RobotContainer {
 	private final Shooter shooter;
 	private final Intake intake;
 	private final IntakeExtend intakeExtend;
+	private final Turret turret;
 
 	// commands
 	// private final DriveWithJoysticks driveWithJoysticks;
@@ -59,11 +62,16 @@ public class RobotContainer {
 		shooter = new Shooter();
 		intake = new Intake();
 		intakeExtend = new IntakeExtend();
+		turret = new Turret();
+
+		turret.setDefaultCommand(new RunCommand(() -> turret.setTurretMotor(gamepad
+		  .getAxisValue(Gamepad.Axis.LeftYAxis)), turret));
 
 		group = new TestCommandGroup(driveTrain, shooter);
-		// driveWithJoysticks = new DriveWithJoysticks(driveTrain);
-		// driveTrain.setDefaultCommand(driveWithJoysticks);
-		tankDriveCommand = new TankDriveCommand(driveTrain);
+
+		// right drivestick trigger -> shift gears
+		tankDriveCommand = new TankDriveCommand(driveTrain, rightStick.getButton(
+		  DriveStick.ButtonType.button1));
 
 		driveTrain.setDefaultCommand(tankDriveCommand);
 
@@ -98,11 +106,6 @@ public class RobotContainer {
 
 		gamepad.getButton(Gamepad.ButtonType.LeftBumper).whenPressed(
 		  intakeExtend::togglePiston, intakeExtend);
-
-		// B --> shift gears
-
-		gamepad.getButton(Gamepad.ButtonType.B).whenPressed(intakeExtend::shiftGear,
-		  intakeExtend);
 	}
 
 	/**

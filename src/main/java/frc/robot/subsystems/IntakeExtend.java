@@ -9,17 +9,17 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class IntakeExtend extends SubsystemBase {
 	/** Creates a new IntakeExtend. */
 	private final DoubleSolenoid piston;
-	private final DoubleSolenoid gear;
 	private final Compressor comp;
 
 	public IntakeExtend() {
-		comp = new Compressor(2, PneumaticsModuleType.REVPH);
-		piston = new DoubleSolenoid(2, PneumaticsModuleType.REVPH, 1, 0);
-		gear = new DoubleSolenoid(2, PneumaticsModuleType.REVPH, 8, 9);
+		comp = new Compressor(Constants.MODULE_NUMBER, PneumaticsModuleType.REVPH);
+		piston = new DoubleSolenoid(Constants.MODULE_NUMBER, PneumaticsModuleType.REVPH,
+		  Constants.INTAKE_PISTON_FORWARD_CHANNEL, Constants.INTAKE_PISTON_REVERSE_CHANNEL);
 
 		comp.enableDigital();
 	}
@@ -28,11 +28,6 @@ public class IntakeExtend extends SubsystemBase {
 		Value oppositeValue = piston.get() == Value.kForward ? Value.kReverse
 		  : Value.kForward;
 		piston.set(oppositeValue);
-	}
-
-	public void shiftGear() {
-		Value oppositeValue = gear.get() == Value.kForward ? Value.kReverse : Value.kForward;
-		gear.set(oppositeValue);
 	}
 
 	@Override

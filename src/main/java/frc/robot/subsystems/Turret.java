@@ -7,17 +7,19 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.RobotContainer;
 
 public class Turret extends SubsystemBase {
-	private final WPI_TalonSRX turretmotor;
+	private final WPI_TalonSRX turretMotor;
 
 	public Turret() {
-		turretmotor = new WPI_TalonSRX(0);
+		turretMotor = new WPI_TalonSRX(0);
 	}
 
 	@Override
 	public void periodic() {
-		turretmotor.set(RobotContainer.gamepad.getRawAxis(1));
+	}
+
+	public void setTurretMotor(double speed) {
+		turretMotor.set(speed);
 	}
 }

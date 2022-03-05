@@ -14,7 +14,7 @@ public class IntakeBall extends CommandBase {
 
 	public IntakeBall(Intake intake) {
 		this.intake = intake;
-		addRequirements(this.intake);
+		addRequirements(intake);
 	}
 
 	// Called when the command is initially scheduled.

@@ -50,7 +50,7 @@ public class RobotContainer {
 	private final TankDriveCommand tankDriveCommand;
 	public static ShootBall shootBall;
 	public static AutoShoot autoShoot;
-	private final IntakeBall intakeBall;
+	public static IntakeBall intakeBall;
 	private final TestCommandGroup group;
 
 	/**
@@ -80,7 +80,6 @@ public class RobotContainer {
 		autoShoot = new AutoShoot(shooter);
 
 		intakeBall = new IntakeBall(intake);
-		intake.setDefaultCommand(intakeBall);
 
 		// Configure the button bindings
 		configureButtonBindings();

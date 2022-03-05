@@ -4,21 +4,16 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Shooter extends SubsystemBase {
-	private final WPI_TalonFX shooterMotor, followerMotor;
+	private final WPI_TalonFX shooterMotor;
 
 	public Shooter() {
 		shooterMotor = new WPI_TalonFX(Constants.SHOOTER_MOTOR_1);
-		followerMotor = new WPI_TalonFX(Constants.SHOOTER_MOTOR_2);
-
-		followerMotor.follow(shooterMotor);
-		followerMotor.setInverted(InvertType.OpposeMaster);
 	}
 
 	@Override

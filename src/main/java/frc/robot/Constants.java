@@ -42,9 +42,8 @@ public final class Constants {
 	// *****************************************
 	// ************** SHOOTER ******************
 	// *****************************************
-	public static final int SHOOTER_MOTOR_1 = 6;
-	public static final int SHOOTER_MOTOR_2 = 8;
-	public static final int ROTATOR_MOTOR = -1;
+	public static final int SHOOTER_MOTOR_1 = 7;
+	public static final int TURRET_MOTOR = 0;
 
 	public static final double AUTO_SHOOT_TIME = 2.0;
 	public static final double LL_SHOT_HEIGHT = 5;
@@ -53,7 +52,7 @@ public final class Constants {
 	// *****************************************
 	// ************** INTAKE *******************
 	// *****************************************
-	public static final int INTAKE_MOTOR_1 = 7;
+	public static final int INTAKE_MOTOR_1 = 9;
 	public static final int MODULE_NUMBER = 2;
 
 	public static final double INTAKE_SPEED = 0.75;
@@ -61,8 +60,8 @@ public final class Constants {
 	// *****************************************
 	// *********** INTAKE EXTEND ***************
 	// *****************************************
-	public static final int INTAKE_PISTON_FORWARD_CHANNEL = 1;
-	public static final int INTAKE_PISTON_REVERSE_CHANNEL = 0;
+	public static final int INTAKE_PISTON_FORWARD_CHANNEL = 0;
+	public static final int INTAKE_PISTON_REVERSE_CHANNEL = 1;
 
 	// *****************************************
 	// ************** JOYSTICKS ****************

@@ -89,11 +89,20 @@ public class RobotContainer {
 		// right bumper -> shoot ball
 		gamepad.getButton(Gamepad.ButtonType.RightBumper).whileHeld(new ShootBall(shooter),
 		  false);
+
 		// A -> intake ball
+
 		gamepad.getButton(Gamepad.ButtonType.A).whileHeld(new IntakeBall(intake), false);
+
 		// left bumper -> toggle piston
+
 		gamepad.getButton(Gamepad.ButtonType.LeftBumper).whenPressed(
 		  intakeExtend::togglePiston, intakeExtend);
+
+		// B --> shift gears
+
+		gamepad.getButton(Gamepad.ButtonType.B).whenPressed(intakeExtend::shiftGear,
+		  intakeExtend);
 	}
 
 	/**

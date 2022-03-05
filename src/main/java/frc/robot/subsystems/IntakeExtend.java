@@ -13,11 +13,13 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class IntakeExtend extends SubsystemBase {
 	/** Creates a new IntakeExtend. */
 	private final DoubleSolenoid piston;
+	private final DoubleSolenoid gear;
 	private final Compressor comp;
 
 	public IntakeExtend() {
 		comp = new Compressor(2, PneumaticsModuleType.REVPH);
 		piston = new DoubleSolenoid(2, PneumaticsModuleType.REVPH, 1, 0);
+		gear = new DoubleSolenoid(2, PneumaticsModuleType.REVPH, 8, 9);
 
 		comp.enableDigital();
 	}
@@ -26,6 +28,11 @@ public class IntakeExtend extends SubsystemBase {
 		Value oppositeValue = piston.get() == Value.kForward ? Value.kReverse
 		  : Value.kForward;
 		piston.set(oppositeValue);
+	}
+
+	public void shiftGear() {
+		Value oppositeValue = gear.get() == Value.kForward ? Value.kReverse : Value.kForward;
+		gear.set(oppositeValue);
 	}
 
 	@Override

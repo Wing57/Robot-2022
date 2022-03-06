@@ -90,7 +90,7 @@ public class RobotContainer {
 	 * created by instantiating a {@link GenericHID} or one of its subclasses
 	 * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and
 	 * then passing it to a
-	 * {@link edu.wpi.first.wp,lilibj2.command.button.JoystickButton}.
+	 * {@link edu.wpi.first.wpililibj2.command.button.JoystickButton}.
 	 */
 	private void configureButtonBindings() {
 		// right bumper -> shoot ball

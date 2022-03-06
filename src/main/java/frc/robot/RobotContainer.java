@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 
 import frc.robot.commands.AutoShoot;
 import frc.robot.commands.IntakeBall;
+import frc.robot.commands.OuttakeBall;
 import frc.robot.commands.ShootBall;
 import frc.robot.commands.TankDriveCommand;
 import frc.robot.commands.TestCommandGroup;
@@ -100,6 +101,10 @@ public class RobotContainer {
 		// A -> intake ball
 
 		gamepad.getButton(Gamepad.ButtonType.A).whileHeld(new IntakeBall(intake), false);
+
+		// B -> outtake ball
+
+		gamepad.getButton(Gamepad.ButtonType.B).whileHeld(new OuttakeBall(intake), false);
 
 		// left bumper -> toggle piston
 

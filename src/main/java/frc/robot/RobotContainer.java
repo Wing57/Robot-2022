@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 
 import frc.robot.commands.AutoShoot;
+import frc.robot.commands.IndexBall;
 import frc.robot.commands.IntakeBall;
 import frc.robot.commands.OuttakeBall;
 import frc.robot.commands.ShootBall;
@@ -20,6 +21,7 @@ import frc.robot.commands.TankDriveCommand;
 import frc.robot.commands.TestCommandGroup;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Index;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 
@@ -43,6 +45,7 @@ public class RobotContainer {
 	private final Shooter shooter;
 	private final Intake intake;
 	private final Climber climber;
+	private final Index index;
 
 	// commands
 	// private final DriveWithJoysticks driveWithJoysticks;
@@ -50,7 +53,10 @@ public class RobotContainer {
 	public static ShootBall shootBall;
 	public static AutoShoot autoShoot;
 	public static IntakeBall intakeBall;
-	private final TestCommandGroup group;
+	public static OuttakeBall outtakeBall;
+	public static TestCommandGroup group;
+	public static IndexBall indexBall;
+	
 
 	/**
 	 * The container for the robot. Contains subsystems, OI devices, and
@@ -61,6 +67,7 @@ public class RobotContainer {
 		shooter = new Shooter();
 		intake = new Intake();
 		climber = new Climber();
+		index = new Index();
 
 		shooter.setDefaultCommand(new RunCommand(() -> shooter.setTurretSpeed(gamepad
 		  .getAxisValue(Gamepad.Axis.LeftYAxis)), shooter));
@@ -72,13 +79,15 @@ public class RobotContainer {
 		driveTrain.setDefaultCommand(tankDriveCommand);
 
 		climber.setDefaultCommand(new RunCommand(() -> climber.setActmotor(gamepad
-		.getAxisValue(Gamepad.Axis.RightYAxis)), climber));
+		  .getAxisValue(Gamepad.Axis.RightYAxis)), climber));
 
 		shootBall = new ShootBall(shooter);
 
 		autoShoot = new AutoShoot(shooter);
 
 		intakeBall = new IntakeBall(intake);
+
+		outtakeBall = new OuttakeBall(intake);
 
 		// Configure the button bindings
 		configureButtonBindings();
@@ -108,6 +117,9 @@ public class RobotContainer {
 
 		gamepad.getButton(Gamepad.ButtonType.LeftBumper).whenPressed(intake::togglePiston,
 		  intake);
+
+		gamepad.getButton(Gamepad.ButtonType.X).whileHeld(new IndexBall(index), false);
+
 	}
 
 	/**

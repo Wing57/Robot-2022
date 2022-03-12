@@ -9,8 +9,8 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -21,7 +21,7 @@ public class Intake extends SubsystemBase {
 
 	public Intake() {
 		intakeMotor = new CANSparkMax(Constants.INTAKE_MOTOR_1, MotorType.kBrushless);
-		
+
 		comp = new Compressor(Constants.MODULE_NUMBER, PneumaticsModuleType.REVPH);
 		piston = new DoubleSolenoid(Constants.MODULE_NUMBER, PneumaticsModuleType.REVPH,
 		  Constants.INTAKE_PISTON_FORWARD_CHANNEL, Constants.INTAKE_PISTON_REVERSE_CHANNEL);
@@ -38,6 +38,7 @@ public class Intake extends SubsystemBase {
 		  : Value.kForward;
 		piston.set(oppositeValue);
 	}
+
 	public void setIntakeMotor(double speed) {
 		intakeMotor.set(speed);
 	}

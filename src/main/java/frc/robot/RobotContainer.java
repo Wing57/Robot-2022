@@ -18,11 +18,10 @@ import frc.robot.commands.OuttakeBall;
 import frc.robot.commands.ShootBall;
 import frc.robot.commands.TankDriveCommand;
 import frc.robot.commands.TestCommandGroup;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.IntakeExtend;
 import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.Turret;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -43,8 +42,7 @@ public class RobotContainer {
 	private final DriveTrain driveTrain;
 	private final Shooter shooter;
 	private final Intake intake;
-	private final IntakeExtend intakeExtend;
-	private final Turret turret;
+	private final Climber climber;
 
 	// commands
 	// private final DriveWithJoysticks driveWithJoysticks;
@@ -62,19 +60,19 @@ public class RobotContainer {
 		driveTrain = new DriveTrain();
 		shooter = new Shooter();
 		intake = new Intake();
-		intakeExtend = new IntakeExtend();
-		turret = new Turret();
+		climber = new Climber();
 
-		turret.setDefaultCommand(new RunCommand(() -> turret.setTurretMotor(gamepad
-		  .getAxisValue(Gamepad.Axis.LeftYAxis)), turret));
-
-		group = new TestCommandGroup(driveTrain, shooter);
+		shooter.setDefaultCommand(new RunCommand(() -> shooter.setTurretSpeed(gamepad
+		  .getAxisValue(Gamepad.Axis.LeftYAxis)), shooter));
 
 		// right drivestick trigger -> shift gears
 		tankDriveCommand = new TankDriveCommand(driveTrain, rightStick.getButton(
 		  DriveStick.ButtonType.button1));
 
 		driveTrain.setDefaultCommand(tankDriveCommand);
+
+		climber.setDefaultCommand(new RunCommand(() -> climber.setActmotor(gamepad
+		.getAxisValue(Gamepad.Axis.RightYAxis)), climber));
 
 		shootBall = new ShootBall(shooter);
 
@@ -102,14 +100,14 @@ public class RobotContainer {
 
 		gamepad.getButton(Gamepad.ButtonType.A).whileHeld(new IntakeBall(intake), false);
 
-		// B -> outtake ball
+		// B -> Outtake
 
 		gamepad.getButton(Gamepad.ButtonType.B).whileHeld(new OuttakeBall(intake), false);
 
 		// left bumper -> toggle piston
 
-		gamepad.getButton(Gamepad.ButtonType.LeftBumper).whenPressed(
-		  intakeExtend::togglePiston, intakeExtend);
+		gamepad.getButton(Gamepad.ButtonType.LeftBumper).whenPressed(intake::togglePiston,
+		  intake);
 	}
 
 	/**

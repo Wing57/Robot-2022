@@ -69,4 +69,12 @@ public final class Constants {
 	public static final int LEFT_JOY = 0;
 	public static final int RIGHT_JOY = 1;
 	public static final int XBOXCONTROLLER = 2;
+
+	// *****************************************
+	// ************** Climber ****************
+	// *****************************************
+	public static final int ACTUATOR_MOTOR = 10;
+
+    public static final int CLIMBER_PISTON_FORWARD_CHANNEL = 2;
+    public static final int CLIMBER_PISTON_REVERSE_CHANNEL = 3;
 }

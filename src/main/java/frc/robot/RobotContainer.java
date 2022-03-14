@@ -56,7 +56,6 @@ public class RobotContainer {
 	public static OuttakeBall outtakeBall;
 	public static TestCommandGroup group;
 	public static IndexBall indexBall;
-	
 
 	/**
 	 * The container for the robot. Contains subsystems, OI devices, and
@@ -70,7 +69,8 @@ public class RobotContainer {
 		index = new Index();
 
 		shooter.setDefaultCommand(new RunCommand(() -> shooter.setTurretSpeed(gamepad
-		  .getAxisValue(Gamepad.Axis.LeftYAxis)), shooter));
+		  .getAxisValue(Gamepad.Axis.LeftYAxis)
+		  * 0.35), shooter));
 
 		// right drivestick trigger -> shift gears
 		tankDriveCommand = new TankDriveCommand(driveTrain, rightStick.getButton(

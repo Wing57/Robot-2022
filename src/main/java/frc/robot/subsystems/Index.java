@@ -5,26 +5,29 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Index extends SubsystemBase {
-  /** Creates a new Index. */
-  private final WPI_TalonSRX indexMotor;
+	/** Creates a new Index. */
+	private final WPI_TalonSRX indexMotor;
 
-  public Index() {
-    indexMotor = new WPI_TalonSRX(Constants.INDEX_MOTOR);
-  }
+	public Index() {
+		indexMotor = new WPI_TalonSRX(Constants.INDEX_MOTOR);
 
-  public void setIndexMotor(double speed) {
-    indexMotor.set(speed);
-  }  
+	}
 
-  public void stop() {
-    indexMotor.set(0);
-  }
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-  }
+	public void setIndexMotor(double speed) {
+		indexMotor.set(-speed);
+	}
+
+	public void stop() {
+		indexMotor.set(0);
+	}
+
+	@Override
+	public void periodic() {
+		// This method will be called once per scheduler run
+	}
 }

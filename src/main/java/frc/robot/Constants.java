@@ -42,13 +42,13 @@ public final class Constants {
 	// *****************************************
 	// ************** SHOOTER ******************
 	// *****************************************
-	public static final int SHOOTER_MOTOR_1 = 7;
-	public static final int SHOOTER_MOTOR_2 = 8;
+	public static final int SHOOTER_MOTOR_1 = 8;
+	public static final int SHOOTER_MOTOR_2 = 7;
 	public static final int TURRET_MOTOR = 9;
 
 	public static final double AUTO_SHOOT_TIME = 2.0;
 	public static final double LL_SHOT_HEIGHT = 5;
-	public static final double SHOOT_SPEED = 1;
+	public static final double SHOOT_SPEED = 0.42;
 
 	// *****************************************
 	// ************** INTAKE *******************
@@ -79,12 +79,11 @@ public final class Constants {
 	public static final int CLIMBER_PISTON_FORWARD_CHANNEL = 2;
 	public static final int CLIMBER_PISTON_REVERSE_CHANNEL = 3;
 
-
 	// *****************************************
-	// ************** sTORAGE ****************
+	// ************** STORAGE ****************
 	// *****************************************
 
-    public static final int INDEX_MOTOR = 12;
-	public static final double INDEX_SPEED = 0;
+	public static final int INDEX_MOTOR = 12;
+	public static final double INDEX_SPEED = 1;
 
 }

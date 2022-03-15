@@ -27,12 +27,14 @@ public class ShootBall extends CommandBase {
 	@Override
 	public void execute() {
 		shooter.setShooterSpeed(Constants.SHOOT_SPEED);
+		shooter.setBackSpinSpeed(Constants.BACKSPIN_SPEED);
 	}
 
 	// Called once the command ends or is interrupted.
 	@Override
 	public void end(boolean interrupted) {
 		shooter.stopShooter();
+		shooter.stopBackSpinMotor();
 	}
 
 	// Returns true when the command should end.

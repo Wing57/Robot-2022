@@ -101,6 +101,7 @@ public class RobotContainer {
 	 * {@link edu.wpi.first.wpililibj2.command.button.JoystickButton}.
 	 */
 	private void configureButtonBindings() {
+
 		// right bumper -> shoot ball
 		gamepad.getButton(Gamepad.ButtonType.RightBumper).whileHeld(new ShootBall(shooter),
 		  false);
@@ -117,6 +118,8 @@ public class RobotContainer {
 
 		gamepad.getButton(Gamepad.ButtonType.LeftBumper).whenPressed(intake::togglePiston,
 		  intake);
+
+		// X -> Index
 
 		gamepad.getButton(Gamepad.ButtonType.X).whileHeld(new IndexBall(index), false);
 

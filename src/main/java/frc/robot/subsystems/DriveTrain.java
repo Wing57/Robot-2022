@@ -50,7 +50,9 @@ public class DriveTrain extends SubsystemBase {
 		rightMotor3.setInverted(InvertType.FollowMaster);
 
 		leftMotor2.follow(leftMaster);
+		leftMotor2.setInverted(InvertType.FollowMaster);
 		leftMotor3.follow(leftMaster);
+		leftMotor3.setInverted(InvertType.FollowMaster);
 
 		// Same as set invert = false
 		TalonFXInvertType m_left_invert = TalonFXInvertType.Clockwise;

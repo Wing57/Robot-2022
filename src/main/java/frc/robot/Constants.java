@@ -71,6 +71,7 @@ public final class Constants {
 	public static final int LEFT_JOY = 0;
 	public static final int RIGHT_JOY = 1;
 	public static final int XBOXCONTROLLER = 2;
+	public static final int XBOXCONTROLLER2 = 3;
 
 	// *****************************************
 	// ************** Climber ****************

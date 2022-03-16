@@ -1,7 +1,5 @@
 package frc.robot.commands;
 
-import com.rambots4571.rampage.joystick.DriveStick;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -26,8 +24,8 @@ public class TankDriveCommand extends CommandBase {
 		if (!lastPressed && isPressed)
 			driveTrain.shiftGears();
 
-		driveTrain.drive(RobotContainer.leftStick.getAxisValue(DriveStick.Axis.yAxis),
-		  RobotContainer.rightStick.getAxisValue(DriveStick.Axis.yAxis));
+		driveTrain.drive(RobotContainer.DriverStick.getRawAxis(1) * -1,
+		  RobotContainer.DriverStick.getRawAxis(5));
 
 		lastPressed = isPressed;
 	}

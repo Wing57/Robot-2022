@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
@@ -20,6 +21,8 @@ public class Shooter extends SubsystemBase {
 		shooterMotor = new WPI_TalonFX(Constants.SHOOTER_MOTOR_1);
 		turretMotor = new WPI_TalonSRX(Constants.TURRET_MOTOR);
 		backSmotor = new WPI_TalonFX(Constants.SHOOTER_MOTOR_2);
+
+		shooterMotor.setNeutralMode(NeutralMode.Brake);
 
 		BackspinInvert = TalonFXInvertType.Clockwise;
 

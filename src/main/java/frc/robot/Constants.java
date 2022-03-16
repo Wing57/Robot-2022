@@ -48,7 +48,7 @@ public final class Constants {
 
 	public static final double AUTO_SHOOT_TIME = 2.0;
 	public static final double LL_SHOT_HEIGHT = 5;
-	public static final double SHOOT_SPEED = 0.42;
+	public static final double SHOOT_SPEED = 0.5;
 	public static final double BACKSPIN_SPEED = 0.60;
 
 	// *****************************************

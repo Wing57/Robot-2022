@@ -62,8 +62,8 @@ public final class Constants {
 	// *****************************************
 	// *********** INTAKE EXTEND ***************
 	// *****************************************
-	public static final int INTAKE_PISTON_FORWARD_CHANNEL = 0;
-	public static final int INTAKE_PISTON_REVERSE_CHANNEL = 1;
+	public static final int INTAKE_PISTON_FORWARD_CHANNEL = 6;
+	public static final int INTAKE_PISTON_REVERSE_CHANNEL = 8;
 
 	// *****************************************
 	// ************** JOYSTICKS ****************

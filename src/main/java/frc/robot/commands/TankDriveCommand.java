@@ -24,8 +24,8 @@ public class TankDriveCommand extends CommandBase {
 		if (!lastPressed && isPressed)
 			driveTrain.shiftGears();
 
-		driveTrain.drive(RobotContainer.DriverStick.getRawAxis(1) * -1,
-		  RobotContainer.DriverStick.getRawAxis(5));
+		driveTrain.drive(RobotContainer.DriverStick.getRawAxis(1) * 0.7,
+		  RobotContainer.DriverStick.getRawAxis(5) * -0.7);
 
 		lastPressed = isPressed;
 	}

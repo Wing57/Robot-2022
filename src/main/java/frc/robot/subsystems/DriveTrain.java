@@ -54,7 +54,7 @@ public class DriveTrain extends SubsystemBase {
 		leftMotor3.setInverted(InvertType.FollowMaster);
 
 		// Same as set invert = false
-		TalonFXInvertType m_left_invert = TalonFXInvertType.Clockwise;
+		TalonFXInvertType m_left_invert = TalonFXInvertType.CounterClockwise;
 
 		// Same as set invert = true
 		TalonFXInvertType m_right_invert = TalonFXInvertType.CounterClockwise;
@@ -74,7 +74,7 @@ public class DriveTrain extends SubsystemBase {
 	}
 
 	public void driveWithJoysticks(XboxController controller) {
-		drive.tankDrive(controller.getRawAxis(1) * -1, controller.getRawAxis(5));
+		drive.tankDrive(controller.getRawAxis(1) * 0.8, controller.getRawAxis(5) * -0.8);
 	}
 
 	public void drive(double left, double right) {

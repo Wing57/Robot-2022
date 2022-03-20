@@ -43,6 +43,16 @@ public class DriveTrain extends SubsystemBase {
 		leftMotor2 = new WPI_TalonFX(Constants.LEFT_MOTOR_2);
 		leftMotor3 = new WPI_TalonFX(Constants.LEFT_MOTOR_3);
 
+
+		// Same as set invert = false
+		TalonFXInvertType m_left_invert = TalonFXInvertType.CounterClockwise;
+
+		// Same as set invert = true
+		TalonFXInvertType m_right_invert = TalonFXInvertType.CounterClockwise;
+
+		leftMaster.setInverted(m_left_invert);
+		rightMaster.setInverted(m_right_invert);
+
 		rightMotor2.follow(rightMaster);
 		rightMotor2.setInverted(InvertType.FollowMaster);
 		rightMotor3.follow(rightMaster);
@@ -53,14 +63,6 @@ public class DriveTrain extends SubsystemBase {
 		leftMotor3.follow(leftMaster);
 		leftMotor3.setInverted(InvertType.FollowMaster);
 
-		// Same as set invert = false
-		TalonFXInvertType m_left_invert = TalonFXInvertType.CounterClockwise;
-
-		// Same as set invert = true
-		TalonFXInvertType m_right_invert = TalonFXInvertType.CounterClockwise;
-
-		leftMaster.setInverted(m_left_invert);
-		rightMaster.setInverted(m_right_invert);
 
 		// DifferentialDrive
 		drive = new DifferentialDrive(leftMaster, rightMaster);

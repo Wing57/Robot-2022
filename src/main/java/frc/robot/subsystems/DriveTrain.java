@@ -4,7 +4,10 @@
 
 package frc.robot.subsystems;
 
+import javax.swing.text.AbstractDocument.LeafElement;
+
 import com.ctre.phoenix.motorcontrol.InvertType;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
@@ -43,6 +46,26 @@ public class DriveTrain extends SubsystemBase {
 		leftMotor2 = new WPI_TalonFX(Constants.LEFT_MOTOR_2);
 		leftMotor3 = new WPI_TalonFX(Constants.LEFT_MOTOR_3);
 
+		//Factory Resets all TalonFX
+
+		rightMaster.configFactoryDefault();
+		rightMotor2.configFactoryDefault();
+		rightMotor3.configFactoryDefault();
+
+		leftMaster.configFactoryDefault();
+		leftMotor2.configFactoryDefault();
+		leftMotor3.configFactoryDefault();
+
+		// Sets Motor to Brake/Coast
+		
+		rightMaster.setNeutralMode(NeutralMode.Brake);
+		rightMotor2.setNeutralMode(NeutralMode.Brake);
+		rightMotor3.setNeutralMode(NeutralMode.Brake);
+
+		leftMaster.setNeutralMode(NeutralMode.Brake);
+		leftMotor2.setNeutralMode(NeutralMode.Brake);
+		leftMotor3.setNeutralMode(NeutralMode.Brake);
+		
 
 		// Same as set invert = false
 		TalonFXInvertType m_left_invert = TalonFXInvertType.CounterClockwise;
@@ -62,6 +85,17 @@ public class DriveTrain extends SubsystemBase {
 		leftMotor2.setInverted(InvertType.FollowMaster);
 		leftMotor3.follow(leftMaster);
 		leftMotor3.setInverted(InvertType.FollowMaster);
+
+		//Ramping motor output to prevent instantaneous directional changes (Values need testing)
+		rightMaster.configOpenloopRamp(0.15, 25);
+		rightMotor2.configOpenloopRamp(0.15, 25);
+		rightMotor3.configOpenloopRamp(0.15, 25);
+
+		leftMaster.configOpenloopRamp(0.15, 25);
+		leftMotor2.configOpenloopRamp(0.15, 25);
+		leftMotor3.configOpenloopRamp(0.15, 25);
+
+		
 
 
 		// DifferentialDrive

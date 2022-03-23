@@ -95,7 +95,7 @@ public class DriveTrain extends SubsystemBase {
 		leftMotor2.configOpenloopRamp(0.15, 25);
 		leftMotor3.configOpenloopRamp(0.15, 25);
 
-		//rightMaster.configStatorCurrentLimit(40, 60, 10)
+		
 
 		
 

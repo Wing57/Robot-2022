@@ -31,7 +31,7 @@ public final class Constants {
 	public static final int SHIFTER_REVERSE_CHANNEL = 9;
 
 	// Drivetrain Speed
-	public static final double DRIVETRAINSPEED = 0.75;
+	public static final double DRIVETRAINSPEED = 1;
 
 	// Duration of DRIVEFORWARD Command
 	public static final double DRIVE_FORWARD_TIME = 3.0;
@@ -48,8 +48,10 @@ public final class Constants {
 
 	public static final double AUTO_SHOOT_TIME = 2.0;
 	public static final double LL_SHOT_HEIGHT = 5;
-	public static final double SHOOT_SPEED = 0.5;
-	public static final double BACKSPIN_SPEED = 0.60;
+	public static final double SHOOT_SPEED = 0.6;
+	public static final double BACKSPIN_SPEED = 0.65;
+	public static final int RIGHTTURRET_LIMITSWITCH_PORT = 9;
+	public static final int LEFTTURRET_LIMITSWITCH_PORT = 8;
 
 	// *****************************************
 	// ************** INTAKE *******************

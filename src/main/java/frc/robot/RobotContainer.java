@@ -16,6 +16,7 @@ import frc.robot.commands.AutoShoot;
 import frc.robot.commands.IndexBall;
 import frc.robot.commands.IntakeBall;
 import frc.robot.commands.OuttakeBall;
+import frc.robot.commands.ReverseIndex;
 import frc.robot.commands.ShootBall;
 import frc.robot.commands.TankDriveCommand;
 import frc.robot.commands.TestCommandGroup;
@@ -58,6 +59,7 @@ public class RobotContainer {
 	public static OuttakeBall outtakeBall;
 	public static TestCommandGroup group;
 	public static IndexBall indexBall;
+	public static ReverseIndex reverseIndex;
 
 	/**
 	 * The container for the robot. Contains subsystems, OI devices, and
@@ -124,6 +126,10 @@ public class RobotContainer {
 		// X -> Index
 
 		gamepad.getButton(Gamepad.ButtonType.X).whileHeld(new IndexBall(index), false);
+
+		// Y -> Reverse Index
+
+		gamepad.getButton(Gamepad.ButtonType.Y).whileHeld(new ReverseIndex(index), false);
 
 	}
 

@@ -4,8 +4,6 @@
 
 package frc.robot.subsystems;
 
-import javax.swing.text.AbstractDocument.LeafElement;
-
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
@@ -46,7 +44,7 @@ public class DriveTrain extends SubsystemBase {
 		leftMotor2 = new WPI_TalonFX(Constants.LEFT_MOTOR_2);
 		leftMotor3 = new WPI_TalonFX(Constants.LEFT_MOTOR_3);
 
-		//Factory Resets all TalonFX
+		// Factory Resets all TalonFX
 
 		rightMaster.configFactoryDefault();
 		rightMotor2.configFactoryDefault();
@@ -57,7 +55,7 @@ public class DriveTrain extends SubsystemBase {
 		leftMotor3.configFactoryDefault();
 
 		// Sets Motor to Brake/Coast
-		
+
 		rightMaster.setNeutralMode(NeutralMode.Brake);
 		rightMotor2.setNeutralMode(NeutralMode.Brake);
 		rightMotor3.setNeutralMode(NeutralMode.Brake);
@@ -65,7 +63,6 @@ public class DriveTrain extends SubsystemBase {
 		leftMaster.setNeutralMode(NeutralMode.Brake);
 		leftMotor2.setNeutralMode(NeutralMode.Brake);
 		leftMotor3.setNeutralMode(NeutralMode.Brake);
-		
 
 		// Same as set invert = false
 		TalonFXInvertType m_left_invert = TalonFXInvertType.CounterClockwise;
@@ -86,7 +83,8 @@ public class DriveTrain extends SubsystemBase {
 		leftMotor3.follow(leftMaster);
 		leftMotor3.setInverted(InvertType.FollowMaster);
 
-		//Ramping motor output to prevent instantaneous directional changes (Values need testing)
+		// Ramping motor output to prevent instantaneous directional changes (Values
+		// need testing)
 		rightMaster.configOpenloopRamp(0.15, 25);
 		rightMotor2.configOpenloopRamp(0.15, 25);
 		rightMotor3.configOpenloopRamp(0.15, 25);
@@ -94,11 +92,6 @@ public class DriveTrain extends SubsystemBase {
 		leftMaster.configOpenloopRamp(0.15, 25);
 		leftMotor2.configOpenloopRamp(0.15, 25);
 		leftMotor3.configOpenloopRamp(0.15, 25);
-
-		
-
-		
-
 
 		// DifferentialDrive
 		drive = new DifferentialDrive(leftMaster, rightMaster);
@@ -112,7 +105,7 @@ public class DriveTrain extends SubsystemBase {
 	}
 
 	public void driveWithJoysticks(XboxController controller) {
-		drive.tankDrive(controller.getRawAxis(1) * 0.8, controller.getRawAxis(5) * -0.8);
+		drive.tankDrive(controller.getRawAxis(1) * 1, controller.getRawAxis(5) * -1);
 	}
 
 	public void drive(double left, double right) {

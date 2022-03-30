@@ -118,11 +118,6 @@ public class RobotContainer {
 
 		gamepad.getButton(Gamepad.ButtonType.B).whileHeld(new OuttakeBall(intake), false);
 
-		// left bumper -> toggle piston
-
-		gamepad.getButton(Gamepad.ButtonType.LeftBumper).whenPressed(intake::togglePiston,
-		  intake);
-
 		// X -> Index
 
 		gamepad.getButton(Gamepad.ButtonType.X).whileHeld(new IndexBall(index), false);
@@ -131,6 +126,10 @@ public class RobotContainer {
 
 		gamepad.getButton(Gamepad.ButtonType.Y).whileHeld(new ReverseIndex(index), false);
 
+		// LEFT BUMPER -> SHIFT GEARS CRY
+
+		gamepad.getButton(Gamepad.ButtonType.LeftBumper).whileHeld(driveTrain::shiftGears,
+		  driveTrain);
 	}
 
 	/**

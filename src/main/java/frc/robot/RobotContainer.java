@@ -6,10 +6,12 @@ package frc.robot;
 
 import com.rambots4571.rampage.joystick.DriveStick;
 import com.rambots4571.rampage.joystick.Gamepad;
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+
 import frc.robot.commands.AutoShoot;
 import frc.robot.commands.IndexBall;
 import frc.robot.commands.IntakeBall;
@@ -74,7 +76,7 @@ public class RobotContainer {
 		  .getAxisValue(Gamepad.Axis.LeftYAxis)
 		  * 0.35), shooter));
 
-		shooter.setDefaultCommand(new RunCommand(() -> shooter.setReverseShooterSpeed(gamepad.getAxisValue(Gamepad.Axis.RightTrigger) * 0.30), shooter));
+		shooter.setReverseShooterSpeed(-gamepad.getAxisValue(Gamepad.Axis.RightTrigger) * 0.30);
 
 		// right drivestick trigger -> shift gears
 		tankDriveCommand = new TankDriveCommand(driveTrain, rightStick.getButton(
@@ -92,6 +94,8 @@ public class RobotContainer {
 		intakeBall = new IntakeBall(intake);
 
 		outtakeBall = new OuttakeBall(intake);
+
+		group = new TestCommandGroup(driveTrain, shooter);
 
 		// Configure the button bindings
 		configureButtonBindings();
@@ -131,7 +135,6 @@ public class RobotContainer {
 		gamepad.getButton(Gamepad.ButtonType.LeftBumper).whileHeld(driveTrain::shiftGears,
 		  driveTrain);
 
-		
 	}
 
 	/**

@@ -14,6 +14,8 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.commands.ShootBall;
 import frc.robot.commands.Auton.AutoShoot;
 import frc.robot.commands.Auton.TestCommandGroup;
+import frc.robot.commands.Climber.BackwardsPivot;
+import frc.robot.commands.Climber.ForwardPivot;
 import frc.robot.commands.Climber.HookExtend;
 import frc.robot.commands.Climber.HookRetract;
 import frc.robot.commands.Drive.TankDriveCommand;
@@ -62,6 +64,8 @@ public class RobotContainer {
 	public static ReverseIndex reverseIndex;
 	public static HookExtend hookExtend;
 	public static HookRetract hookRetract;
+	public static ForwardPivot forwardPivot;
+	public static BackwardsPivot backwardsPivot;
 
 	/**
 	 * The container for the robot. Contains subsystems, OI devices, and
@@ -83,11 +87,9 @@ public class RobotContainer {
 		// right drivestick trigger -> shift gears
 		tankDriveCommand = new TankDriveCommand(driveTrain, rightStick.getButton(
 		  DriveStick.ButtonType.button1));
+		
 
 		driveTrain.setDefaultCommand(tankDriveCommand);
-
-		climber.setDefaultCommand(new RunCommand(() -> climber.setActmotor(gamepad
-		  .getAxisValue(Gamepad.Axis.RightYAxis)), climber));
 
 		shootBall = new ShootBall(shooter);
 
@@ -106,6 +108,10 @@ public class RobotContainer {
 		hookExtend = new HookExtend(climber);
 
 		hookRetract = new HookRetract(climber);
+
+		forwardPivot = new ForwardPivot(climber);
+
+		backwardsPivot = new BackwardsPivot(climber);
 
 		// Configure the button bindings
 		configureButtonBindings();
@@ -145,15 +151,21 @@ public class RobotContainer {
 		DriverStick.getButton(Gamepad.ButtonType.X).whileHeld(driveTrain::shiftGears,
 		  driveTrain);
 
-		// (Drivestick) RIGHT BUMPER -> EXTEND HOOK
+		// (Drivestick) RIGHT BUMPER -> FORWARD PIVOT
 
-		DriverStick.getButton(Gamepad.ButtonType.RightBumper).whileHeld(hookExtend, false);
+		DriverStick.getButton(Gamepad.ButtonType.RightBumper).whileHeld(forwardPivot, false);
 
-		// (Drivestick) LEFT BUMPER -> RETRACT HOOK
+		// (Drivestick) LEFT BUMPER -> BACKWARDS PIVOT
 
-		DriverStick.getButton(Gamepad.ButtonType.LeftBumper).whileHeld(hookRetract, false);
+		DriverStick.getButton(Gamepad.ButtonType.LeftBumper).whileHeld(backwardsPivot, false);
 
-		
+		// (Driverstick) A -> EXTEND HOOK
+
+		DriverStick.getButton(Gamepad.ButtonType.A).whileHeld(hookExtend, false);
+
+		// (Driverstick) B -> RETRACT HOOK
+
+		DriverStick.getButton(Gamepad.ButtonType.B).whileHeld(hookRetract, false);
 	}
 
 	/**

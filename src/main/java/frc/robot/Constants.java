@@ -84,6 +84,7 @@ public final class Constants {
     public static final int HOOK_MOTOR = 13;
 
 	public static final double HOOK_SPEED = 1;
+	public static final double ACTMOTOR_SPEED = 1;
 
 	// *****************************************
 	// ************** STORAGE ****************
@@ -91,6 +92,7 @@ public final class Constants {
 
 	public static final int INDEX_MOTOR = 12;
 	public static final double INDEX_SPEED = 1;
+  
 
 
 

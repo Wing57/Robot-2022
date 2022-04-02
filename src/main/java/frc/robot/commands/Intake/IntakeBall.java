@@ -2,38 +2,31 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.Intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import frc.robot.Constants;
-import frc.robot.subsystems.Index;
+import frc.robot.subsystems.Intake;
 
-public class ReverseIndex extends CommandBase {
-	/** Creates a new ReverseIndex. */
+public class IntakeBall extends CommandBase {
+	Intake intake;
 
-	Index index;
-
-	public ReverseIndex(Index index) {
-		this.index = index;
-		addRequirements(index);
-	}
-
-	// Called when the command is initially scheduled.
-	@Override
-	public void initialize() {
+	public IntakeBall(Intake intake) {
+		this.intake = intake;
+		addRequirements(intake);
 	}
 
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
-		index.setIndexMotor(Constants.INDEX_SPEED * -1);
+		intake.setIntakeMotor(Constants.INTAKE_SPEED);
 	}
 
 	// Called once the command ends or is interrupted.
 	@Override
 	public void end(boolean interrupted) {
-		index.stop();
+		intake.stop();
 	}
 
 	// Returns true when the command should end.

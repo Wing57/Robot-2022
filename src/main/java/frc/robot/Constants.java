@@ -81,9 +81,7 @@ public final class Constants {
 	// ************** Climber ****************
 	// *****************************************
 	public static final int ACTUATOR_MOTOR = 11;
-
-	public static final int CLIMBER_PISTON_FORWARD_CHANNEL = 2;
-	public static final int CLIMBER_PISTON_REVERSE_CHANNEL = 3;
+    public static final int HOOK_MOTOR = 13;
 
 	// *****************************************
 	// ************** STORAGE ****************
@@ -91,5 +89,6 @@ public final class Constants {
 
 	public static final int INDEX_MOTOR = 12;
 	public static final double INDEX_SPEED = 1;
+
 
 }

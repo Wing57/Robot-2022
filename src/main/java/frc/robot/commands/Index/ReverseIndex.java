@@ -2,47 +2,43 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.Index;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import frc.robot.Constants;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Index;
 
-public class AutoShoot extends CommandBase {
-	private Shooter shooter;
-	private Timer timer;
+public class ReverseIndex extends CommandBase {
+	/** Creates a new ReverseIndex. */
 
-	/** Creates a new AutoShoot. */
-	public AutoShoot(Shooter s) {
-		shooter = s;
-		addRequirements(shooter);
-		timer = new Timer();
+	Index index;
+
+	public ReverseIndex(Index index) {
+		this.index = index;
+		addRequirements(index);
 	}
 
 	// Called when the command is initially scheduled.
 	@Override
 	public void initialize() {
-		timer.reset();
-		timer.start();
 	}
 
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
-		shooter.setShooterSpeed(Constants.SHOOT_SPEED);
+		index.setIndexMotor(Constants.INDEX_SPEED * -1);
 	}
 
 	// Called once the command ends or is interrupted.
 	@Override
 	public void end(boolean interrupted) {
-		shooter.stopShooter();
+		index.stop();
 	}
 
 	// Returns true when the command should end.
 	@Override
 	public boolean isFinished() {
-		return timer.get() >= Constants.AUTO_SHOOT_TIME;
+		return false;
 	}
 }

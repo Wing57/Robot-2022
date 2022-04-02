@@ -5,34 +5,51 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Climber extends SubsystemBase {
 	/** Creates a new Climber. */
-	private final WPI_TalonFX Actmotor;
-	private final DoubleSolenoid ClimbPiston;
+	private final CANSparkMax Actmotor;
+	private final WPI_TalonFX hookMotor;
+	private final DigitalInput toplimitswitch;
 
 	public Climber() {
-		Actmotor = new WPI_TalonFX(Constants.ACTUATOR_MOTOR);
-		ClimbPiston = new DoubleSolenoid(Constants.MODULE_NUMBER, PneumaticsModuleType.REVPH,
-		  Constants.CLIMBER_PISTON_FORWARD_CHANNEL, Constants.CLIMBER_PISTON_REVERSE_CHANNEL);
-	}
+		Actmotor = new CANSparkMax(Constants.ACTUATOR_MOTOR, MotorType.kBrushless);
+		hookMotor = new WPI_TalonFX(Constants.HOOK_MOTOR);
+		toplimitswitch = new DigitalInput(7);
 
+		Actmotor.restoreFactoryDefaults();
+		hookMotor.configFactoryDefault();
+
+		// Corrupted lose your mind
+
+		Actmotor.setOpenLoopRampRate(0.20);
+	}
 	public void setActmotor(double speed) {
-		Actmotor.set(speed);
+		if  (toplimitswitch.get() && speed > 0.0) speed = 0;
+		
+		else {
+			Actmotor.set(speed);
+		}
+		
 	}
 
-	public void toggleClimber() {
-		Value oppValue = ClimbPiston.get() == Value.kForward ? Value.kReverse
-		  : Value.kForward;
-		ClimbPiston.set(oppValue);
+	public void sethookMotor(double speed) {
+		hookMotor.set(speed);
 	}
 
+	public void stopActmotor() {
+		Actmotor.set(0);
+	}
+
+	public void stophookMotor() {
+		hookMotor.set(0);
+	}
 	@Override
 	public void periodic() {
 		// This method will be called once per scheduler run

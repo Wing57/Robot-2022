@@ -22,7 +22,7 @@ public class Shooter extends SubsystemBase {
 		turretMotor = new WPI_TalonSRX(Constants.TURRET_MOTOR);
 		backSmotor = new WPI_TalonFX(Constants.SHOOTER_MOTOR_2);
 
-		shooterMotor.setNeutralMode(NeutralMode.Brake);
+		shooterMotor.setNeutralMode(NeutralMode.Coast);
 
 		BackspinInvert = TalonFXInvertType.Clockwise;
 
@@ -39,6 +39,10 @@ public class Shooter extends SubsystemBase {
 
 	}
 
+	public void setReverseShooterSpeed(double speed) {
+		shooterMotor.set(-speed);
+	}
+
 	public void setBackSpinSpeed(double speed) {
 		backSmotor.set(speed);
 
@@ -51,6 +55,10 @@ public class Shooter extends SubsystemBase {
 	public void stopShooter() {
 		shooterMotor.set(0);
 
+	}
+
+	public void stopReverseShooter() {
+		shooterMotor.set(0);
 	}
 
 	public void stopBackSpinMotor() {

@@ -5,13 +5,14 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.InvertType;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.rambots4571.rampage.joystick.Gamepad;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -43,6 +44,35 @@ public class DriveTrain extends SubsystemBase {
 		leftMotor2 = new WPI_TalonFX(Constants.LEFT_MOTOR_2);
 		leftMotor3 = new WPI_TalonFX(Constants.LEFT_MOTOR_3);
 
+		// Factory Resets all TalonFX
+
+		rightMaster.configFactoryDefault();
+		rightMotor2.configFactoryDefault();
+		rightMotor3.configFactoryDefault();
+
+		leftMaster.configFactoryDefault();
+		leftMotor2.configFactoryDefault();
+		leftMotor3.configFactoryDefault();
+
+		// Sets Motor to Brake/Coast
+
+		rightMaster.setNeutralMode(NeutralMode.Brake);
+		rightMotor2.setNeutralMode(NeutralMode.Brake);
+		rightMotor3.setNeutralMode(NeutralMode.Brake);
+
+		leftMaster.setNeutralMode(NeutralMode.Brake);
+		leftMotor2.setNeutralMode(NeutralMode.Brake);
+		leftMotor3.setNeutralMode(NeutralMode.Brake);
+
+		// Same as set invert = false
+		TalonFXInvertType m_left_invert = TalonFXInvertType.CounterClockwise;
+
+		// Same as set invert = true
+		TalonFXInvertType m_right_invert = TalonFXInvertType.CounterClockwise;
+
+		leftMaster.setInverted(m_left_invert);
+		rightMaster.setInverted(m_right_invert);
+
 		rightMotor2.follow(rightMaster);
 		rightMotor2.setInverted(InvertType.FollowMaster);
 		rightMotor3.follow(rightMaster);
@@ -53,14 +83,15 @@ public class DriveTrain extends SubsystemBase {
 		leftMotor3.follow(leftMaster);
 		leftMotor3.setInverted(InvertType.FollowMaster);
 
-		// Same as set invert = false
-		TalonFXInvertType m_left_invert = TalonFXInvertType.CounterClockwise;
+		// Ramping motor output to prevent instantaneous directional changes (Values
+		// need testing)
+		rightMaster.configOpenloopRamp(0.15, 25);
+		rightMotor2.configOpenloopRamp(0.15, 25);
+		rightMotor3.configOpenloopRamp(0.15, 25);
 
-		// Same as set invert = true
-		TalonFXInvertType m_right_invert = TalonFXInvertType.CounterClockwise;
-
-		leftMaster.setInverted(m_left_invert);
-		rightMaster.setInverted(m_right_invert);
+		leftMaster.configOpenloopRamp(0.15, 25);
+		leftMotor2.configOpenloopRamp(0.15, 25);
+		leftMotor3.configOpenloopRamp(0.15, 25);
 
 		// DifferentialDrive
 		drive = new DifferentialDrive(leftMaster, rightMaster);

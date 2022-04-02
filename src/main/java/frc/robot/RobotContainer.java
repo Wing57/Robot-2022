@@ -14,6 +14,8 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.commands.ShootBall;
 import frc.robot.commands.Auton.AutoShoot;
 import frc.robot.commands.Auton.TestCommandGroup;
+import frc.robot.commands.Climber.HookExtend;
+import frc.robot.commands.Climber.HookRetract;
 import frc.robot.commands.Drive.TankDriveCommand;
 import frc.robot.commands.Index.IndexBall;
 import frc.robot.commands.Index.ReverseIndex;
@@ -37,8 +39,7 @@ public class RobotContainer {
 
 	// joysticks
 	public static final Gamepad gamepad = new Gamepad(Constants.XBOXCONTROLLER);
-	public static final XboxController DriverStick = new XboxController(
-	  Constants.XBOXCONTROLLER2);
+	public static final Gamepad DriverStick = new Gamepad(Constants.XBOXCONTROLLER2);
 	public static final DriveStick leftStick = new DriveStick(Constants.LEFT_JOY);
 	public static final DriveStick rightStick = new DriveStick(Constants.RIGHT_JOY);
 
@@ -59,6 +60,8 @@ public class RobotContainer {
 	public static TestCommandGroup group;
 	public static IndexBall indexBall;
 	public static ReverseIndex reverseIndex;
+	public static HookExtend hookExtend;
+	public static HookRetract hookRetract;
 
 	/**
 	 * The container for the robot. Contains subsystems, OI devices, and
@@ -96,6 +99,14 @@ public class RobotContainer {
 
 		group = new TestCommandGroup(driveTrain, shooter);
 
+		indexBall = new IndexBall(index);
+
+		reverseIndex = new ReverseIndex(index);
+
+		hookExtend = new HookExtend(climber);
+
+		hookRetract = new HookRetract(climber);
+
 		// Configure the button bindings
 		configureButtonBindings();
 	}
@@ -129,11 +140,20 @@ public class RobotContainer {
 
 		gamepad.getButton(Gamepad.ButtonType.Y).whileHeld(new ReverseIndex(index), false);
 
-		// LEFT BUMPER -> SHIFT GEARS CRY
+		// (Drivestick) X -> SHIFT GEARS CRY
 
-		gamepad.getButton(Gamepad.ButtonType.LeftBumper).whileHeld(driveTrain::shiftGears,
+		DriverStick.getButton(Gamepad.ButtonType.X).whileHeld(driveTrain::shiftGears,
 		  driveTrain);
 
+		// (Drivestick) RIGHT BUMPER -> EXTEND HOOK
+
+		DriverStick.getButton(Gamepad.ButtonType.RightBumper).whileHeld(hookExtend, false);
+
+		// (Drivestick) LEFT BUMPER -> RETRACT HOOK
+
+		DriverStick.getButton(Gamepad.ButtonType.LeftBumper).whileHeld(hookRetract, false);
+
+		
 	}
 
 	/**

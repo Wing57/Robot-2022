@@ -43,6 +43,13 @@ public class Climber extends SubsystemBase {
 		hookMotor.set(speed);
 	}
 
+	public void stopActmotor() {
+		Actmotor.set(0);
+	}
+
+	public void stophookMotor() {
+		hookMotor.set(0);
+	}
 	@Override
 	public void periodic() {
 		// This method will be called once per scheduler run

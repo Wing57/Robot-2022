@@ -5,37 +5,39 @@
 package frc.robot.commands.Climber;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+
 import frc.robot.Constants;
 import frc.robot.subsystems.Climber;
 
 public class HookRetract extends CommandBase {
-  
-  Climber climber;
 
-  public HookRetract(Climber c) {
-    climber = c;
-    addRequirements(climber);
-  }
+	Climber climber;
 
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {}
+	public HookRetract(Climber c) {
+		climber = c;
+		addRequirements(climber);
+	}
 
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    climber.sethookMotor(-Constants.HOOK_SPEED);
-  }
+	// Called when the command is initially scheduled.
+	@Override
+	public void initialize() {
+	}
 
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
-    climber.stophookMotor();
-  }
+	// Called every time the scheduler runs while the command is scheduled.
+	@Override
+	public void execute() {
+		climber.sethookMotor(-Constants.HOOK_SPEED);
+	}
 
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return false;
-  }
+	// Called once the command ends or is interrupted.
+	@Override
+	public void end(boolean interrupted) {
+		climber.stophookMotor();
+	}
+
+	// Returns true when the command should end.
+	@Override
+	public boolean isFinished() {
+		return false;
+	}
 }

@@ -30,13 +30,15 @@ public class Climber extends SubsystemBase {
 
 		Actmotor.setOpenLoopRampRate(0.20);
 	}
+
 	public void setActmotor(double speed) {
-		if  (toplimitswitch.get() && speed > 0.0) speed = 0;
-		
+		if (toplimitswitch.get() && speed > 0.0)
+			speed = 0;
+
 		else {
 			Actmotor.set(speed);
 		}
-		
+
 	}
 
 	public void sethookMotor(double speed) {
@@ -50,6 +52,7 @@ public class Climber extends SubsystemBase {
 	public void stophookMotor() {
 		hookMotor.set(0);
 	}
+
 	@Override
 	public void periodic() {
 		// This method will be called once per scheduler run

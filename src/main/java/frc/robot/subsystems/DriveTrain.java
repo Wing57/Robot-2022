@@ -8,7 +8,6 @@ import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import com.rambots4571.rampage.joystick.Gamepad;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -102,10 +101,6 @@ public class DriveTrain extends SubsystemBase {
 
 	@Override
 	public void periodic() {
-	}
-
-	public void driveWithJoysticks(XboxController controller) {
-		drive.tankDrive(controller.getRawAxis(1), controller.getRawAxis(5) * -1);
 	}
 
 	public void drive(double left, double right) {

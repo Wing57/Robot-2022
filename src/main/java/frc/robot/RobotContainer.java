@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import frc.robot.commands.ShootBall;
+
 import frc.robot.commands.Auton.AutoShoot;
 import frc.robot.commands.Auton.TestCommandGroup;
 import frc.robot.commands.Climber.BackwardsPivot;
@@ -23,6 +23,7 @@ import frc.robot.commands.Index.IndexBall;
 import frc.robot.commands.Index.ReverseIndex;
 import frc.robot.commands.Intake.IntakeBall;
 import frc.robot.commands.Intake.OuttakeBall;
+import frc.robot.commands.ShootBall;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Index;
@@ -82,12 +83,12 @@ public class RobotContainer {
 		  .getAxisValue(Gamepad.Axis.LeftYAxis)
 		  * 0.35), shooter));
 
-		shooter.setReverseShooterSpeed(-gamepad.getAxisValue(Gamepad.Axis.RightTrigger) * 0.30);
+		shooter.setReverseShooterSpeed(-gamepad.getAxisValue(Gamepad.Axis.RightTrigger)
+		  * 0.30);
 
 		// right drivestick trigger -> shift gears
 		tankDriveCommand = new TankDriveCommand(driveTrain, rightStick.getButton(
 		  DriveStick.ButtonType.button1));
-		
 
 		driveTrain.setDefaultCommand(tankDriveCommand);
 

@@ -42,7 +42,7 @@ public class RobotContainer {
 
 	// joysticks
 	public static final Gamepad gamepad = new Gamepad(Constants.XBOXCONTROLLER);
-	public static final Gamepad DriverStick = new Gamepad(Constants.XBOXCONTROLLER2);
+	public static final Gamepad driveController = new Gamepad(Constants.XBOXCONTROLLER2);
 	public static final DriveStick leftStick = new DriveStick(Constants.LEFT_JOY);
 	public static final DriveStick rightStick = new DriveStick(Constants.RIGHT_JOY);
 
@@ -149,24 +149,26 @@ public class RobotContainer {
 
 		// (Drivestick) X -> SHIFT GEARS CRY
 
-		DriverStick.getButton(Gamepad.ButtonType.X).whileHeld(driveTrain::shiftGears,
+		driveController.getButton(Gamepad.ButtonType.X).whileHeld(driveTrain::shiftGears,
 		  driveTrain);
 
 		// (Drivestick) RIGHT BUMPER -> FORWARD PIVOT
 
-		DriverStick.getButton(Gamepad.ButtonType.RightBumper).whileHeld(forwardPivot, false);
+		driveController.getButton(Gamepad.ButtonType.RightBumper).whileHeld(forwardPivot,
+		  false);
 
 		// (Drivestick) LEFT BUMPER -> BACKWARDS PIVOT
 
-		DriverStick.getButton(Gamepad.ButtonType.LeftBumper).whileHeld(backwardsPivot, false);
+		driveController.getButton(Gamepad.ButtonType.LeftBumper).whileHeld(backwardsPivot,
+		  false);
 
-		// (Driverstick) A -> EXTEND HOOK
+		// driveController) A -> EXTEND HOOK
 
-		DriverStick.getButton(Gamepad.ButtonType.A).whileHeld(hookExtend, false);
+		driveController.getButton(Gamepad.ButtonType.A).whileHeld(hookExtend, false);
 
-		// (Driverstick) B -> RETRACT HOOK
+		// driveController) B -> RETRACT HOOK
 
-		DriverStick.getButton(Gamepad.ButtonType.B).whileHeld(hookRetract, false);
+		driveController.getButton(Gamepad.ButtonType.B).whileHeld(hookRetract, false);
 	}
 
 	/**

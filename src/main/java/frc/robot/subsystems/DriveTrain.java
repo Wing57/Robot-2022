@@ -88,13 +88,13 @@ public class DriveTrain extends SubsystemBase {
 
 		// Ramping motor output to prevent instantaneous directional changes (Values
 		// need testing)
-		rightMaster.configOpenloopRamp(0.15, 25);
-		rightMotor2.configOpenloopRamp(0.15, 25);
-		rightMotor3.configOpenloopRamp(0.15, 25);
+		rightMaster.configOpenloopRamp(1.0, 25);
+		rightMotor2.configOpenloopRamp(1.0, 25);
+		rightMotor3.configOpenloopRamp(1.0, 25);
 
-		leftMaster.configOpenloopRamp(0.15, 25);
-		leftMotor2.configOpenloopRamp(0.15, 25);
-		leftMotor3.configOpenloopRamp(0.15, 25);
+		leftMaster.configOpenloopRamp(1.0, 25);
+		leftMotor2.configOpenloopRamp(1.0, 25);
+		leftMotor3.configOpenloopRamp(1.0, 25);
 
 		// DifferentialDrive
 		drive = new DifferentialDrive(leftMaster, rightMaster);

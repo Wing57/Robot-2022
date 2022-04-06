@@ -6,9 +6,13 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
+import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+
 import com.rambots4571.rampage.joystick.Gamepad;
+
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -32,7 +36,6 @@ public class DriveTrain extends SubsystemBase {
 	private final DifferentialDrive drive;
 
 	private final SlewRateLimiter filter = new SlewRateLimiter(0.5);
-
 
 	/**
 	 * Creates a new DriveTrain.
@@ -66,6 +69,17 @@ public class DriveTrain extends SubsystemBase {
 		leftMaster.setNeutralMode(NeutralMode.Brake);
 		leftMotor2.setNeutralMode(NeutralMode.Brake);
 		leftMotor3.setNeutralMode(NeutralMode.Brake);
+
+		//Current limit to prevent breaker tripping. Approx at 150% of rated current supply.
+
+		rightMaster.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 60, 4));
+		rightMotor2.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 60, 4));
+		rightMotor3.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 60, 4));
+
+		leftMaster.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 60, 4));
+		leftMotor2.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 60, 4));
+		leftMotor3.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 60, 4));
+
 
 		// Same as set invert = false
 		TalonFXInvertType m_left_invert = TalonFXInvertType.CounterClockwise;

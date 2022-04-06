@@ -8,9 +8,8 @@ import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-
 import com.rambots4571.rampage.joystick.Gamepad;
-
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -31,6 +30,9 @@ public class DriveTrain extends SubsystemBase {
 	private final DoubleSolenoid shifter;
 
 	private final DifferentialDrive drive;
+
+	private final SlewRateLimiter filter = new SlewRateLimiter(0.5);
+
 
 	/**
 	 * Creates a new DriveTrain.
@@ -110,7 +112,7 @@ public class DriveTrain extends SubsystemBase {
 	}
 
 	public void drive(double left, double right) {
-		drive.tankDrive(left, right);
+		drive.tankDrive(filter.calculate(left), filter.calculate(right));
 	}
 
 	public void stopMotors() {

@@ -15,7 +15,6 @@ public class Turret extends CommandBase {
 		// Use addRequirements() here to declare subsystem dependencies.
 		this.limelight = limelight;
 		this.shooter = shooter;
-
 	}
 
 	// Called when the command is initially scheduled.

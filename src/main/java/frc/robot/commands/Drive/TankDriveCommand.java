@@ -1,4 +1,4 @@
-package frc.robot.commands.Drive;
+package frc.robot.commands.drive;
 
 import com.rambots4571.rampage.joystick.Gamepad.Axis;
 

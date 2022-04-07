@@ -11,19 +11,18 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-
-import frc.robot.commands.Auton.AutoShoot;
-import frc.robot.commands.Auton.TestCommandGroup;
-import frc.robot.commands.Climber.BackwardsPivot;
-import frc.robot.commands.Climber.ForwardPivot;
-import frc.robot.commands.Climber.HookExtend;
-import frc.robot.commands.Climber.HookRetract;
-import frc.robot.commands.Drive.TankDriveCommand;
-import frc.robot.commands.Index.IndexBall;
-import frc.robot.commands.Index.ReverseIndex;
-import frc.robot.commands.Intake.IntakeBall;
-import frc.robot.commands.Intake.OuttakeBall;
-import frc.robot.commands.ShootBall;
+import frc.robot.commands.auton.AutoShoot;
+import frc.robot.commands.auton.TestCommandGroup;
+import frc.robot.commands.climber.BackwardsPivot;
+import frc.robot.commands.climber.ForwardPivot;
+import frc.robot.commands.climber.HookExtend;
+import frc.robot.commands.climber.HookRetract;
+import frc.robot.commands.drive.TankDriveCommand;
+import frc.robot.commands.index.IndexBall;
+import frc.robot.commands.index.ReverseIndex;
+import frc.robot.commands.intake.IntakeBall;
+import frc.robot.commands.intake.OuttakeBall;
+import frc.robot.commands.shooter.ShootBall;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Index;
@@ -84,8 +83,7 @@ public class RobotContainer {
 		limelight = new Limelight();
 
 		shooter.setDefaultCommand(new RunCommand(() -> shooter.setTurretSpeed(gamepad
-		  .getAxisValue(Gamepad.Axis.LeftXAxis)
-		  * 1), shooter));
+		  .getAxisValue(Gamepad.Axis.LeftXAxis)), shooter));
 
 		shooter.setReverseShooterSpeed(-gamepad.getAxisValue(Gamepad.Axis.RightTrigger)
 		  * 0.30);

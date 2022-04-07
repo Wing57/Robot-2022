@@ -10,8 +10,6 @@ import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
-import com.rambots4571.rampage.joystick.Gamepad;
-
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -124,10 +122,6 @@ public class DriveTrain extends SubsystemBase {
 
 	@Override
 	public void periodic() {
-	}
-
-	public void driveWithJoysticks(Gamepad gamepad) {
-		drive.tankDrive(gamepad.getRawAxis(1) * 1, gamepad.getRawAxis(5) * -1);
 	}
 
 	public void drive(double left, double right) {

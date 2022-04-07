@@ -85,13 +85,13 @@ public class DriveTrain extends SubsystemBase {
 		leftMotor3.configSupplyCurrentLimit(currentLimitConfig);
 
 		// Same as set invert = false
-		TalonFXInvertType m_left_invert = TalonFXInvertType.CounterClockwise;
+		TalonFXInvertType leftInvert = TalonFXInvertType.CounterClockwise;
 
 		// Same as set invert = true
-		TalonFXInvertType m_right_invert = TalonFXInvertType.CounterClockwise;
+		TalonFXInvertType rightInvert = TalonFXInvertType.CounterClockwise;
 
-		leftMaster.setInverted(m_left_invert);
-		rightMaster.setInverted(m_right_invert);
+		leftMaster.setInverted(leftInvert);
+		rightMaster.setInverted(rightInvert);
 
 		rightMotor2.follow(rightMaster);
 		rightMotor2.setInverted(InvertType.FollowMaster);

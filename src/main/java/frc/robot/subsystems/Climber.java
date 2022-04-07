@@ -14,42 +14,41 @@ import frc.robot.Constants;
 
 public class Climber extends SubsystemBase {
 	/** Creates a new Climber. */
-	private final CANSparkMax Actmotor;
+	private final CANSparkMax actMotor;
 	private final WPI_TalonFX hookMotor;
-	private final DigitalInput toplimitswitch;
+	private final DigitalInput topLimitSwitch;
 
 	public Climber() {
-		Actmotor = new CANSparkMax(Constants.ACTUATOR_MOTOR, MotorType.kBrushless);
+		actMotor = new CANSparkMax(Constants.ACTUATOR_MOTOR, MotorType.kBrushless);
 		hookMotor = new WPI_TalonFX(Constants.HOOK_MOTOR);
-		toplimitswitch = new DigitalInput(7);
+		topLimitSwitch = new DigitalInput(7);
 
-		Actmotor.restoreFactoryDefaults();
+		actMotor.restoreFactoryDefaults();
 		hookMotor.configFactoryDefault();
 
 		// Corrupted lose your mind
 
-		Actmotor.setOpenLoopRampRate(0.20);
+		actMotor.setOpenLoopRampRate(0.20);
 	}
 
-	public void setActmotor(double speed) {
-		if (toplimitswitch.get() && speed > 0.0)
+	public void setActMotor(double speed) {
+		if (topLimitSwitch.get() && speed > 0.0)
 			speed = 0;
-
 		else {
-			Actmotor.set(speed);
+			actMotor.set(speed);
 		}
 
 	}
 
-	public void sethookMotor(double speed) {
+	public void setHookMotor(double speed) {
 		hookMotor.set(speed);
 	}
 
-	public void stopActmotor() {
-		Actmotor.set(0);
+	public void stopActMotor() {
+		actMotor.set(0);
 	}
 
-	public void stophookMotor() {
+	public void stopHookMotor() {
 		hookMotor.set(0);
 	}
 

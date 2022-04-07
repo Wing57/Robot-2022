@@ -15,16 +15,21 @@ import frc.robot.Constants;
 public class Climber extends SubsystemBase {
 	/** Creates a new Climber. */
 	private final CANSparkMax actMotor;
+	private final CANSparkMax actMotor2;
 	private final WPI_TalonFX hookMotor;
 	private final DigitalInput topLimitSwitch;
 
 	public Climber() {
 		actMotor = new CANSparkMax(Constants.ACTUATOR_MOTOR, MotorType.kBrushless);
+		actMotor2 = new CANSparkMax(Constants.ACTUATOR_MOTOR2, MotorType.kBrushless);
 		hookMotor = new WPI_TalonFX(Constants.HOOK_MOTOR);
 		topLimitSwitch = new DigitalInput(7);
 
 		actMotor.restoreFactoryDefaults();
+		actMotor2.restoreFactoryDefaults();
 		hookMotor.configFactoryDefault();
+
+		actMotor2.follow(actMotor);
 
 		// Corrupted lose your mind
 
@@ -36,6 +41,7 @@ public class Climber extends SubsystemBase {
 			speed = 0;
 		else {
 			actMotor.set(speed);
+			actMotor2.set(speed);
 		}
 
 	}
@@ -46,6 +52,7 @@ public class Climber extends SubsystemBase {
 
 	public void stopActMotor() {
 		actMotor.set(0);
+		actMotor2.set(0);
 	}
 
 	public void stopHookMotor() {

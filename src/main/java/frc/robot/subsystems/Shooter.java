@@ -7,22 +7,25 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Shooter extends SubsystemBase {
 	private final WPI_TalonFX shooterMotor, backSpinMotor;
-	private final WPI_TalonSRX turretMotor;
+	private final WPI_TalonFX turretMotor;
 	private final TalonFXInvertType backSpinInvert;
 
 	public Shooter() {
 		shooterMotor = new WPI_TalonFX(Constants.SHOOTER_MOTOR_1);
-		turretMotor = new WPI_TalonSRX(Constants.TURRET_MOTOR);
+		turretMotor = new WPI_TalonFX(Constants.TURRET_MOTOR);
 		backSpinMotor = new WPI_TalonFX(Constants.SHOOTER_MOTOR_2);
 
+		shooterMotor.configFactoryDefault();
+		backSpinMotor.configFactoryDefault();
+
 		shooterMotor.setNeutralMode(NeutralMode.Coast);
+		backSpinMotor.setNeutralMode(NeutralMode.Coast);
 
 		backSpinInvert = TalonFXInvertType.Clockwise;
 
@@ -54,7 +57,6 @@ public class Shooter extends SubsystemBase {
 
 	public void stopShooter() {
 		shooterMotor.set(0);
-
 	}
 
 	public void stopReverseShooter() {

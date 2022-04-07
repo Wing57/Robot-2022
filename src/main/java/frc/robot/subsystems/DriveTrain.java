@@ -4,13 +4,14 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
+import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
-import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -32,7 +33,7 @@ public class DriveTrain extends SubsystemBase {
 
 	private final DifferentialDrive drive;
 
-	private final SlewRateLimiter filter = new SlewRateLimiter(0.5);
+	private final TalonFXConfiguration config;
 
 	private final SupplyCurrentLimitConfiguration currentLimitConfig =
 	  new SupplyCurrentLimitConfiguration(true, 40, 60, 4);
@@ -103,6 +104,9 @@ public class DriveTrain extends SubsystemBase {
 		leftMotor3.follow(leftMaster);
 		leftMotor3.setInverted(InvertType.FollowMaster);
 
+		config = new TalonFXConfiguration();
+		config.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
+
 		// Ramping motor output to prevent instantaneous directional changes (Values
 		// need testing)
 		rightMaster.configOpenloopRamp(rampRate, 25);
@@ -125,7 +129,7 @@ public class DriveTrain extends SubsystemBase {
 	}
 
 	public void drive(double left, double right) {
-		drive.tankDrive(filter.calculate(left), filter.calculate(right));
+		drive.tankDrive(left, right);
 	}
 
 	public void stopMotors() {

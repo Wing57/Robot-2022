@@ -15,11 +15,11 @@ public class Index extends SubsystemBase {
 
 	public Index() {
 		indexMotor = new WPI_TalonSRX(Constants.INDEX_MOTOR);
-
+		indexMotor.setInverted(true);
 	}
 
 	public void setIndexMotor(double speed) {
-		indexMotor.set(-speed);
+		indexMotor.set(speed);
 	}
 
 	public void stop() {

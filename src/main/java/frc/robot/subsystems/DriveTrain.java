@@ -6,7 +6,6 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
@@ -37,6 +36,12 @@ public class DriveTrain extends SubsystemBase {
 
 	private final SlewRateLimiter filter = new SlewRateLimiter(0.5);
 
+	private final SupplyCurrentLimitConfiguration currentLimitConfig =
+	  new SupplyCurrentLimitConfiguration(true, 40, 60, 4);
+
+	private final NeutralMode neutralMode = NeutralMode.Brake;
+	private final double rampRate = 1.0;
+
 	/**
 	 * Creates a new DriveTrain.
 	 */
@@ -62,24 +67,24 @@ public class DriveTrain extends SubsystemBase {
 
 		// Sets Motor to Brake/Coast
 
-		rightMaster.setNeutralMode(NeutralMode.Brake);
-		rightMotor2.setNeutralMode(NeutralMode.Brake);
-		rightMotor3.setNeutralMode(NeutralMode.Brake);
+		rightMaster.setNeutralMode(neutralMode);
+		rightMotor2.setNeutralMode(neutralMode);
+		rightMotor3.setNeutralMode(neutralMode);
 
-		leftMaster.setNeutralMode(NeutralMode.Brake);
-		leftMotor2.setNeutralMode(NeutralMode.Brake);
-		leftMotor3.setNeutralMode(NeutralMode.Brake);
+		leftMaster.setNeutralMode(neutralMode);
+		leftMotor2.setNeutralMode(neutralMode);
+		leftMotor3.setNeutralMode(neutralMode);
 
-		//Current limit to prevent breaker tripping. Approx at 150% of rated current supply.
+		// Current limit to prevent breaker tripping. Approx at 150% of rated
+		// current supply.
 
-		rightMaster.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 60, 4));
-		rightMotor2.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 60, 4));
-		rightMotor3.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 60, 4));
+		rightMaster.configSupplyCurrentLimit(currentLimitConfig);
+		rightMotor2.configSupplyCurrentLimit(currentLimitConfig);
+		rightMotor3.configSupplyCurrentLimit(currentLimitConfig);
 
-		leftMaster.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 60, 4));
-		leftMotor2.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 60, 4));
-		leftMotor3.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 60, 4));
-
+		leftMaster.configSupplyCurrentLimit(currentLimitConfig);
+		leftMotor2.configSupplyCurrentLimit(currentLimitConfig);
+		leftMotor3.configSupplyCurrentLimit(currentLimitConfig);
 
 		// Same as set invert = false
 		TalonFXInvertType m_left_invert = TalonFXInvertType.CounterClockwise;
@@ -102,13 +107,13 @@ public class DriveTrain extends SubsystemBase {
 
 		// Ramping motor output to prevent instantaneous directional changes (Values
 		// need testing)
-		rightMaster.configOpenloopRamp(1.0, 25);
-		rightMotor2.configOpenloopRamp(1.0, 25);
-		rightMotor3.configOpenloopRamp(1.0, 25);
+		rightMaster.configOpenloopRamp(rampRate, 25);
+		rightMotor2.configOpenloopRamp(rampRate, 25);
+		rightMotor3.configOpenloopRamp(rampRate, 25);
 
-		leftMaster.configOpenloopRamp(1.0, 25);
-		leftMotor2.configOpenloopRamp(1.0, 25);
-		leftMotor3.configOpenloopRamp(1.0, 25);
+		leftMaster.configOpenloopRamp(rampRate, 25);
+		leftMotor2.configOpenloopRamp(rampRate, 25);
+		leftMotor3.configOpenloopRamp(rampRate, 25);
 
 		// DifferentialDrive
 		drive = new DifferentialDrive(leftMaster, rightMaster);

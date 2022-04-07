@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+
 import frc.robot.commands.auton.AutoShoot;
 import frc.robot.commands.auton.TestCommandGroup;
 import frc.robot.commands.climber.BackwardsPivot;
@@ -22,6 +23,7 @@ import frc.robot.commands.index.IndexBall;
 import frc.robot.commands.index.ReverseIndex;
 import frc.robot.commands.intake.IntakeBall;
 import frc.robot.commands.intake.OuttakeBall;
+import frc.robot.commands.shooter.AutoTurnTurret;
 import frc.robot.commands.shooter.ShootBall;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveTrain;
@@ -29,7 +31,6 @@ import frc.robot.subsystems.Index;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.Turret;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -149,8 +150,8 @@ public class RobotContainer {
 
 		gamepad.getButton(Gamepad.ButtonType.Y).whileHeld(new ReverseIndex(index), false);
 
-		gamepad.getButton(Gamepad.ButtonType.LeftBumper).whileHeld(new Turret(limelight,
-		  shooter));
+		gamepad.getButton(Gamepad.ButtonType.LeftBumper).whileHeld(new AutoTurnTurret(
+		  limelight, shooter));
 
 		// (Drivestick) X -> SHIFT GEARS CRY
 

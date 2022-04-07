@@ -2,16 +2,19 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.subsystems;
+package frc.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class Turret extends CommandBase {
+import frc.robot.subsystems.Limelight;
+import frc.robot.subsystems.Shooter;
+
+public class AutoTurnTurret extends CommandBase {
 	/** Creates a new turret. */
 	private Limelight limelight;
 	private Shooter shooter;
 
-	public Turret(Limelight limelight, Shooter shooter) {
+	public AutoTurnTurret(Limelight limelight, Shooter shooter) {
 		// Use addRequirements() here to declare subsystem dependencies.
 		this.limelight = limelight;
 		this.shooter = shooter;

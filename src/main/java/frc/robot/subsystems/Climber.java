@@ -38,7 +38,7 @@ public class Climber extends SubsystemBase {
 
 	public void setActMotor(double speed) {
 		if (topLimitSwitch.get() && speed > 0.0)
-			speed = 0;
+			stopActMotor();
 		else {
 			actMotor.set(speed);
 			actMotor2.set(speed);

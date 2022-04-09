@@ -6,6 +6,7 @@ package frc.robot;
 
 import com.rambots4571.rampage.joystick.DriveStick;
 import com.rambots4571.rampage.joystick.Gamepad;
+import com.rambots4571.rampage.joystick.component.DPadButton.Direction;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
@@ -172,13 +173,13 @@ public class RobotContainer {
 		driveController.getButton(Gamepad.ButtonType.LeftBumper).whileHeld(backwardsPivot,
 		  false);
 
-		// driveController) A -> EXTEND HOOK
+		// Gamepad) Up -> EXTEND HOOK
 
-		driveController.getButton(Gamepad.ButtonType.A).whileHeld(hookExtend, false);
+		gamepad.getDPadButton(Direction.UP).whileHeld(hookExtend, false);
 
-		// driveController) B -> RETRACT HOOK
+		// Gamepad) Down -> RETRACT HOOK
 
-		driveController.getButton(Gamepad.ButtonType.B).whileHeld(hookRetract, false);
+		gamepad.getDPadButton(Direction.DOWN).whileHeld(hookRetract, false);
 	}
 
 	/**

@@ -27,8 +27,8 @@ import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Index;
 import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Vision;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -52,7 +52,7 @@ public class RobotContainer {
 	private final Intake intake;
 	private final Climber climber;
 	private final Index index;
-	private Limelight limelight;
+	private Vision vision;
 
 	// commands
 	// private final DriveWithJoysticks driveWithJoysticks;
@@ -79,7 +79,7 @@ public class RobotContainer {
 		intake = new Intake();
 		climber = new Climber();
 		index = new Index();
-		limelight = new Limelight();
+		vision = new Vision();
 
 		shooter.setReverseShooterSpeed(-gamepad.getAxisValue(Gamepad.Axis.RightTrigger)
 		  * 0.30);

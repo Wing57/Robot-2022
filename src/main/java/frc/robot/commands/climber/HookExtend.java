@@ -11,10 +11,10 @@ import frc.robot.subsystems.Climber;
 
 public class HookExtend extends CommandBase {
 
-	Climber climber;
+	private final Climber climber;
 
-	public HookExtend(Climber c) {
-		climber = c;
+	public HookExtend(Climber climber) {
+		this.climber = climber;
 		addRequirements(climber);
 	}
 

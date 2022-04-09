@@ -11,7 +11,7 @@ import frc.robot.subsystems.Climber;
 
 public class BackwardsPivot extends CommandBase {
 
-	Climber climber;
+	private final Climber climber;
 
 	public BackwardsPivot(Climber climber) {
 		this.climber = climber;

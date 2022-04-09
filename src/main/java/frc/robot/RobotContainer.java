@@ -17,6 +17,7 @@ import frc.robot.commands.climber.BackwardsPivot;
 import frc.robot.commands.climber.ForwardPivot;
 import frc.robot.commands.climber.HookExtend;
 import frc.robot.commands.climber.HookRetract;
+import frc.robot.commands.drive.FaceHub;
 import frc.robot.commands.drive.TankDriveCommand;
 import frc.robot.commands.index.IndexBall;
 import frc.robot.commands.index.ReverseIndex;
@@ -57,13 +58,19 @@ public class RobotContainer {
 	// commands
 	// private final DriveWithJoysticks driveWithJoysticks;
 	private final TankDriveCommand tankDriveCommand;
+	public static FaceHub faceHub;
+
 	public static ShootBall shootBall;
 	public static AutoShoot autoShoot;
+
 	public static IntakeBall intakeBall;
 	public static OuttakeBall outtakeBall;
+
 	public static TestCommandGroup group;
+
 	public static IndexBall indexBall;
 	public static ReverseIndex reverseIndex;
+
 	public static HookExtend hookExtend;
 	public static HookRetract hookRetract;
 	public static ForwardPivot forwardPivot;
@@ -89,6 +96,8 @@ public class RobotContainer {
 		  DriveStick.ButtonType.button1));
 
 		driveTrain.setDefaultCommand(tankDriveCommand);
+
+		faceHub = new FaceHub(driveTrain);
 
 		shootBall = new ShootBall(shooter);
 
@@ -145,9 +154,8 @@ public class RobotContainer {
 
 		gamepad.getButton(Gamepad.ButtonType.Y).whileHeld(new ReverseIndex(index), false);
 
-		// gamepad.getButton(Gamepad.ButtonType.LeftBumper).whileHeld(new
-		// AutoTurnTurret(
-		// limelight, shooter));
+		// TODO: test face hub
+		gamepad.getButton(Gamepad.ButtonType.LeftBumper).whileHeld(faceHub, false);
 
 		// (Drivestick) X -> SHIFT GEARS CRY
 

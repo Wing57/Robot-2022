@@ -7,11 +7,13 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
+import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -33,13 +35,16 @@ public class DriveTrain extends SubsystemBase {
 
 	private final DifferentialDrive drive;
 
+	private final AHRS navX;
+
 	private final TalonFXConfiguration config;
 
-	private final SupplyCurrentLimitConfiguration currentLimitConfig =
-	  new SupplyCurrentLimitConfiguration(true, 40, 60, 4);
+	private final StatorCurrentLimitConfiguration currentLimitConfig =
+	  new StatorCurrentLimitConfiguration(true, 40, 60, 4);
+	// new SatorCurrentLimitConfiguration(true, 40, 60, 4);
 
 	private final NeutralMode neutralMode = NeutralMode.Brake;
-	private final double rampRate = 1.0;
+	private final double rampRate = 0.2;
 
 	/**
 	 * Creates a new DriveTrain.
@@ -77,13 +82,13 @@ public class DriveTrain extends SubsystemBase {
 		// Current limit to prevent breaker tripping. Approx at 150% of rated
 		// current supply.
 
-		rightMaster.configSupplyCurrentLimit(currentLimitConfig);
-		rightMotor2.configSupplyCurrentLimit(currentLimitConfig);
-		rightMotor3.configSupplyCurrentLimit(currentLimitConfig);
+		rightMaster.configStatorCurrentLimit(currentLimitConfig);
+		rightMotor2.configStatorCurrentLimit(currentLimitConfig);
+		rightMotor3.configStatorCurrentLimit(currentLimitConfig);
 
-		leftMaster.configSupplyCurrentLimit(currentLimitConfig);
-		leftMotor2.configSupplyCurrentLimit(currentLimitConfig);
-		leftMotor3.configSupplyCurrentLimit(currentLimitConfig);
+		leftMaster.configStatorCurrentLimit(currentLimitConfig);
+		leftMotor2.configStatorCurrentLimit(currentLimitConfig);
+		leftMotor3.configStatorCurrentLimit(currentLimitConfig);
 
 		// Same as set invert = false
 		TalonFXInvertType leftInvert = TalonFXInvertType.Clockwise;
@@ -122,6 +127,8 @@ public class DriveTrain extends SubsystemBase {
 
 		shifter = new DoubleSolenoid(Constants.MODULE_NUMBER, PneumaticsModuleType.REVPH,
 		  Constants.SHIFTER_FORWARD_CHANNEL, Constants.SHIFTER_REVERSE_CHANNEL);
+
+		navX = new AHRS();
 	}
 
 	@Override
@@ -139,5 +146,15 @@ public class DriveTrain extends SubsystemBase {
 	public void shiftGears() {
 		Value oppValue = shifter.get() == Value.kForward ? Value.kReverse : Value.kForward;
 		shifter.set(oppValue);
+	}
+
+	public double getAngle() {
+		return navX.getAngle();
+	}
+
+	@Override
+	public void initSendable(SendableBuilder builder) {
+		builder.setSmartDashboardType("DriveTrain");
+		builder.addDoubleProperty("Angle", this::getAngle, null);
 	}
 }

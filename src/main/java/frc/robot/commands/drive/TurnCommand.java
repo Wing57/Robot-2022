@@ -4,58 +4,42 @@
 
 package frc.robot.commands.drive;
 
-import com.rambots4571.rampage.vision.Limelight;
-import com.rambots4571.rampage.vision.ReadValue;
-
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
 
-public class FaceHub extends CommandBase {
+public class TurnCommand extends CommandBase {
 	private final DriveTrain driveTrain;
 	private final PIDController controller;
-	private final Limelight limelight = Limelight.getInstance();
+	private final double angle;
 
-	private final double kP = 0.2;
-	private final double kI = 0;
-	private final double kD = 0;
+	private final double kP = 0.5;
+	private final double kI = 0.0;
+	private final double kD = 0.0;
 
-	private final double maxOutput = 0.7;
-
-	/** Creates a new FaceHub. */
-	public FaceHub(DriveTrain driveTrain) {
+	/** Creates a new TurnCommand. */
+	public TurnCommand(DriveTrain driveTrain, double angle) {
 		this.driveTrain = driveTrain;
+		this.angle = angle;
 		addRequirements(driveTrain);
 		controller = new PIDController(kP, kI, kD);
 		controller.setTolerance(2.0);
 	}
 
-	private boolean hasValidTarget() {
-		return limelight.getValue(ReadValue.tv) == 1;
-	}
-
 	// Called when the command is initially scheduled.
 	@Override
 	public void initialize() {
-		if (hasValidTarget())
-			controller.setSetpoint(0);
-		else
-			this.cancel();
+		controller.setSetpoint(angle);
 	}
 
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
-		SmartDashboard.putData("Face Hub Controller", controller);
-
-		double xOffset = limelight.getValue(ReadValue.tx);
-		if (xOffset == Integer.MAX_VALUE)
-			this.cancel();
-
-		double output = MathUtil.clamp(controller.calculate(xOffset), -maxOutput, maxOutput);
-
+		SmartDashboard.putData("Turn Controller", controller);
+		double output = MathUtil.clamp(controller.calculate(driveTrain.getAngle()), -0.8,
+		  0.8);
 		driveTrain.drive(-output, output);
 	}
 
@@ -68,6 +52,6 @@ public class FaceHub extends CommandBase {
 	// Returns true when the command should end.
 	@Override
 	public boolean isFinished() {
-		return !hasValidTarget() || controller.atSetpoint();
+		return controller.atSetpoint();
 	}
 }

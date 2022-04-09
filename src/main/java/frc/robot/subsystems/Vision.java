@@ -67,6 +67,9 @@ public class Vision extends SubsystemBase {
 
 	@Override
 	public void initSendable(SendableBuilder builder) {
-		super.initSendable(builder);
+		builder.setSmartDashboardType("Limelight Values");
+		builder.addBooleanProperty("has valid target", this::hasValidTarget, null);
+		builder.addDoubleProperty("xOff", this::getHorizontalOffset, null);
+		builder.addDoubleProperty("yOff", this::getVerticalOffset, null);
 	}
 }

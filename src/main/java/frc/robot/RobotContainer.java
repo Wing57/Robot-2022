@@ -10,7 +10,6 @@ import com.rambots4571.rampage.joystick.Gamepad;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 
 import frc.robot.commands.auton.AutoShoot;
 import frc.robot.commands.auton.TestCommandGroup;
@@ -23,7 +22,6 @@ import frc.robot.commands.index.IndexBall;
 import frc.robot.commands.index.ReverseIndex;
 import frc.robot.commands.intake.IntakeBall;
 import frc.robot.commands.intake.OuttakeBall;
-import frc.robot.commands.shooter.AutoTurnTurret;
 import frc.robot.commands.shooter.ShootBall;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveTrain;
@@ -54,7 +52,7 @@ public class RobotContainer {
 	private final Intake intake;
 	private final Climber climber;
 	private final Index index;
-	private Limelight limelight = new Limelight();
+	private Limelight limelight;
 
 	// commands
 	// private final DriveWithJoysticks driveWithJoysticks;
@@ -82,9 +80,6 @@ public class RobotContainer {
 		climber = new Climber();
 		index = new Index();
 		limelight = new Limelight();
-
-		shooter.setDefaultCommand(new RunCommand(() -> shooter.setTurretSpeed(gamepad
-		  .getAxisValue(Gamepad.Axis.LeftXAxis)), shooter));
 
 		shooter.setReverseShooterSpeed(-gamepad.getAxisValue(Gamepad.Axis.RightTrigger)
 		  * 0.30);
@@ -150,8 +145,9 @@ public class RobotContainer {
 
 		gamepad.getButton(Gamepad.ButtonType.Y).whileHeld(new ReverseIndex(index), false);
 
-		gamepad.getButton(Gamepad.ButtonType.LeftBumper).whileHeld(new AutoTurnTurret(
-		  limelight, shooter));
+		// gamepad.getButton(Gamepad.ButtonType.LeftBumper).whileHeld(new
+		// AutoTurnTurret(
+		// limelight, shooter));
 
 		// (Drivestick) X -> SHIFT GEARS CRY
 

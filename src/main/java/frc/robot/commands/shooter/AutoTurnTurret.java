@@ -29,18 +29,18 @@ public class AutoTurnTurret extends CommandBase {
 	@Override
 	public void execute() {
 		if (limelight.getHorizontalOffset() < -0.5) {
-			shooter.setTurretSpeed(-0.2);
+			// shooter.setTurretSpeed(-0.2);
 		} else if (limelight.getHorizontalOffset() > 0.5) {
-			shooter.setTurretSpeed(0.2);
+			// shooter.setTurretSpeed(0.2);
 		} else {
-			shooter.setTurretSpeed(0);
+			// shooter.setTurretSpeed(0);
 		}
 	}
 
 	// Called once the command ends or is interrupted.
 	@Override
 	public void end(boolean interrupted) {
-		shooter.setTurretSpeed(0);
+		// shooter.setTurretSpeed(0);
 	}
 
 	// Returns true when the command should end.

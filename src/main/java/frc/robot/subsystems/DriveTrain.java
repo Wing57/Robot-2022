@@ -86,7 +86,7 @@ public class DriveTrain extends SubsystemBase {
 		leftMotor3.configSupplyCurrentLimit(currentLimitConfig);
 
 		// Same as set invert = false
-		TalonFXInvertType leftInvert = TalonFXInvertType.CounterClockwise;
+		TalonFXInvertType leftInvert = TalonFXInvertType.Clockwise;
 
 		// Same as set invert = true
 		TalonFXInvertType rightInvert = TalonFXInvertType.CounterClockwise;

@@ -52,7 +52,7 @@ public class Shooter extends SubsystemBase {
 	}
 
 	// public void setTurretSpeed(double speed) {
-	// 	turretMotor.set(speed);
+	// turretMotor.set(speed);
 	// }
 
 	public void stopShooter() {

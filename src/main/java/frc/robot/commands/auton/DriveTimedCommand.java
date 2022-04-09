@@ -32,7 +32,7 @@ public class DriveTimedCommand extends CommandBase {
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
-		drivetrain.drive(0.5, 0.5);
+		drivetrain.drive(-0.5, -0.5);
 	}
 
 	// Called once the command ends or is interrupted.

@@ -59,7 +59,7 @@ public final class Constants {
 	// ************** INTAKE *******************
 	// *****************************************
 	public static final int INTAKE_MOTOR_1 = 10;
-	public static final int MODULE_NUMBER = 2;
+	public static final int MODULE_NUMBER = 20;
 
 	public static final double INTAKE_SPEED = 0.75;
 

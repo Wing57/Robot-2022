@@ -164,6 +164,9 @@ public class RobotContainer {
 		driveController.getButton(Gamepad.ButtonType.X).whileHeld(driveTrain::shiftGears,
 		  driveTrain);
 
+		driveController.getButton(Gamepad.ButtonType.LeftBumper).whenPressed(
+		  intake::togglePiston, intake);
+
 		// (Drivestick) RIGHT BUMPER -> FORWARD PIVOT
 
 		gamepad.getDPadButton(Direction.LEFT).whileHeld(forwardPivot, false);

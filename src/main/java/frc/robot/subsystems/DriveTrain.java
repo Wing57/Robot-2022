@@ -156,5 +156,14 @@ public class DriveTrain extends SubsystemBase {
 	public void initSendable(SendableBuilder builder) {
 		builder.setSmartDashboardType("DriveTrain");
 		builder.addDoubleProperty("Angle", this::getAngle, null);
+		builder.addDoubleProperty("ramp rate", () -> rampRate, r -> {
+			rightMaster.configOpenloopRamp(r, 25);
+			rightMotor2.configOpenloopRamp(r, 25);
+			rightMotor3.configOpenloopRamp(r, 25);
+
+			leftMaster.configOpenloopRamp(r, 25);
+			leftMotor2.configOpenloopRamp(r, 25);
+			leftMotor3.configOpenloopRamp(r, 25);
+		});
 	}
 }

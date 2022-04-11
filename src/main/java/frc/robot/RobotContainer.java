@@ -6,11 +6,11 @@ package frc.robot;
 
 import com.rambots4571.rampage.joystick.DriveStick;
 import com.rambots4571.rampage.joystick.Gamepad;
+import com.rambots4571.rampage.joystick.component.DPadButton.Direction;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 
 import frc.robot.commands.auton.AutoShoot;
 import frc.robot.commands.auton.TestCommandGroup;
@@ -18,19 +18,19 @@ import frc.robot.commands.climber.BackwardsPivot;
 import frc.robot.commands.climber.ForwardPivot;
 import frc.robot.commands.climber.HookExtend;
 import frc.robot.commands.climber.HookRetract;
+import frc.robot.commands.drive.FaceHub;
 import frc.robot.commands.drive.TankDriveCommand;
 import frc.robot.commands.index.IndexBall;
 import frc.robot.commands.index.ReverseIndex;
 import frc.robot.commands.intake.IntakeBall;
 import frc.robot.commands.intake.OuttakeBall;
-import frc.robot.commands.shooter.AutoTurnTurret;
 import frc.robot.commands.shooter.ShootBall;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Index;
 import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Vision;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -54,18 +54,24 @@ public class RobotContainer {
 	private final Intake intake;
 	private final Climber climber;
 	private final Index index;
-	private Limelight limelight = new Limelight();
+	private Vision vision;
 
 	// commands
 	// private final DriveWithJoysticks driveWithJoysticks;
 	private final TankDriveCommand tankDriveCommand;
+	public static FaceHub faceHub;
+
 	public static ShootBall shootBall;
 	public static AutoShoot autoShoot;
+
 	public static IntakeBall intakeBall;
 	public static OuttakeBall outtakeBall;
+
 	public static TestCommandGroup group;
+
 	public static IndexBall indexBall;
 	public static ReverseIndex reverseIndex;
+
 	public static HookExtend hookExtend;
 	public static HookRetract hookRetract;
 	public static ForwardPivot forwardPivot;
@@ -81,10 +87,7 @@ public class RobotContainer {
 		intake = new Intake();
 		climber = new Climber();
 		index = new Index();
-		limelight = new Limelight();
-
-		shooter.setDefaultCommand(new RunCommand(() -> shooter.setTurretSpeed(gamepad
-		  .getAxisValue(Gamepad.Axis.LeftXAxis)), shooter));
+		vision = new Vision();
 
 		shooter.setReverseShooterSpeed(-gamepad.getAxisValue(Gamepad.Axis.RightTrigger)
 		  * 0.30);
@@ -94,6 +97,8 @@ public class RobotContainer {
 		  DriveStick.ButtonType.button1));
 
 		driveTrain.setDefaultCommand(tankDriveCommand);
+
+		faceHub = new FaceHub(driveTrain);
 
 		shootBall = new ShootBall(shooter);
 
@@ -150,31 +155,33 @@ public class RobotContainer {
 
 		gamepad.getButton(Gamepad.ButtonType.Y).whileHeld(new ReverseIndex(index), false);
 
-		gamepad.getButton(Gamepad.ButtonType.LeftBumper).whileHeld(new AutoTurnTurret(
-		  limelight, shooter));
+		// TODO: test face hub
+		// driveController.getDPadButton(Direction.UP).whileHeld(faceHub,
+		// false)
 
 		// (Drivestick) X -> SHIFT GEARS CRY
 
 		driveController.getButton(Gamepad.ButtonType.X).whileHeld(driveTrain::shiftGears,
 		  driveTrain);
 
+		driveController.getButton(Gamepad.ButtonType.LeftBumper).whenPressed(
+		  intake::togglePiston, intake);
+
 		// (Drivestick) RIGHT BUMPER -> FORWARD PIVOT
 
-		driveController.getButton(Gamepad.ButtonType.RightBumper).whileHeld(forwardPivot,
-		  false);
+		gamepad.getDPadButton(Direction.LEFT).whileHeld(forwardPivot, false);
 
 		// (Drivestick) LEFT BUMPER -> BACKWARDS PIVOT
 
-		driveController.getButton(Gamepad.ButtonType.LeftBumper).whileHeld(backwardsPivot,
-		  false);
+		gamepad.getDPadButton(Direction.RIGHT).whileHeld(backwardsPivot, false);
 
-		// driveController) A -> EXTEND HOOK
+		// Gamepad) Up -> EXTEND HOOK
 
-		driveController.getButton(Gamepad.ButtonType.A).whileHeld(hookExtend, false);
+		gamepad.getDPadButton(Direction.UP).whileHeld(hookExtend, false);
 
-		// driveController) B -> RETRACT HOOK
+		// Gamepad) Down -> RETRACT HOOK
 
-		driveController.getButton(Gamepad.ButtonType.B).whileHeld(hookRetract, false);
+		gamepad.getDPadButton(Direction.DOWN).whileHeld(hookRetract, false);
 	}
 
 	/**

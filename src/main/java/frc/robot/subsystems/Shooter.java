@@ -13,12 +13,12 @@ import frc.robot.Constants;
 
 public class Shooter extends SubsystemBase {
 	private final WPI_TalonFX shooterMotor, backSpinMotor;
-	private final WPI_TalonFX turretMotor;
+	// private final WPI_TalonFX turretMotor;
 	private final TalonFXInvertType backSpinInvert;
 
 	public Shooter() {
 		shooterMotor = new WPI_TalonFX(Constants.SHOOTER_MOTOR_1);
-		turretMotor = new WPI_TalonFX(Constants.TURRET_MOTOR);
+		// turretMotor = new WPI_TalonFX(Constants.TURRET_MOTOR);
 		backSpinMotor = new WPI_TalonFX(Constants.SHOOTER_MOTOR_2);
 
 		shooterMotor.configFactoryDefault();
@@ -51,9 +51,9 @@ public class Shooter extends SubsystemBase {
 
 	}
 
-	public void setTurretSpeed(double speed) {
-		turretMotor.set(speed);
-	}
+	// public void setTurretSpeed(double speed) {
+	// turretMotor.set(speed);
+	// }
 
 	public void stopShooter() {
 		shooterMotor.set(0);

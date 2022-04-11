@@ -7,11 +7,14 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -33,13 +36,18 @@ public class DriveTrain extends SubsystemBase {
 
 	private final DifferentialDrive drive;
 
+	private final AHRS navX;
+
 	private final TalonFXConfiguration config;
 
-	private final SupplyCurrentLimitConfiguration currentLimitConfig =
+	private final StatorCurrentLimitConfiguration statorLimitConfig =
+	  new StatorCurrentLimitConfiguration(true, 40, 70, 2);
+
+	private final SupplyCurrentLimitConfiguration supplyLimitConfig =
 	  new SupplyCurrentLimitConfiguration(true, 40, 60, 4);
 
 	private final NeutralMode neutralMode = NeutralMode.Brake;
-	private final double rampRate = 1.0;
+	private final double rampRate = 0.35;
 
 	/**
 	 * Creates a new DriveTrain.
@@ -77,16 +85,24 @@ public class DriveTrain extends SubsystemBase {
 		// Current limit to prevent breaker tripping. Approx at 150% of rated
 		// current supply.
 
-		rightMaster.configSupplyCurrentLimit(currentLimitConfig);
-		rightMotor2.configSupplyCurrentLimit(currentLimitConfig);
-		rightMotor3.configSupplyCurrentLimit(currentLimitConfig);
+		rightMaster.configSupplyCurrentLimit(supplyLimitConfig);
+		rightMotor2.configSupplyCurrentLimit(supplyLimitConfig);
+		rightMotor3.configSupplyCurrentLimit(supplyLimitConfig);
 
-		leftMaster.configSupplyCurrentLimit(currentLimitConfig);
-		leftMotor2.configSupplyCurrentLimit(currentLimitConfig);
-		leftMotor3.configSupplyCurrentLimit(currentLimitConfig);
+		leftMaster.configSupplyCurrentLimit(supplyLimitConfig);
+		leftMotor2.configSupplyCurrentLimit(supplyLimitConfig);
+		leftMotor3.configSupplyCurrentLimit(supplyLimitConfig);
 
-		// Same as set invert = false
-		TalonFXInvertType leftInvert = TalonFXInvertType.CounterClockwise;
+		rightMaster.configStatorCurrentLimit(statorLimitConfig);
+		rightMotor2.configStatorCurrentLimit(statorLimitConfig);
+		rightMotor3.configStatorCurrentLimit(statorLimitConfig);
+
+		leftMaster.configStatorCurrentLimit(statorLimitConfig);
+		leftMotor2.configStatorCurrentLimit(statorLimitConfig);
+		leftMotor3.configStatorCurrentLimit(statorLimitConfig);
+
+		// Same as set invert = false/gr
+		TalonFXInvertType leftInvert = TalonFXInvertType.Clockwise;
 
 		// Same as set invert = true
 		TalonFXInvertType rightInvert = TalonFXInvertType.CounterClockwise;
@@ -109,19 +125,21 @@ public class DriveTrain extends SubsystemBase {
 
 		// Ramping motor output to prevent instantaneous directional changes (Values
 		// need testing)
-		rightMaster.configOpenloopRamp(rampRate, 25);
-		rightMotor2.configOpenloopRamp(rampRate, 25);
-		rightMotor3.configOpenloopRamp(rampRate, 25);
+		rightMaster.configOpenloopRamp(rampRate, 15);
+		rightMotor2.configOpenloopRamp(rampRate, 15);
+		rightMotor3.configOpenloopRamp(rampRate, 15);
 
-		leftMaster.configOpenloopRamp(rampRate, 25);
-		leftMotor2.configOpenloopRamp(rampRate, 25);
-		leftMotor3.configOpenloopRamp(rampRate, 25);
+		leftMaster.configOpenloopRamp(rampRate, 15);
+		leftMotor2.configOpenloopRamp(rampRate, 15);
+		leftMotor3.configOpenloopRamp(rampRate, 15);
 
 		// DifferentialDrive
 		drive = new DifferentialDrive(leftMaster, rightMaster);
 
 		shifter = new DoubleSolenoid(Constants.MODULE_NUMBER, PneumaticsModuleType.REVPH,
 		  Constants.SHIFTER_FORWARD_CHANNEL, Constants.SHIFTER_REVERSE_CHANNEL);
+
+		navX = new AHRS();
 	}
 
 	@Override
@@ -139,5 +157,24 @@ public class DriveTrain extends SubsystemBase {
 	public void shiftGears() {
 		Value oppValue = shifter.get() == Value.kForward ? Value.kReverse : Value.kForward;
 		shifter.set(oppValue);
+	}
+
+	public double getAngle() {
+		return navX.getAngle();
+	}
+
+	@Override
+	public void initSendable(SendableBuilder builder) {
+		builder.setSmartDashboardType("DriveTrain");
+		builder.addDoubleProperty("Angle", this::getAngle, null);
+		builder.addDoubleProperty("ramp rate", () -> rampRate, r -> {
+			rightMaster.configOpenloopRamp(r, 25);
+			rightMotor2.configOpenloopRamp(r, 25);
+			rightMotor3.configOpenloopRamp(r, 25);
+
+			leftMaster.configOpenloopRamp(r, 25);
+			leftMotor2.configOpenloopRamp(r, 25);
+			leftMotor3.configOpenloopRamp(r, 25);
+		});
 	}
 }

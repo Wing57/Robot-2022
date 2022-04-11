@@ -47,7 +47,8 @@ public class DriveTrain extends SubsystemBase {
 	  new SupplyCurrentLimitConfiguration(true, 40, 60, 4);
 
 	private final NeutralMode neutralMode = NeutralMode.Brake;
-	private final double rampRate = 0.35;
+	private final double rampRate;
+	private final int timeoutMs;
 
 	/**
 	 * Creates a new DriveTrain.
@@ -125,13 +126,16 @@ public class DriveTrain extends SubsystemBase {
 
 		// Ramping motor output to prevent instantaneous directional changes (Values
 		// need testing)
-		rightMaster.configOpenloopRamp(rampRate, 15);
-		rightMotor2.configOpenloopRamp(rampRate, 15);
-		rightMotor3.configOpenloopRamp(rampRate, 15);
+		rampRate = 0.35;
+		timeoutMs = 15;
 
-		leftMaster.configOpenloopRamp(rampRate, 15);
-		leftMotor2.configOpenloopRamp(rampRate, 15);
-		leftMotor3.configOpenloopRamp(rampRate, 15);
+		rightMaster.configOpenloopRamp(rampRate, timeoutMs);
+		rightMotor2.configOpenloopRamp(rampRate, timeoutMs);
+		rightMotor3.configOpenloopRamp(rampRate, timeoutMs);
+
+		leftMaster.configOpenloopRamp(rampRate, timeoutMs);
+		leftMotor2.configOpenloopRamp(rampRate, timeoutMs);
+		leftMotor3.configOpenloopRamp(rampRate, timeoutMs);
 
 		// DifferentialDrive
 		drive = new DifferentialDrive(leftMaster, rightMaster);
@@ -168,13 +172,13 @@ public class DriveTrain extends SubsystemBase {
 		builder.setSmartDashboardType("DriveTrain");
 		builder.addDoubleProperty("Angle", this::getAngle, null);
 		builder.addDoubleProperty("ramp rate", () -> rampRate, r -> {
-			rightMaster.configOpenloopRamp(r, 25);
-			rightMotor2.configOpenloopRamp(r, 25);
-			rightMotor3.configOpenloopRamp(r, 25);
+			rightMaster.configOpenloopRamp(r, timeoutMs);
+			rightMotor2.configOpenloopRamp(r, timeoutMs);
+			rightMotor3.configOpenloopRamp(r, timeoutMs);
 
-			leftMaster.configOpenloopRamp(r, 25);
-			leftMotor2.configOpenloopRamp(r, 25);
-			leftMotor3.configOpenloopRamp(r, 25);
+			leftMaster.configOpenloopRamp(r, timeoutMs);
+			leftMotor2.configOpenloopRamp(r, timeoutMs);
+			leftMotor3.configOpenloopRamp(r, timeoutMs);
 		});
 	}
 }

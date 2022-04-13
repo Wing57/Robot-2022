@@ -20,7 +20,10 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
 import frc.robot.Constants;
+import java.util.Arrays;
+import java.util.List;
 
 public class DriveTrain extends SubsystemBase {
 	// Local Talon Variables
@@ -31,6 +34,8 @@ public class DriveTrain extends SubsystemBase {
 	private final WPI_TalonFX rightMotor3;
 	private final WPI_TalonFX leftMotor2;
 	private final WPI_TalonFX leftMotor3;
+
+	private final List<WPI_TalonFX> allMotors;
 
 	private final DoubleSolenoid shifter;
 
@@ -63,44 +68,26 @@ public class DriveTrain extends SubsystemBase {
 		leftMotor2 = new WPI_TalonFX(Constants.LEFT_MOTOR_2);
 		leftMotor3 = new WPI_TalonFX(Constants.LEFT_MOTOR_3);
 
-		// Factory Resets all TalonFX
+		allMotors = Arrays.asList(rightMaster, rightMotor2, rightMotor3, leftMaster,
+		  leftMotor2, leftMotor3);
 
-		rightMaster.configFactoryDefault();
-		rightMotor2.configFactoryDefault();
-		rightMotor3.configFactoryDefault();
+		rampRate = 0.35;
+		timeoutMs = 15;
 
-		leftMaster.configFactoryDefault();
-		leftMotor2.configFactoryDefault();
-		leftMotor3.configFactoryDefault();
-
-		// Sets Motor to Brake/Coast
-
-		rightMaster.setNeutralMode(neutralMode);
-		rightMotor2.setNeutralMode(neutralMode);
-		rightMotor3.setNeutralMode(neutralMode);
-
-		leftMaster.setNeutralMode(neutralMode);
-		leftMotor2.setNeutralMode(neutralMode);
-		leftMotor3.setNeutralMode(neutralMode);
-
-		// Current limit to prevent breaker tripping. Approx at 150% of rated
-		// current supply.
-
-		rightMaster.configSupplyCurrentLimit(supplyLimitConfig);
-		rightMotor2.configSupplyCurrentLimit(supplyLimitConfig);
-		rightMotor3.configSupplyCurrentLimit(supplyLimitConfig);
-
-		leftMaster.configSupplyCurrentLimit(supplyLimitConfig);
-		leftMotor2.configSupplyCurrentLimit(supplyLimitConfig);
-		leftMotor3.configSupplyCurrentLimit(supplyLimitConfig);
-
-		rightMaster.configStatorCurrentLimit(statorLimitConfig);
-		rightMotor2.configStatorCurrentLimit(statorLimitConfig);
-		rightMotor3.configStatorCurrentLimit(statorLimitConfig);
-
-		leftMaster.configStatorCurrentLimit(statorLimitConfig);
-		leftMotor2.configStatorCurrentLimit(statorLimitConfig);
-		leftMotor3.configStatorCurrentLimit(statorLimitConfig);
+		allMotors.forEach(motor -> {
+			// Factory Resets all TalonFX
+			motor.configFactoryDefault();
+			// Sets Motor to Brake/Coast
+			motor.setNeutralMode(neutralMode);
+			// Current limit to prevent breaker tripping. Approx at 150% of rated
+			// current supply.
+			motor.configSupplyCurrentLimit(supplyLimitConfig);
+			motor.configStatorCurrentLimit(statorLimitConfig);
+			// Ramping motor output to prevent instantaneous directional changes
+			// (Values
+			// need testing)
+			motor.configOpenloopRamp(rampRate, timeoutMs);
+		});
 
 		// Same as set invert = false/gr
 		TalonFXInvertType leftInvert = TalonFXInvertType.Clockwise;
@@ -123,19 +110,6 @@ public class DriveTrain extends SubsystemBase {
 
 		config = new TalonFXConfiguration();
 		config.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
-
-		// Ramping motor output to prevent instantaneous directional changes (Values
-		// need testing)
-		rampRate = 0.35;
-		timeoutMs = 15;
-
-		rightMaster.configOpenloopRamp(rampRate, timeoutMs);
-		rightMotor2.configOpenloopRamp(rampRate, timeoutMs);
-		rightMotor3.configOpenloopRamp(rampRate, timeoutMs);
-
-		leftMaster.configOpenloopRamp(rampRate, timeoutMs);
-		leftMotor2.configOpenloopRamp(rampRate, timeoutMs);
-		leftMotor3.configOpenloopRamp(rampRate, timeoutMs);
 
 		// DifferentialDrive
 		drive = new DifferentialDrive(leftMaster, rightMaster);
@@ -172,13 +146,7 @@ public class DriveTrain extends SubsystemBase {
 		builder.setSmartDashboardType("DriveTrain");
 		builder.addDoubleProperty("Angle", this::getAngle, null);
 		builder.addDoubleProperty("ramp rate", () -> rampRate, r -> {
-			rightMaster.configOpenloopRamp(r, timeoutMs);
-			rightMotor2.configOpenloopRamp(r, timeoutMs);
-			rightMotor3.configOpenloopRamp(r, timeoutMs);
-
-			leftMaster.configOpenloopRamp(r, timeoutMs);
-			leftMotor2.configOpenloopRamp(r, timeoutMs);
-			leftMotor3.configOpenloopRamp(r, timeoutMs);
+			allMotors.forEach(motor -> motor.configOpenloopRamp(r, timeoutMs));
 		});
 	}
 }

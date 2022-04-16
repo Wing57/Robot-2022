@@ -84,8 +84,7 @@ public class DriveTrain extends SubsystemBase {
 			motor.configSupplyCurrentLimit(supplyLimitConfig);
 			motor.configStatorCurrentLimit(statorLimitConfig);
 			// Ramping motor output to prevent instantaneous directional changes
-			// (Values
-			// need testing)
+			// (Values need testing)
 			motor.configOpenloopRamp(rampRate, timeoutMs);
 		});
 

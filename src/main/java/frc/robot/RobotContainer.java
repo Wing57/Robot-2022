@@ -4,7 +4,7 @@
 
 package frc.robot;
 
-import com.rambots4571.rampage.joystick.DriveStick;
+import com.rambots4571.rampage.commands.RunEndCommand;
 import com.rambots4571.rampage.joystick.Gamepad;
 import com.rambots4571.rampage.joystick.component.DPadButton.Direction;
 
@@ -14,16 +14,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 import frc.robot.commands.auton.AutoShoot;
 import frc.robot.commands.auton.TestCommandGroup;
-import frc.robot.commands.climber.BackwardsPivot;
-import frc.robot.commands.climber.ForwardPivot;
-import frc.robot.commands.climber.HookExtend;
-import frc.robot.commands.climber.HookRetract;
 import frc.robot.commands.drive.FaceHub;
 import frc.robot.commands.drive.TankDriveCommand;
-import frc.robot.commands.index.IndexBall;
-import frc.robot.commands.index.ReverseIndex;
-import frc.robot.commands.intake.IntakeBall;
-import frc.robot.commands.intake.OuttakeBall;
 import frc.robot.commands.shooter.ShootBall;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveTrain;
@@ -45,8 +37,6 @@ public class RobotContainer {
 	// joysticks
 	public static final Gamepad gamepad = new Gamepad(Constants.XBOXCONTROLLER);
 	public static final Gamepad driveController = new Gamepad(Constants.XBOXCONTROLLER2);
-	public static final DriveStick leftStick = new DriveStick(Constants.LEFT_JOY);
-	public static final DriveStick rightStick = new DriveStick(Constants.RIGHT_JOY);
 
 	// subsystems
 	private final DriveTrain driveTrain;
@@ -57,25 +47,13 @@ public class RobotContainer {
 	private Vision vision;
 
 	// commands
-	// private final DriveWithJoysticks driveWithJoysticks;
 	private final TankDriveCommand tankDriveCommand;
 	public static FaceHub faceHub;
 
 	public static ShootBall shootBall;
 	public static AutoShoot autoShoot;
 
-	public static IntakeBall intakeBall;
-	public static OuttakeBall outtakeBall;
-
 	public static TestCommandGroup group;
-
-	public static IndexBall indexBall;
-	public static ReverseIndex reverseIndex;
-
-	public static HookExtend hookExtend;
-	public static HookRetract hookRetract;
-	public static ForwardPivot forwardPivot;
-	public static BackwardsPivot backwardsPivot;
 
 	/**
 	 * The container for the robot. Contains subsystems, OI devices, and
@@ -89,12 +67,9 @@ public class RobotContainer {
 		index = new Index();
 		vision = new Vision();
 
-		shooter.setReverseShooterSpeed(-gamepad.getAxisValue(Gamepad.Axis.RightTrigger)
-		  * 0.30);
-
-		// right drivestick trigger -> shift gears
-		tankDriveCommand = new TankDriveCommand(driveTrain, rightStick.getButton(
-		  DriveStick.ButtonType.button1));
+		// (driveController) X -> SHIFT GEARS
+		tankDriveCommand = new TankDriveCommand(driveTrain, driveController.getButton(
+		  Gamepad.ButtonType.X));
 
 		driveTrain.setDefaultCommand(tankDriveCommand);
 
@@ -104,23 +79,7 @@ public class RobotContainer {
 
 		autoShoot = new AutoShoot(shooter);
 
-		intakeBall = new IntakeBall(intake);
-
-		outtakeBall = new OuttakeBall(intake);
-
 		group = new TestCommandGroup(driveTrain, shooter);
-
-		indexBall = new IndexBall(index);
-
-		reverseIndex = new ReverseIndex(index);
-
-		hookExtend = new HookExtend(climber);
-
-		hookRetract = new HookRetract(climber);
-
-		forwardPivot = new ForwardPivot(climber);
-
-		backwardsPivot = new BackwardsPivot(climber);
 
 		// Configure the button bindings
 		configureButtonBindings();
@@ -136,52 +95,63 @@ public class RobotContainer {
 	private void configureButtonBindings() {
 
 		// right bumper -> shoot ball
-		gamepad.getButton(Gamepad.ButtonType.RightBumper).whileHeld(new ShootBall(shooter),
-		  false);
+
+		gamepad.getButton(Gamepad.ButtonType.RightBumper).whileHeld(new RunEndCommand(() -> {
+			shooter.setShooterSpeed(Constants.SHOOT_SPEED);
+			shooter.setBackSpinSpeed(Constants.BACKSPIN_SPEED);
+		}, () -> {
+			shooter.stopShooter();
+			shooter.stopBackSpinMotor();
+		}, shooter), false);
 
 		// A -> intake ball
 
-		gamepad.getButton(Gamepad.ButtonType.A).whileHeld(new IntakeBall(intake), false);
+		gamepad.getButton(Gamepad.ButtonType.A).whileHeld(setIntakeCommand(
+		  Constants.INDEX_SPEED), false);
 
 		// B -> Outtake
 
-		gamepad.getButton(Gamepad.ButtonType.B).whileHeld(new OuttakeBall(intake), false);
+		gamepad.getButton(Gamepad.ButtonType.B).whileHeld(setIntakeCommand(
+		  -Constants.INDEX_SPEED), false);
 
 		// X -> Index
 
-		gamepad.getButton(Gamepad.ButtonType.X).whileHeld(new IndexBall(index), false);
+		gamepad.getButton(Gamepad.ButtonType.X).whileHeld(setIndexCommand(
+		  Constants.INDEX_SPEED), false);
 
 		// Y -> Reverse Index
 
-		gamepad.getButton(Gamepad.ButtonType.Y).whileHeld(new ReverseIndex(index), false);
+		gamepad.getButton(Gamepad.ButtonType.Y).whileHeld(setIndexCommand(
+		  -Constants.INDEX_SPEED), false);
 
 		// TODO: test face hub
 		// driveController.getDPadButton(Direction.UP).whileHeld(faceHub,
 		// false)
 
-		// (Drivestick) X -> SHIFT GEARS CRY
-
-		driveController.getButton(Gamepad.ButtonType.X).whileHeld(driveTrain::shiftGears,
-		  driveTrain);
+		// (driveController) left bumper -> toggle intake up / down
 
 		driveController.getButton(Gamepad.ButtonType.LeftBumper).whenPressed(
 		  intake::togglePiston, intake);
 
-		// (Drivestick) RIGHT BUMPER -> FORWARD PIVOT
+		// Gamepad > Left -> FORWARD PIVOT
 
-		gamepad.getDPadButton(Direction.LEFT).whileHeld(forwardPivot, false);
+		gamepad.getDPadButton(Direction.LEFT).whileHeld(setPivotCommand(
+		  Constants.ACTMOTOR_SPEED), false);
 
-		// (Drivestick) LEFT BUMPER -> BACKWARDS PIVOT
+		// Gamepad > Right -> BACKWARDS PIVOT
 
-		gamepad.getDPadButton(Direction.RIGHT).whileHeld(backwardsPivot, false);
+		gamepad.getDPadButton(Direction.RIGHT).whileHeld(setPivotCommand(
+		  -Constants.ACTMOTOR_SPEED), false);
 
-		// Gamepad) Up -> EXTEND HOOK
+		// Gamepad > Up -> EXTEND HOOK
 
-		gamepad.getDPadButton(Direction.UP).whileHeld(hookExtend, false);
+		gamepad.getDPadButton(Direction.UP).whileHeld(setHookCommand(Constants.HOOK_SPEED),
+		  false);
 
-		// Gamepad) Down -> RETRACT HOOK
+		// Gamepad > Down -> RETRACT HOOK
 
-		gamepad.getDPadButton(Direction.DOWN).whileHeld(hookRetract, false);
+		gamepad.getDPadButton(Direction.DOWN).whileHeld(setHookCommand(-Constants.HOOK_SPEED),
+		  false);
 	}
 
 	/**
@@ -192,5 +162,23 @@ public class RobotContainer {
 
 	public Command getAutonomousCommand() {
 		return group;
+	}
+
+	private Command setIntakeCommand(double speed) {
+		return new RunEndCommand(() -> index.setIndexMotor(speed), intake::stop, intake);
+	}
+
+	private Command setIndexCommand(double speed) {
+		return new RunEndCommand(() -> index.setIndexMotor(speed), index::stop, index);
+	}
+
+	private Command setHookCommand(double speed) {
+		return new RunEndCommand(() -> climber.setHookMotor(speed), climber::stopHookMotor,
+		  climber);
+	}
+
+	private Command setPivotCommand(double speed) {
+		return new RunEndCommand(() -> climber.setActMotor(speed), climber::stopActMotor,
+		  climber);
 	}
 }

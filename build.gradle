@@ -55,7 +55,7 @@ def includeDesktopSupport = false
 dependencies {
     implementation wpi.java.deps.wpilib()
     implementation wpi.java.vendor.java()
-    implementation 'com.github.rambots:rampage:v2022.2.2'
+    implementation 'com.github.rambots:rampage:v2022.2.3'
 
     implementation 'com.github.Wobblyyyy.Pathfinder2:geometry:v2.1.1'
     implementation 'com.github.Wobblyyyy.Pathfinder2:kinematics:v2.1.1'

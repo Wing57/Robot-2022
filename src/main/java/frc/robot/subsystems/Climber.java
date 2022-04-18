@@ -14,56 +14,56 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Climber extends SubsystemBase {
-	/** Creates a new Climber. */
-	private final CANSparkMax actMotor;
-	private final CANSparkMax actMotor2;
-	private final WPI_TalonFX hookMotor;
-	private final DigitalInput topLimitSwitch;
+  /** Creates a new Climber. */
+  private final CANSparkMax actMotor;
+  private final CANSparkMax actMotor2;
+  private final WPI_TalonFX hookMotor;
+  private final DigitalInput topLimitSwitch;
 
-	public Climber() {
-		actMotor = new CANSparkMax(Constants.ACTUATOR_MOTOR, MotorType.kBrushless);
-		actMotor2 = new CANSparkMax(Constants.ACTUATOR_MOTOR2, MotorType.kBrushless);
-		hookMotor = new WPI_TalonFX(Constants.HOOK_MOTOR);
-		topLimitSwitch = new DigitalInput(7);
+  public Climber() {
+    actMotor = new CANSparkMax(Constants.ACTUATOR_MOTOR, MotorType.kBrushless);
+    actMotor2 = new CANSparkMax(Constants.ACTUATOR_MOTOR2, MotorType.kBrushless);
+    hookMotor = new WPI_TalonFX(Constants.HOOK_MOTOR);
+    topLimitSwitch = new DigitalInput(7);
 
-		actMotor.restoreFactoryDefaults();
-		actMotor2.restoreFactoryDefaults();
-		hookMotor.configFactoryDefault();
+    actMotor.restoreFactoryDefaults();
+    actMotor2.restoreFactoryDefaults();
+    hookMotor.configFactoryDefault();
 
-		hookMotor.setNeutralMode(NeutralMode.Brake);
+    hookMotor.setNeutralMode(NeutralMode.Brake);
 
-		actMotor2.follow(actMotor);
+    actMotor2.follow(actMotor);
 
-		// Corrupted lose your mind
+    // Corrupted lose your mind
 
-		actMotor.setOpenLoopRampRate(0.20);
-	}
+    actMotor.setOpenLoopRampRate(0.20);
+  }
 
-	public void setActMotor(double speed) {
-		if (topLimitSwitch.get() && speed > 0.0)
-			stopActMotor();
-		else {
-			actMotor.set(speed);
-			actMotor2.set(speed);
-		}
+  public void setActMotor(double speed) {
+    if (topLimitSwitch.get() && speed > 0.0)
+      stopActMotor();
+    else {
+      actMotor.set(speed);
+      actMotor2.set(speed);
+    }
 
-	}
+  }
 
-	public void setHookMotor(double speed) {
-		hookMotor.set(speed);
-	}
+  public void setHookMotor(double speed) {
+    hookMotor.set(speed);
+  }
 
-	public void stopActMotor() {
-		actMotor.set(0);
-		actMotor2.set(0);
-	}
+  public void stopActMotor() {
+    actMotor.set(0);
+    actMotor2.set(0);
+  }
 
-	public void stopHookMotor() {
-		hookMotor.set(0);
-	}
+  public void stopHookMotor() {
+    hookMotor.set(0);
+  }
 
-	@Override
-	public void periodic() {
-		// This method will be called once per scheduler run
-	}
+  @Override
+  public void periodic() {
+    // This method will be called once per scheduler run
+  }
 }

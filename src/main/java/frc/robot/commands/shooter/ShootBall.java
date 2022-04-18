@@ -10,36 +10,36 @@ import frc.robot.Constants;
 import frc.robot.subsystems.Shooter;
 
 public class ShootBall extends CommandBase {
-	// Shooter declaration
-	Shooter shooter;
+  // Shooter declaration
+  Shooter shooter;
 
-	public ShootBall(Shooter s) {
-		shooter = s;
-		addRequirements(shooter);
-	}
+  public ShootBall(Shooter s) {
+    shooter = s;
+    addRequirements(shooter);
+  }
 
-	// Called when the command is initially scheduled.
-	@Override
-	public void initialize() {
-	}
+  // Called when the command is initially scheduled.
+  @Override
+  public void initialize() {
+  }
 
-	// Called every time the scheduler runs while the command is scheduled.
-	@Override
-	public void execute() {
-		shooter.setShooterSpeed(Constants.SHOOT_SPEED);
-		shooter.setBackSpinSpeed(Constants.BACKSPIN_SPEED);
-	}
+  // Called every time the scheduler runs while the command is scheduled.
+  @Override
+  public void execute() {
+    shooter.setShooterSpeed(Constants.SHOOT_SPEED);
+    shooter.setBackSpinSpeed(Constants.BACKSPIN_SPEED);
+  }
 
-	// Called once the command ends or is interrupted.
-	@Override
-	public void end(boolean interrupted) {
-		shooter.stopShooter();
-		shooter.stopBackSpinMotor();
-	}
+  // Called once the command ends or is interrupted.
+  @Override
+  public void end(boolean interrupted) {
+    shooter.stopShooter();
+    shooter.stopBackSpinMotor();
+  }
 
-	// Returns true when the command should end.
-	@Override
-	public boolean isFinished() {
-		return false;
-	}
+  // Returns true when the command should end.
+  @Override
+  public boolean isFinished() {
+    return false;
+  }
 }

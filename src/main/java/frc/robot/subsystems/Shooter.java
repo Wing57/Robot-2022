@@ -12,58 +12,58 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Shooter extends SubsystemBase {
-	private final WPI_TalonFX shooterMotor, backSpinMotor;
-	// private final WPI_TalonFX turretMotor;
-	private final TalonFXInvertType backSpinInvert;
+  private final WPI_TalonFX shooterMotor, backSpinMotor;
+  // private final WPI_TalonFX turretMotor;
+  private final TalonFXInvertType backSpinInvert;
 
-	public Shooter() {
-		shooterMotor = new WPI_TalonFX(Constants.SHOOTER_MOTOR_1);
-		// turretMotor = new WPI_TalonFX(Constants.TURRET_MOTOR);
-		backSpinMotor = new WPI_TalonFX(Constants.SHOOTER_MOTOR_2);
+  public Shooter() {
+    shooterMotor = new WPI_TalonFX(Constants.SHOOTER_MOTOR_1);
+    // turretMotor = new WPI_TalonFX(Constants.TURRET_MOTOR);
+    backSpinMotor = new WPI_TalonFX(Constants.SHOOTER_MOTOR_2);
 
-		shooterMotor.configFactoryDefault();
-		backSpinMotor.configFactoryDefault();
+    shooterMotor.configFactoryDefault();
+    backSpinMotor.configFactoryDefault();
 
-		shooterMotor.setNeutralMode(NeutralMode.Coast);
-		backSpinMotor.setNeutralMode(NeutralMode.Coast);
+    shooterMotor.setNeutralMode(NeutralMode.Coast);
+    backSpinMotor.setNeutralMode(NeutralMode.Coast);
 
-		backSpinInvert = TalonFXInvertType.Clockwise;
+    backSpinInvert = TalonFXInvertType.Clockwise;
 
-		backSpinMotor.setInverted(backSpinInvert);
-	}
+    backSpinMotor.setInverted(backSpinInvert);
+  }
 
-	@Override
-	public void periodic() {
-		// This method will be called once per scheduler run
-	}
+  @Override
+  public void periodic() {
+    // This method will be called once per scheduler run
+  }
 
-	public void setShooterSpeed(double speed) {
-		shooterMotor.set(speed);
+  public void setShooterSpeed(double speed) {
+    shooterMotor.set(speed);
 
-	}
+  }
 
-	public void setReverseShooterSpeed(double speed) {
-		shooterMotor.set(-speed);
-	}
+  public void setReverseShooterSpeed(double speed) {
+    shooterMotor.set(-speed);
+  }
 
-	public void setBackSpinSpeed(double speed) {
-		backSpinMotor.set(speed);
+  public void setBackSpinSpeed(double speed) {
+    backSpinMotor.set(speed);
 
-	}
+  }
 
-	// public void setTurretSpeed(double speed) {
-	// turretMotor.set(speed);
-	// }
+  // public void setTurretSpeed(double speed) {
+  // turretMotor.set(speed);
+  // }
 
-	public void stopShooter() {
-		shooterMotor.set(0);
-	}
+  public void stopShooter() {
+    shooterMotor.set(0);
+  }
 
-	public void stopReverseShooter() {
-		shooterMotor.set(0);
-	}
+  public void stopReverseShooter() {
+    shooterMotor.set(0);
+  }
 
-	public void stopBackSpinMotor() {
-		backSpinMotor.set(0);
-	}
+  public void stopBackSpinMotor() {
+    backSpinMotor.set(0);
+  }
 }

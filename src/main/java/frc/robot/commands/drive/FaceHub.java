@@ -14,60 +14,60 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
 
 public class FaceHub extends CommandBase {
-	private final DriveTrain driveTrain;
-	private final PIDController controller;
-	private final Limelight limelight = Limelight.getInstance();
+  private final DriveTrain driveTrain;
+  private final PIDController controller;
+  private final Limelight limelight = Limelight.getInstance();
 
-	private final double kP = 0.2;
-	private final double kI = 0;
-	private final double kD = 0;
+  private final double kP = 0.2;
+  private final double kI = 0;
+  private final double kD = 0;
 
-	private final double maxOutput = 0.7;
+  private final double maxOutput = 0.7;
 
-	/** Creates a new FaceHub. */
-	public FaceHub(DriveTrain driveTrain) {
-		this.driveTrain = driveTrain;
-		addRequirements(driveTrain);
-		controller = new PIDController(kP, kI, kD);
-		controller.setTolerance(2.0);
-	}
+  /** Creates a new FaceHub. */
+  public FaceHub(DriveTrain driveTrain) {
+    this.driveTrain = driveTrain;
+    addRequirements(driveTrain);
+    controller = new PIDController(kP, kI, kD);
+    controller.setTolerance(2.0);
+  }
 
-	private boolean hasValidTarget() {
-		return limelight.getValue(ReadValue.tv) == 1;
-	}
+  private boolean hasValidTarget() {
+    return limelight.getValue(ReadValue.tv) == 1;
+  }
 
-	// Called when the command is initially scheduled.
-	@Override
-	public void initialize() {
-		if (hasValidTarget())
-			controller.setSetpoint(0);
-		else
-			this.cancel();
-	}
+  // Called when the command is initially scheduled.
+  @Override
+  public void initialize() {
+    if (hasValidTarget())
+      controller.setSetpoint(0);
+    else
+      this.cancel();
+  }
 
-	// Called every time the scheduler runs while the command is scheduled.
-	@Override
-	public void execute() {
-		SmartDashboard.putData("Face Hub Controller", controller);
+  // Called every time the scheduler runs while the command is scheduled.
+  @Override
+  public void execute() {
+    SmartDashboard.putData("Face Hub Controller", controller);
 
-		double xOffset = limelight.getValue(ReadValue.tx);
-		if (xOffset == Integer.MAX_VALUE)
-			this.cancel();
+    double xOffset = limelight.getValue(ReadValue.tx);
+    if (xOffset == Integer.MAX_VALUE)
+      this.cancel();
 
-		double output = MathUtil.clamp(controller.calculate(xOffset), -maxOutput, maxOutput);
+    double output = MathUtil.clamp(controller.calculate(xOffset), -maxOutput, maxOutput);
 
-		driveTrain.drive(-output, output);
-	}
+    driveTrain.drive(-output, output);
+  }
 
-	// Called once the command ends or is interrupted.
-	@Override
-	public void end(boolean interrupted) {
-		driveTrain.stopMotors();
-	}
+  // Called once the command ends or is interrupted.
+  @Override
+  public void end(boolean interrupted) {
+    driveTrain.stopMotors();
+  }
 
-	// Returns true when the command should end.
-	@Override
-	public boolean isFinished() {
-		return !hasValidTarget() || controller.atSetpoint();
-	}
+  // Returns true when the command should end.
+  @Override
+  public boolean isFinished() {
+    return !hasValidTarget() || controller.atSetpoint();
+  }
 }

@@ -34,152 +34,152 @@ import frc.robot.subsystems.Vision;
  * commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-	// The robot's subsystems and commands are defined here...
+  // The robot's subsystems and commands are defined here...
 
-	// joysticks
-	public static final Controller<Gamepad.Button, Gamepad.Axis> gamepad = Gamepad.make(
-	  Constants.XBOXCONTROLLER);
-	public static final Controller<Gamepad.Button, Gamepad.Axis> driveController = Gamepad
-	  .make(Constants.XBOXCONTROLLER);
+  // joysticks
+  public static final Controller<Gamepad.Button, Gamepad.Axis> gamepad = Gamepad.make(
+    Constants.XBOXCONTROLLER);
+  public static final Controller<Gamepad.Button, Gamepad.Axis> driveController = Gamepad
+    .make(Constants.XBOXCONTROLLER);
 
-	// subsystems
-	private final DriveTrain driveTrain;
-	private final Shooter shooter;
-	private final Intake intake;
-	private final Climber climber;
-	private final Index index;
-	private Vision vision;
+  // subsystems
+  private final DriveTrain driveTrain;
+  private final Shooter shooter;
+  private final Intake intake;
+  private final Climber climber;
+  private final Index index;
+  private Vision vision;
 
-	// commands
-	private final TankDriveCommand tankDriveCommand;
-	public static FaceHub faceHub;
+  // commands
+  private final TankDriveCommand tankDriveCommand;
+  public static FaceHub faceHub;
 
-	public static ShootBall shootBall;
-	public static AutoShoot autoShoot;
+  public static ShootBall shootBall;
+  public static AutoShoot autoShoot;
 
-	public static TestCommandGroup group;
+  public static TestCommandGroup group;
 
-	/**
-	 * The container for the robot. Contains subsystems, OI devices, and
-	 * commands.
-	 */
-	public RobotContainer() {
-		driveTrain = new DriveTrain();
-		shooter = new Shooter();
-		intake = new Intake();
-		climber = new Climber();
-		index = new Index();
-		vision = new Vision();
+  /**
+   * The container for the robot. Contains subsystems, OI devices, and
+   * commands.
+   */
+  public RobotContainer() {
+    driveTrain = new DriveTrain();
+    shooter = new Shooter();
+    intake = new Intake();
+    climber = new Climber();
+    index = new Index();
+    vision = new Vision();
 
-		// (driveController) X -> SHIFT GEARS
-		tankDriveCommand = new TankDriveCommand(driveTrain, driveController.getButton(
-		  Gamepad.Button.X));
+    // (driveController) X -> SHIFT GEARS
+    tankDriveCommand = new TankDriveCommand(driveTrain, driveController.getButton(
+      Gamepad.Button.X));
 
-		driveTrain.setDefaultCommand(tankDriveCommand);
+    driveTrain.setDefaultCommand(tankDriveCommand);
 
-		faceHub = new FaceHub(driveTrain);
+    faceHub = new FaceHub(driveTrain);
 
-		shootBall = new ShootBall(shooter);
+    shootBall = new ShootBall(shooter);
 
-		autoShoot = new AutoShoot(shooter);
+    autoShoot = new AutoShoot(shooter);
 
-		group = new TestCommandGroup(driveTrain, shooter);
+    group = new TestCommandGroup(driveTrain, shooter);
 
-		// Configure the button bindings
-		configureButtonBindings();
-	}
+    // Configure the button bindings
+    configureButtonBindings();
+  }
 
-	/**
-	 * Use this method to define your button->command mappings. Buttons can be
-	 * created by instantiating a {@link GenericHID} or one of its subclasses
-	 * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and
-	 * then passing it to a
-	 * {@link edu.wpi.first.wpililibj2.command.button.JoystickButton}.
-	 */
-	private void configureButtonBindings() {
+  /**
+   * Use this method to define your button->command mappings. Buttons can be
+   * created by instantiating a {@link GenericHID} or one of its subclasses
+   * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and
+   * then passing it to a
+   * {@link edu.wpi.first.wpililibj2.command.button.JoystickButton}.
+   */
+  private void configureButtonBindings() {
 
-		// right bumper -> shoot ball
+    // right bumper -> shoot ball
 
-		gamepad.getButton(Gamepad.Button.RightBumper).whileHeld(new RunEndCommand(() -> {
-			shooter.setShooterSpeed(Constants.SHOOT_SPEED);
-			shooter.setBackSpinSpeed(Constants.BACKSPIN_SPEED);
-		}, () -> {
-			shooter.stopShooter();
-			shooter.stopBackSpinMotor();
-		}, shooter), false);
+    gamepad.getButton(Gamepad.Button.RightBumper).whileHeld(new RunEndCommand(() -> {
+      shooter.setShooterSpeed(Constants.SHOOT_SPEED);
+      shooter.setBackSpinSpeed(Constants.BACKSPIN_SPEED);
+    }, () -> {
+      shooter.stopShooter();
+      shooter.stopBackSpinMotor();
+    }, shooter), false);
 
-		// A -> intake ball
+    // A -> intake ball
 
-		gamepad.getButton(Button.A).whileHeld(setIntakeCommand(Constants.INDEX_SPEED), false);
+    gamepad.getButton(Button.A).whileHeld(setIntakeCommand(Constants.INDEX_SPEED), false);
 
-		// B -> Outtake
+    // B -> Outtake
 
-		gamepad.getButton(Button.B).whileHeld(setIntakeCommand(-Constants.INDEX_SPEED),
-		  false);
+    gamepad.getButton(Button.B).whileHeld(setIntakeCommand(-Constants.INDEX_SPEED),
+      false);
 
-		// X -> Index
+    // X -> Index
 
-		gamepad.getButton(Button.X).whileHeld(setIndexCommand(Constants.INDEX_SPEED), false);
+    gamepad.getButton(Button.X).whileHeld(setIndexCommand(Constants.INDEX_SPEED), false);
 
-		// Y -> Reverse Index
+    // Y -> Reverse Index
 
-		gamepad.getButton(Button.Y).whileHeld(setIndexCommand(-Constants.INDEX_SPEED), false);
+    gamepad.getButton(Button.Y).whileHeld(setIndexCommand(-Constants.INDEX_SPEED), false);
 
-		// TODO: test face hub
-		// driveController.getDPadButton(Direction.UP).whileHeld(faceHub,
-		// false)
+    // TODO: test face hub
+    // driveController.getDPadButton(Direction.UP).whileHeld(faceHub,
+    // false)
 
-		// (driveController) left bumper -> toggle intake up / down
+    // (driveController) left bumper -> toggle intake up / down
 
-		driveController.getButton(Button.LeftBumper).whenPressed(intake::togglePiston,
-		  intake);
+    driveController.getButton(Button.LeftBumper).whenPressed(intake::togglePiston,
+      intake);
 
-		// Gamepad > Left -> FORWARD PIVOT
+    // Gamepad > Left -> FORWARD PIVOT
 
-		gamepad.getDPadButton(Direction.LEFT).whileHeld(setPivotCommand(
-		  Constants.ACTMOTOR_SPEED), false);
+    gamepad.getDPadButton(Direction.LEFT).whileHeld(setPivotCommand(
+      Constants.ACTMOTOR_SPEED), false);
 
-		// Gamepad > Right -> BACKWARDS PIVOT
+    // Gamepad > Right -> BACKWARDS PIVOT
 
-		gamepad.getDPadButton(Direction.RIGHT).whileHeld(setPivotCommand(
-		  -Constants.ACTMOTOR_SPEED), false);
+    gamepad.getDPadButton(Direction.RIGHT).whileHeld(setPivotCommand(
+      -Constants.ACTMOTOR_SPEED), false);
 
-		// Gamepad > Up -> EXTEND HOOK
+    // Gamepad > Up -> EXTEND HOOK
 
-		gamepad.getDPadButton(Direction.UP).whileHeld(setHookCommand(Constants.HOOK_SPEED),
-		  false);
+    gamepad.getDPadButton(Direction.UP).whileHeld(setHookCommand(Constants.HOOK_SPEED),
+      false);
 
-		// Gamepad > Down -> RETRACT HOOK
+    // Gamepad > Down -> RETRACT HOOK
 
-		gamepad.getDPadButton(Direction.DOWN).whileHeld(setHookCommand(-Constants.HOOK_SPEED),
-		  false);
-	}
+    gamepad.getDPadButton(Direction.DOWN).whileHeld(setHookCommand(-Constants.HOOK_SPEED),
+      false);
+  }
 
-	/**
-	 * Use this to pass the autonomous command to the main {@link Robot} class.
-	 *
-	 * @return the command to run in autonomous
-	 */
+  /**
+   * Use this to pass the autonomous command to the main {@link Robot} class.
+   *
+   * @return the command to run in autonomous
+   */
 
-	public Command getAutonomousCommand() {
-		return group;
-	}
+  public Command getAutonomousCommand() {
+    return group;
+  }
 
-	private Command setIntakeCommand(double speed) {
-		return new RunEndCommand(() -> index.setIndexMotor(speed), intake::stop, intake);
-	}
+  private Command setIntakeCommand(double speed) {
+    return new RunEndCommand(() -> index.setIndexMotor(speed), intake::stop, intake);
+  }
 
-	private Command setIndexCommand(double speed) {
-		return new RunEndCommand(() -> index.setIndexMotor(speed), index::stop, index);
-	}
+  private Command setIndexCommand(double speed) {
+    return new RunEndCommand(() -> index.setIndexMotor(speed), index::stop, index);
+  }
 
-	private Command setHookCommand(double speed) {
-		return new RunEndCommand(() -> climber.setHookMotor(speed), climber::stopHookMotor,
-		  climber);
-	}
+  private Command setHookCommand(double speed) {
+    return new RunEndCommand(() -> climber.setHookMotor(speed), climber::stopHookMotor,
+      climber);
+  }
 
-	private Command setPivotCommand(double speed) {
-		return new RunEndCommand(() -> climber.setActMotor(speed), climber::stopActMotor,
-		  climber);
-	}
+  private Command setPivotCommand(double speed) {
+    return new RunEndCommand(() -> climber.setActMotor(speed), climber::stopActMotor,
+      climber);
+  }
 }

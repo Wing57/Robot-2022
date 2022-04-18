@@ -89,7 +89,7 @@
         <setting id="org.eclipse.jdt.core.formatter.alignment_for_annotations_on_enum_constant" value="49"/>
         <setting id="org.eclipse.jdt.core.formatter.insert_space_before_and_in_type_parameter" value="insert"/>
         <setting id="org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_parenthesized_expression" value="do not insert"/>
-        <setting id="org.eclipse.jdt.core.formatter.text_block_indentation" value="0"/>
+        <setting id="org.eclipse.jdt.core.formatter.text_block_indentation" value="2"/>
         <setting id="org.eclipse.jdt.core.formatter.align_type_members_on_columns" value="false"/>
         <setting id="org.eclipse.jdt.core.formatter.alignment_for_assignment" value="20"/>
         <setting id="org.eclipse.jdt.core.formatter.alignment_for_module_statements" value="37"/>
@@ -381,7 +381,7 @@
         <setting id="org.eclipse.jdt.core.formatter.comment.indent_parameter_description" value="false"/>
         <setting id="org.eclipse.jdt.core.formatter.number_of_blank_lines_at_beginning_of_code_block" value="0"/>
         <setting id="org.eclipse.jdt.core.formatter.insert_new_line_before_finally_in_try_statement" value="do not insert"/>
-        <setting id="org.eclipse.jdt.core.formatter.tabulation.char" value="mixed"/>
+        <setting id="org.eclipse.jdt.core.formatter.tabulation.char" value="space"/>
         <setting id="org.eclipse.jdt.core.formatter.wrap_before_string_concatenation" value="true"/>
         <setting id="org.eclipse.jdt.core.formatter.lineSplit" value="90"/>
         <setting id="org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_annotation" value="do not insert"/>

@@ -4,8 +4,10 @@
 
 package frc.robot;
 
-import com.rambots4571.rampage.commands.RunEndCommand;
+import com.rambots4571.rampage.command.RunEndCommand;
+import com.rambots4571.rampage.joystick.Controller;
 import com.rambots4571.rampage.joystick.Gamepad;
+import com.rambots4571.rampage.joystick.Gamepad.Button;
 import com.rambots4571.rampage.joystick.component.DPadButton.Direction;
 
 import edu.wpi.first.wpilibj.GenericHID;
@@ -35,8 +37,10 @@ public class RobotContainer {
 	// The robot's subsystems and commands are defined here...
 
 	// joysticks
-	public static final Gamepad gamepad = new Gamepad(Constants.XBOXCONTROLLER);
-	public static final Gamepad driveController = new Gamepad(Constants.XBOXCONTROLLER2);
+	public static final Controller<Gamepad.Button, Gamepad.Axis> gamepad = Gamepad.make(
+	  Constants.XBOXCONTROLLER);
+	public static final Controller<Gamepad.Button, Gamepad.Axis> driveController = Gamepad
+	  .make(Constants.XBOXCONTROLLER);
 
 	// subsystems
 	private final DriveTrain driveTrain;
@@ -69,7 +73,7 @@ public class RobotContainer {
 
 		// (driveController) X -> SHIFT GEARS
 		tankDriveCommand = new TankDriveCommand(driveTrain, driveController.getButton(
-		  Gamepad.ButtonType.X));
+		  Gamepad.Button.X));
 
 		driveTrain.setDefaultCommand(tankDriveCommand);
 
@@ -96,7 +100,7 @@ public class RobotContainer {
 
 		// right bumper -> shoot ball
 
-		gamepad.getButton(Gamepad.ButtonType.RightBumper).whileHeld(new RunEndCommand(() -> {
+		gamepad.getButton(Gamepad.Button.RightBumper).whileHeld(new RunEndCommand(() -> {
 			shooter.setShooterSpeed(Constants.SHOOT_SPEED);
 			shooter.setBackSpinSpeed(Constants.BACKSPIN_SPEED);
 		}, () -> {
@@ -106,23 +110,20 @@ public class RobotContainer {
 
 		// A -> intake ball
 
-		gamepad.getButton(Gamepad.ButtonType.A).whileHeld(setIntakeCommand(
-		  Constants.INDEX_SPEED), false);
+		gamepad.getButton(Button.A).whileHeld(setIntakeCommand(Constants.INDEX_SPEED), false);
 
 		// B -> Outtake
 
-		gamepad.getButton(Gamepad.ButtonType.B).whileHeld(setIntakeCommand(
-		  -Constants.INDEX_SPEED), false);
+		gamepad.getButton(Button.B).whileHeld(setIntakeCommand(-Constants.INDEX_SPEED),
+		  false);
 
 		// X -> Index
 
-		gamepad.getButton(Gamepad.ButtonType.X).whileHeld(setIndexCommand(
-		  Constants.INDEX_SPEED), false);
+		gamepad.getButton(Button.X).whileHeld(setIndexCommand(Constants.INDEX_SPEED), false);
 
 		// Y -> Reverse Index
 
-		gamepad.getButton(Gamepad.ButtonType.Y).whileHeld(setIndexCommand(
-		  -Constants.INDEX_SPEED), false);
+		gamepad.getButton(Button.Y).whileHeld(setIndexCommand(-Constants.INDEX_SPEED), false);
 
 		// TODO: test face hub
 		// driveController.getDPadButton(Direction.UP).whileHeld(faceHub,
@@ -130,8 +131,8 @@ public class RobotContainer {
 
 		// (driveController) left bumper -> toggle intake up / down
 
-		driveController.getButton(Gamepad.ButtonType.LeftBumper).whenPressed(
-		  intake::togglePiston, intake);
+		driveController.getButton(Button.LeftBumper).whenPressed(intake::togglePiston,
+		  intake);
 
 		// Gamepad > Left -> FORWARD PIVOT
 

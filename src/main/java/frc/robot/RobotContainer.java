@@ -40,7 +40,7 @@ public class RobotContainer {
   public static final Controller<Gamepad.Button, Gamepad.Axis> gamepad = Gamepad.make(
     Constants.XBOXCONTROLLER);
   public static final Controller<Gamepad.Button, Gamepad.Axis> driveController = Gamepad
-    .make(Constants.XBOXCONTROLLER);
+    .make(Constants.XBOXCONTROLLER2);
 
   // subsystems
   private final DriveTrain driveTrain;
@@ -126,8 +126,7 @@ public class RobotContainer {
     gamepad.getButton(Button.Y).whileHeld(setIndexCommand(-Constants.INDEX_SPEED), false);
 
     // TODO: test face hub
-    // driveController.getDPadButton(Direction.UP).whileHeld(faceHub,
-    // false)
+    driveController.getDPadButton(Direction.UP).whileHeld(faceHub, false);
 
     // (driveController) left bumper -> toggle intake up / down
 

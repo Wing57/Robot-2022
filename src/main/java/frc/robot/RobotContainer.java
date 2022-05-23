@@ -126,7 +126,7 @@ public class RobotContainer {
     gamepad.getButton(Button.Y).whileHeld(setIndexCommand(-Constants.INDEX_SPEED), false);
 
     // TODO: test face hub
-    driveController.getDPadButton(Direction.UP).whileHeld(faceHub, false);
+    driveController.getButton(Button.A).whileHeld(faceHub, false);
 
     // (driveController) left bumper -> toggle intake up / down
 

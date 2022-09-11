@@ -35,7 +35,7 @@ public class DriveTrain extends SubsystemBase {
 	private final WPI_TalonFX leftMotor2;
 	private final WPI_TalonFX leftMotor3;
 	
-  private final List<WPI_TalonFX> allMotors;
+  	private final List<WPI_TalonFX> allMotors;
 
 	private final DoubleSolenoid shifter;
 
@@ -52,8 +52,9 @@ public class DriveTrain extends SubsystemBase {
 	  new SupplyCurrentLimitConfiguration(true, 40, 60, 4);
 
 	private final NeutralMode neutralMode = NeutralMode.Brake;
-  private final double rampRate;
-  private final int timeoutMs;
+
+  	private final double rampRate;
+  	private final int timeoutMs;
 
 	/**
 	 * Creates a new DriveTrain.
@@ -62,17 +63,16 @@ public class DriveTrain extends SubsystemBase {
 		// Talons
 		rightMaster = new WPI_TalonFX(Constants.RIGHT_MOTOR_1);
 		rightMotor2 = new WPI_TalonFX(Constants.RIGHT_MOTOR_2);
-		rightMotor3 = new WPI_TalonFX(Constants.RIGHT_MOTOR_3);
-
+		rightMotor3 = new WPI_TalonFX(Constants.RIGHT_MOTOR_3);	
 		leftMaster = new WPI_TalonFX(Constants.LEFT_MOTOR_1);
 		leftMotor2 = new WPI_TalonFX(Constants.LEFT_MOTOR_2);
 		leftMotor3 = new WPI_TalonFX(Constants.LEFT_MOTOR_3);
 		
-    allMotors = Arrays.asList(rightMaster, rightMotor2, rightMotor3, leftMaster,
-      leftMotor2, leftMotor3);
-
-    rampRate = 0.35;
-    timeoutMs = 15;
+    	allMotors = Arrays.asList(rightMaster, rightMotor2, rightMotor3, leftMaster,
+    	leftMotor2, leftMotor3);	
+		
+    	rampRate = 0.35;
+    	timeoutMs = 15;
 
     allMotors.forEach(motor -> {
 		// Factory Resets all TalonFX

@@ -41,7 +41,7 @@ public class FaceHub extends CommandBase {
   public void initialize() {
     if (hasValidTarget())
       controller.setSetpoint(0);
-    
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.

@@ -26,61 +26,61 @@ import java.util.Arrays;
 import java.util.List;
 
 public class DriveTrain extends SubsystemBase {
-	// Local Talon Variables
-	private final WPI_TalonFX rightMaster;
-	private final WPI_TalonFX leftMaster;
+  // Local Talon Variables
+  private final WPI_TalonFX rightMaster;
+  private final WPI_TalonFX leftMaster;
 
-	private final WPI_TalonFX rightMotor2;
-	private final WPI_TalonFX rightMotor3;
-	private final WPI_TalonFX leftMotor2;
-	private final WPI_TalonFX leftMotor3;
-	
-  	private final List<WPI_TalonFX> allMotors;
+  private final WPI_TalonFX rightMotor2;
+  private final WPI_TalonFX rightMotor3;
+  private final WPI_TalonFX leftMotor2;
+  private final WPI_TalonFX leftMotor3;
 
-	private final DoubleSolenoid shifter;
+  private final List<WPI_TalonFX> allMotors;
 
-	private final DifferentialDrive drive;
+  private final DoubleSolenoid shifter;
 
-	private final AHRS navX;
+  private final DifferentialDrive drive;
 
-	private final TalonFXConfiguration config;
+  private final AHRS navX;
 
-	private final StatorCurrentLimitConfiguration statorLimitConfig =
-	  new StatorCurrentLimitConfiguration(true, 40, 70, 2);
+  private final TalonFXConfiguration config;
 
-	private final SupplyCurrentLimitConfiguration supplyLimitConfig =
-	  new SupplyCurrentLimitConfiguration(true, 40, 60, 4);
+  private final StatorCurrentLimitConfiguration statorLimitConfig =
+    new StatorCurrentLimitConfiguration(true, 40, 70, 2);
 
-	private final NeutralMode neutralMode = NeutralMode.Brake;
+  private final SupplyCurrentLimitConfiguration supplyLimitConfig =
+    new SupplyCurrentLimitConfiguration(true, 40, 60, 4);
 
-  	private final double rampRate;
-  	private final int timeoutMs;
+  private final NeutralMode neutralMode = NeutralMode.Brake;
 
-	/**
-	 * Creates a new DriveTrain.
-	 */
-	public DriveTrain() {
-		// Talons
-		rightMaster = new WPI_TalonFX(Constants.RIGHT_MOTOR_1);
-		rightMotor2 = new WPI_TalonFX(Constants.RIGHT_MOTOR_2);
-		rightMotor3 = new WPI_TalonFX(Constants.RIGHT_MOTOR_3);	
-		leftMaster = new WPI_TalonFX(Constants.LEFT_MOTOR_1);
-		leftMotor2 = new WPI_TalonFX(Constants.LEFT_MOTOR_2);
-		leftMotor3 = new WPI_TalonFX(Constants.LEFT_MOTOR_3);
-		
-    	allMotors = Arrays.asList(rightMaster, rightMotor2, rightMotor3, leftMaster,
-    	leftMotor2, leftMotor3);	
-		
-    	rampRate = 0.35;
-    	timeoutMs = 15;
+  private final double rampRate;
+  private final int timeoutMs;
+
+  /**
+   * Creates a new DriveTrain.
+   */
+  public DriveTrain() {
+    // Talons
+    rightMaster = new WPI_TalonFX(Constants.RIGHT_MOTOR_1);
+    rightMotor2 = new WPI_TalonFX(Constants.RIGHT_MOTOR_2);
+    rightMotor3 = new WPI_TalonFX(Constants.RIGHT_MOTOR_3);
+    leftMaster = new WPI_TalonFX(Constants.LEFT_MOTOR_1);
+    leftMotor2 = new WPI_TalonFX(Constants.LEFT_MOTOR_2);
+    leftMotor3 = new WPI_TalonFX(Constants.LEFT_MOTOR_3);
+
+    allMotors = Arrays.asList(rightMaster, rightMotor2, rightMotor3, leftMaster,
+      leftMotor2, leftMotor3);
+
+    rampRate = 0.35;
+    timeoutMs = 15;
 
     allMotors.forEach(motor -> {
-		// Factory Resets all TalonFX
+      // Factory Resets all TalonFX
       motor.configFactoryDefault();
-		// Sets Motor to Brake/Coast
+      // Sets Motor to Brake/Coast
       motor.setNeutralMode(neutralMode);
-		// Current limit to prevent breaker tripping. Approx at 150% of rated
-		// current supply.
+      // Current limit to prevent breaker tripping. Approx at 150% of rated
+      // current supply.
       motor.configSupplyCurrentLimit(supplyLimitConfig);
       motor.configStatorCurrentLimit(statorLimitConfig);
       // Ramping motor output to prevent instantaneous directional changes
@@ -88,64 +88,64 @@ public class DriveTrain extends SubsystemBase {
       motor.configOpenloopRamp(rampRate, timeoutMs);
     });
 
-		// Same as set invert = false/gr
-		TalonFXInvertType leftInvert = TalonFXInvertType.Clockwise;
+    // Same as set invert = false/gr
+    TalonFXInvertType leftInvert = TalonFXInvertType.Clockwise;
 
-		// Same as set invert = true
-		TalonFXInvertType rightInvert = TalonFXInvertType.CounterClockwise;
+    // Same as set invert = true
+    TalonFXInvertType rightInvert = TalonFXInvertType.CounterClockwise;
 
-		leftMaster.setInverted(leftInvert);
-		rightMaster.setInverted(rightInvert);
+    leftMaster.setInverted(leftInvert);
+    rightMaster.setInverted(rightInvert);
 
-		rightMotor2.follow(rightMaster);
-		rightMotor2.setInverted(InvertType.FollowMaster);
-		rightMotor3.follow(rightMaster);
-		rightMotor3.setInverted(InvertType.FollowMaster);
+    rightMotor2.follow(rightMaster);
+    rightMotor2.setInverted(InvertType.FollowMaster);
+    rightMotor3.follow(rightMaster);
+    rightMotor3.setInverted(InvertType.FollowMaster);
 
-		leftMotor2.follow(leftMaster);
-		leftMotor2.setInverted(InvertType.FollowMaster);
-		leftMotor3.follow(leftMaster);
-		leftMotor3.setInverted(InvertType.FollowMaster);
+    leftMotor2.follow(leftMaster);
+    leftMotor2.setInverted(InvertType.FollowMaster);
+    leftMotor3.follow(leftMaster);
+    leftMotor3.setInverted(InvertType.FollowMaster);
 
-		config = new TalonFXConfiguration();
-		config.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
+    config = new TalonFXConfiguration();
+    config.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
 
-		// DifferentialDrive
-		drive = new DifferentialDrive(leftMaster, rightMaster);
+    // DifferentialDrive
+    drive = new DifferentialDrive(leftMaster, rightMaster);
 
-		shifter = new DoubleSolenoid(Constants.MODULE_NUMBER, PneumaticsModuleType.REVPH,
-		  Constants.SHIFTER_FORWARD_CHANNEL, Constants.SHIFTER_REVERSE_CHANNEL);
+    shifter = new DoubleSolenoid(Constants.MODULE_NUMBER, PneumaticsModuleType.REVPH,
+      Constants.SHIFTER_FORWARD_CHANNEL, Constants.SHIFTER_REVERSE_CHANNEL);
 
-		navX = new AHRS();
-	}
+    navX = new AHRS();
+  }
 
-	@Override
-	public void periodic() {
-	}
+  @Override
+  public void periodic() {
+  }
 
-	public void drive(double left, double right) {
-		drive.tankDrive(left, right);
-	}
+  public void drive(double left, double right) {
+    drive.tankDrive(left, right);
+  }
 
-	public void stopMotors() {
-		drive.stopMotor();
-	}
+  public void stopMotors() {
+    drive.stopMotor();
+  }
 
-	public void shiftGears() {
-		Value oppValue = shifter.get() == Value.kForward ? Value.kReverse : Value.kForward;
-		shifter.set(oppValue);
-	}
+  public void shiftGears() {
+    Value oppValue = shifter.get() == Value.kForward ? Value.kReverse : Value.kForward;
+    shifter.set(oppValue);
+  }
 
-	public double getAngle() {
-		return navX.getAngle();
-	}
+  public double getAngle() {
+    return navX.getAngle();
+  }
 
-	@Override
-	public void initSendable(SendableBuilder builder) {
-		builder.setSmartDashboardType("DriveTrain");
-		builder.addDoubleProperty("Angle", this::getAngle, null);
-		builder.addDoubleProperty("ramp rate", () -> rampRate, r -> {
+  @Override
+  public void initSendable(SendableBuilder builder) {
+    builder.setSmartDashboardType("DriveTrain");
+    builder.addDoubleProperty("Angle", this::getAngle, null);
+    builder.addDoubleProperty("ramp rate", () -> rampRate, r -> {
       allMotors.forEach(motor -> motor.configOpenloopRamp(r, timeoutMs));
-		});
-	}
+    });
+  }
 }

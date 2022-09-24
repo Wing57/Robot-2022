@@ -168,7 +168,7 @@ public class RobotContainer {
   }
 
   private Command setIntakeCommand(double speed) {
-    return new RunEndCommand(() -> index.setIndexMotor(speed), intake::stop, intake);
+    return new RunEndCommand(() -> intake.setIntakeMotor(speed), intake::stop, intake);
   }
 
   private Command setIndexCommand(double speed) {

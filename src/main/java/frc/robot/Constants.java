@@ -58,7 +58,7 @@ public final class Constants {
   // *****************************************
   // ************** INTAKE *******************
   // *****************************************
-  public static final int INTAKE_MOTOR_1 = 10;
+  public static final int INTAKE_MOTOR_1 = 15;
   public static final int MODULE_NUMBER = 20;
 
   public static final double INTAKE_SPEED = 0.75;
@@ -81,7 +81,7 @@ public final class Constants {
   // ************** Climber ****************
   // *****************************************
   public static final int ACTUATOR_MOTOR = 11;
-  public static final int ACTUATOR_MOTOR2 = 15;
+  public static final int ACTUATOR_MOTOR2 = 10;
   public static final int HOOK_MOTOR = 13;
 
   public static final double HOOK_SPEED = 0.70;

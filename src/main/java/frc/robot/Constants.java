@@ -46,11 +46,11 @@ public final class Constants {
   public static final int SHOOTER_MOTOR_2 = 7;
   public static final int TURRET_MOTOR = 9;
 
-  public static final double AUTO_SHOOT_TIME = 2.0;
+  public static final double AUTO_SHOOT_TIME = 6.0;
   public static final double LL_SHOT_HEIGHT = 5;
-  public static final double SHOOT_SPEED = 0.30;
+  public static final double SHOOT_SPEED = 0.68;
   // good speed value is 0.38
-  public static final double BACKSPIN_SPEED = 0.38;
+  public static final double BACKSPIN_SPEED = 0.48;
   // good speed value is 0.45
   public static final int RIGHTTURRET_LIMITSWITCH_PORT = 9;
   public static final int LEFTTURRET_LIMITSWITCH_PORT = 8;

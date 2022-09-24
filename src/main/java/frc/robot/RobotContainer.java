@@ -85,7 +85,6 @@ public class RobotContainer {
 
     autoShoot = new AutoShoot(shooter);
 
-
     group = new TestCommandGroup(driveTrain, autoShoot, turnCommand);
 
     // Configure the button bindings
@@ -113,11 +112,12 @@ public class RobotContainer {
 
     // A -> intake ball
 
-    gamepad.getButton(Button.A).whileHeld(setIntakeCommand(Constants.INDEX_SPEED), false);
+    gamepad.getButton(Button.A).whileHeld(setIntakeCommand(Constants.INTAKE_SPEED),
+      false);
 
     // B -> Outtake
 
-    gamepad.getButton(Button.B).whileHeld(setIntakeCommand(-Constants.INDEX_SPEED),
+    gamepad.getButton(Button.B).whileHeld(setIntakeCommand(-Constants.INTAKE_SPEED),
       false);
 
     // X -> Index

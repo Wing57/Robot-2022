@@ -16,7 +16,7 @@ public class AutoShoot extends CommandBase {
 
   /** Creates a new AutoShoot. */
   public AutoShoot(Shooter s) {
-    shooter = s;
+    this.shooter = s;
     addRequirements(shooter);
     timer = new Timer();
   }

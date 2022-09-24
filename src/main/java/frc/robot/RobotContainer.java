@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 import frc.robot.commands.auton.AutoShoot;
 import frc.robot.commands.auton.TestCommandGroup;
+import frc.robot.commands.auton.TurnCommand;
 import frc.robot.commands.drive.FaceHub;
 import frc.robot.commands.drive.TankDriveCommand;
 import frc.robot.commands.shooter.ShootBall;
@@ -55,8 +56,9 @@ public class RobotContainer {
   public static FaceHub faceHub;
 
   public static ShootBall shootBall;
-  public static AutoShoot autoShoot;
 
+  public static TurnCommand turnCommand;
+  public static AutoShoot autoShoot;
   public static TestCommandGroup group;
 
   /**
@@ -83,7 +85,8 @@ public class RobotContainer {
 
     autoShoot = new AutoShoot(shooter);
 
-    group = new TestCommandGroup(driveTrain, shooter);
+
+    group = new TestCommandGroup(driveTrain, autoShoot, turnCommand);
 
     // Configure the button bindings
     configureButtonBindings();

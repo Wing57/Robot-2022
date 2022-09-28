@@ -1,15 +1,17 @@
 #!/bin/sh
 
-echo 'making sure project builds correctly'
+echo 'making sure project builds correctly.'
 
-git stash -q --keep-index
+stagedFiles=$(git diff --staged --name-only)
 
-./gradlew build -Dorg.gradle.java.home=$JAVA_HOME
+./gradlew build -Dorg.gradle.java.home=$JAVA_HOME || exit 1
 
 RESULT=$?
 
-git stash pop -q
-
-echo 'done building.'
+for file in $stagedFiles; do
+  if test -f "$file"; then
+    git add $file
+  fi
+done
 
 exit $RESULT

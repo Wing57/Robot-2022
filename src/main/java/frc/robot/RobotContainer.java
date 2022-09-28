@@ -164,7 +164,7 @@ public class RobotContainer {
    */
 
   public Command getAutonomousCommand() {
-    return group;
+    return turnCommand;
   }
 
   private Command setIntakeCommand(double speed) {

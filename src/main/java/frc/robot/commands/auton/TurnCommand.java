@@ -40,7 +40,7 @@ public class TurnCommand extends CommandBase {
     SmartDashboard.putData("Turn Controller", controller);
     double output = MathUtil.clamp(controller.calculate(driveTrain.getAngle()), -0.8,
       0.8);
-    driveTrain.drive(-output, output);
+    driveTrain.drive(output, -output);
   }
 
   // Called once the command ends or is interrupted.

@@ -26,6 +26,7 @@ public class TurnCommand extends CommandBase {
     addRequirements(driveTrain);
     controller = new PIDController(kP, kI, kD);
     controller.setTolerance(2.0);
+    controller.enableContinuousInput(0, 360);
   }
 
   // Called when the command is initially scheduled.

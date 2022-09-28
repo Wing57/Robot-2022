@@ -85,8 +85,14 @@ dependencies {
 wpi.sim.addGui().defaultEnabled = true
 wpi.sim.addDriverstation()
 
+tasks.register('updateGitHooks', Copy) {
+    from './scripts/pre-commit'
+    into './.git/hooks'
+}
+
 compileJava {
     dependsOn 'spotlessApply'
+    dependsOn 'updateGitHooks'
 }
 
 // Setting up my Jar File. In this case, adding all libraries into the main jar ('fat jar')

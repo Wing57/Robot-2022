@@ -4,6 +4,10 @@
 
 package frc.robot.subsystems;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.List;
+
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
@@ -13,22 +17,25 @@ import frc.robot.Constants;
 
 public class Shooter extends SubsystemBase {
   private final WPI_TalonFX shooterMotor, backSpinMotor;
-  // private final WPI_TalonFX turretMotor;
   private final TalonFXInvertType backSpinInvert;
+
+  private final List<WPI_TalonFX> bothMotors;
 
   public Shooter() {
     shooterMotor = new WPI_TalonFX(Constants.SHOOTER_MOTOR_1);
-    // turretMotor = new WPI_TalonFX(Constants.TURRET_MOTOR);
     backSpinMotor = new WPI_TalonFX(Constants.SHOOTER_MOTOR_2);
 
-    shooterMotor.configFactoryDefault();
-    backSpinMotor.configFactoryDefault();
+    bothMotors = Arrays.asList(shooterMotor, backSpinMotor);
 
-    shooterMotor.setNeutralMode(NeutralMode.Coast);
-    backSpinMotor.setNeutralMode(NeutralMode.Coast);
+    bothMotors.forEach(motor -> {
+      // Factory Resets all TalonFX
+      motor.configFactoryDefault();
+
+      // Sets the motor state as either brake or coast
+      motor.setNeutralMode(NeutralMode.Brake);
+    });
 
     backSpinInvert = TalonFXInvertType.Clockwise;
-
     backSpinMotor.setInverted(backSpinInvert);
   }
 

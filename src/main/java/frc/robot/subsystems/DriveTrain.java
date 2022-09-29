@@ -72,6 +72,7 @@ public class DriveTrain extends SubsystemBase {
     allMotors = Arrays.asList(rightMaster, rightMotor2, rightMotor3, leftMaster,
       leftMotor2, leftMotor3);
 
+    // TODO: Adjust rampRate
     rampRate = 0.35;
     timeoutMs = 15;
 

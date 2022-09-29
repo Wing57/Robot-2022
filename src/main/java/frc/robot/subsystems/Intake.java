@@ -15,12 +15,21 @@ import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
   private final WPI_TalonSRX intakeMotor;
+
   private final DoubleSolenoid piston;
   private final Compressor comp;
+
+  private final double rampRate;
+  private final int timeoutMs;
 
   public Intake() {
     intakeMotor = new WPI_TalonSRX(Constants.INTAKE_MOTOR_1);
 
+    rampRate = 0.20;
+    timeoutMs = 15;
+
+    intakeMotor.configOpenloopRamp(rampRate, timeoutMs);
+    
     comp = new Compressor(Constants.MODULE_NUMBER, PneumaticsModuleType.REVPH);
     piston = new DoubleSolenoid(Constants.MODULE_NUMBER, PneumaticsModuleType.REVPH,
       Constants.INTAKE_PISTON_FORWARD_CHANNEL, Constants.INTAKE_PISTON_REVERSE_CHANNEL);

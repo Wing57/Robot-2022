@@ -1,0 +1,17 @@
+#!/bin/sh
+
+echo 'making sure project builds correctly.'
+
+stagedFiles=$(git diff --staged --name-only)
+
+./gradlew build -Dorg.gradle.java.home=$JAVA_HOME || exit 1
+
+RESULT=$?
+
+for file in $stagedFiles; do
+  if test -f "$file"; then
+    git add $file
+  fi
+done
+
+exit $RESULT

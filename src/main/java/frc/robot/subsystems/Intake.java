@@ -4,8 +4,7 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -15,12 +14,12 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
-  private final CANSparkMax intakeMotor;
+  private final WPI_TalonSRX intakeMotor;
   private final DoubleSolenoid piston;
   private final Compressor comp;
 
   public Intake() {
-    intakeMotor = new CANSparkMax(Constants.INTAKE_MOTOR_1, MotorType.kBrushless);
+    intakeMotor = new WPI_TalonSRX(Constants.INTAKE_MOTOR_1);
 
     comp = new Compressor(Constants.MODULE_NUMBER, PneumaticsModuleType.REVPH);
     piston = new DoubleSolenoid(Constants.MODULE_NUMBER, PneumaticsModuleType.REVPH,

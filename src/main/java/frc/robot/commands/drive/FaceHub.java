@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.Vision;
+
 
 public class FaceHub extends CommandBase {
   private final DriveTrain driveTrain;
@@ -50,8 +50,7 @@ public class FaceHub extends CommandBase {
   @Override
   public void execute() {
     SmartDashboard.putData("Face Hub Controller", controller);
-    Vision.upadateTelemetry();
-
+    
     double xOffset = limelight.getValue(ReadValue.tx);
     if (xOffset == Integer.MAX_VALUE)
       this.cancel();

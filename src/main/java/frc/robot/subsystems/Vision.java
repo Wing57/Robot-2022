@@ -72,4 +72,8 @@ public class Vision extends SubsystemBase {
 		builder.addDoubleProperty("xOff", this::getHorizontalOffset, null);
 		builder.addDoubleProperty("yOff", this::getVerticalOffset, null);
 	}
+
+  public void periodic() {
+    initSendable(null);
+  }
 }

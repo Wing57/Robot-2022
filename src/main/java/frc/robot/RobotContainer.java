@@ -26,7 +26,7 @@ import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Index;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.Vision;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -50,7 +50,7 @@ public class RobotContainer {
   private final Intake intake;
   private final Climber climber;
   private final Index index;
-  private Vision vision;
+  
 
   // commands
   private final TankDriveCommand tankDriveCommand;
@@ -72,7 +72,7 @@ public class RobotContainer {
     intake = new Intake();
     climber = new Climber();
     index = new Index();
-    vision = new Vision();
+    
 
     // (driveController) X -> SHIFT GEARS
     tankDriveCommand = new TankDriveCommand(driveTrain, driveController.getButton(

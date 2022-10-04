@@ -9,7 +9,7 @@ import com.rambots4571.rampage.vision.Limelight.CamMode;
 import com.rambots4571.rampage.vision.Limelight.LedMode;
 import com.rambots4571.rampage.vision.ReadValue;
 
-import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Shooters;
 
@@ -65,15 +65,14 @@ public class Vision extends SubsystemBase {
 		limelight.setCamMode(mode);
 	}
 
-	@Override
-	public void initSendable(SendableBuilder builder) {
-		builder.setSmartDashboardType("Limelight Values");
-		builder.addBooleanProperty("has valid target", this::hasValidTarget, null);
-		builder.addDoubleProperty("xOff", this::getHorizontalOffset, null);
-		builder.addDoubleProperty("yOff", this::getVerticalOffset, null);
+	public void updateTelemetry() {
+		SmartDashboard.putBoolean("Limelight Valid Target", hasValidTarget());
+        SmartDashboard.putNumber("Limelight Vertical Offset", getVerticalOffset());
+        SmartDashboard.putNumber("Limelight Horizontal Offset", getHorizontalOffset());
+        SmartDashboard.putNumber("Limelight Estimate Distance", getEstimatedDistance());
 	}
 
   public void periodic() {
-    initSendable(null);
+    updateTelemetry();
   }
 }

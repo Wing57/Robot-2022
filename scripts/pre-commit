@@ -4,7 +4,7 @@ echo 'making sure project builds correctly.'
 
 stagedFiles=$(git diff --staged --name-only)
 
-./gradlew build -Dorg.gradle.java.home=$JAVA_HOME || exit 1
+./gradlew build || exit 1
 
 RESULT=$?
 

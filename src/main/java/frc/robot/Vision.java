@@ -44,9 +44,13 @@ public class Vision implements Sendable {
   // Gets the estimated distance from the robot to the target
   public double getEstimatedDistance() {
     double offset = getVerticalOffset();
-    // return 0.0;
-    return Shooters.LIMELIGHT_DISTANCE_K[0] * Math.pow(offset, 2)
-      + Shooters.LIMELIGHT_DISTANCE_K[1] * offset + Shooters.LIMELIGHT_DISTANCE_K[2];
+    double angleGoalDegrees = Shooters.MountAngleDegrees - offset;
+    double angleGoalRadians = angleGoalDegrees * (Math.PI / 180.0);
+
+    double estimatedDistance = (Shooters.GoalHeightInches - Shooters.LensHeightInches)
+      / Math.tan(angleGoalRadians);
+
+    return estimatedDistance;
   }
 
   // Gets the active pipeline (0 to 9)

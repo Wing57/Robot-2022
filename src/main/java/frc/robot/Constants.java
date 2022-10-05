@@ -96,9 +96,12 @@ public final class Constants {
 
   //////// LIMELIGHT VALUES////////////
   public static final class Shooters {
-    public static final double[] LIMELIGHT_DISTANCE_K = {
-      0.0, -5.61, 119
-    };
+  
+  // TODO: Get real values for MountAngle and LensHeight
+
+  public static final double MountAngleDegrees = 45;
+  public static final double LensHeightInches = 30;
+  public static final double GoalHeightInches = 104;
   }
 
 }

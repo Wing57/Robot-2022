@@ -9,7 +9,7 @@ import com.rambots4571.rampage.command.RunEndCommand;
 import com.rambots4571.rampage.joystick.Controller;
 import com.rambots4571.rampage.joystick.Gamepad;
 import com.rambots4571.rampage.joystick.Gamepad.Button;
-import com.rambots4571.rampage.joystick.component.DPadButton.Direction;
+
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
@@ -21,7 +21,6 @@ import frc.robot.commands.auton.TurnCommand;
 import frc.robot.commands.drive.FaceHub;
 import frc.robot.commands.drive.TankDriveCommand;
 import frc.robot.commands.shooter.ShootBall;
-import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Index;
 import frc.robot.subsystems.Intake;
@@ -48,7 +47,6 @@ public class RobotContainer {
   private final DriveTrain driveTrain;
   private final Shooter shooter;
   private final Intake intake;
-  private final Climber climber;
   private final Index index;
   
 
@@ -70,7 +68,6 @@ public class RobotContainer {
     driveTrain = new DriveTrain();
     shooter = new Shooter();
     intake = new Intake();
-    climber = new Climber();
     index = new Index();
     
 
@@ -137,25 +134,6 @@ public class RobotContainer {
     driveController.getButton(Button.LeftBumper).whenPressed(intake::togglePiston,
       intake);
 
-    // Gamepad > Left -> FORWARD PIVOT
-
-    gamepad.getDPadButton(Direction.LEFT).whileHeld(setPivotCommand(
-      Constants.ACTMOTOR_SPEED), false);
-
-    // Gamepad > Right -> BACKWARDS PIVOT
-
-    gamepad.getDPadButton(Direction.RIGHT).whileHeld(setPivotCommand(
-      -Constants.ACTMOTOR_SPEED), false);
-
-    // Gamepad > Up -> EXTEND HOOK
-
-    gamepad.getDPadButton(Direction.UP).whileHeld(setHookCommand(Constants.HOOK_SPEED),
-      false);
-
-    // Gamepad > Down -> RETRACT HOOK
-
-    gamepad.getDPadButton(Direction.DOWN).whileHeld(setHookCommand(-Constants.HOOK_SPEED),
-      false);
   }
 
   /**
@@ -176,13 +154,4 @@ public class RobotContainer {
     return new RunEndCommand(() -> index.setIndexMotor(speed), index::stop, index);
   }
 
-  private Command setHookCommand(double speed) {
-    return new RunEndCommand(() -> climber.setHookMotor(speed), climber::stopHookMotor,
-      climber);
-  }
-
-  private Command setPivotCommand(double speed) {
-    return new RunEndCommand(() -> climber.setActMotor(speed), climber::stopActMotor,
-      climber);
-  }
 }

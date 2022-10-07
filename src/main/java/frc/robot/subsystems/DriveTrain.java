@@ -5,16 +5,19 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
+import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -42,6 +45,7 @@ public class DriveTrain extends SubsystemBase {
   private final DoubleSolenoid shifter;
 
   private final DifferentialDrive drive;
+  private final DifferentialDriveOdometry m_Odometry;
 
   private final AHRS navX;
 
@@ -111,19 +115,24 @@ public class DriveTrain extends SubsystemBase {
     leftMotor3.setInverted(InvertType.FollowMaster);
 
     config = new TalonFXConfiguration();
-    config.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
+    config.primaryPID.selectedFeedbackSensor = TalonFXFeedbackDevice.IntegratedSensor
+      .toFeedbackDevice();
 
-    // DifferentialDrive
+    navX = new AHRS();
+
     drive = new DifferentialDrive(leftMaster, rightMaster);
+
+    m_Odometry = new DifferentialDriveOdometry(navX.getRotation2d());
 
     shifter = new DoubleSolenoid(Ctake.MODULE_NUMBER, PneumaticsModuleType.REVPH,
       DriveConstants.SHIFTER_FORWARD_CHANNEL, DriveConstants.SHIFTER_REVERSE_CHANNEL);
 
-    navX = new AHRS();
   }
 
   @Override
   public void periodic() {
+    m_Odometry.update(navX.getRotation2d(), leftMaster.getSelectedSensorPosition(),
+      rightMaster.getSelectedSensorPosition());
   }
 
   public void drive(double left, double right) {
@@ -139,8 +148,56 @@ public class DriveTrain extends SubsystemBase {
     shifter.set(oppValue);
   }
 
+  public Pose2d getPose() {
+    return m_Odometry.getPoseMeters();
+  }
+
+  public DifferentialDriveWheelSpeeds getWheelSpeeds() {
+    return new DifferentialDriveWheelSpeeds(leftMaster.getSelectedSensorVelocity(),
+      rightMaster.getSelectedSensorVelocity());
+  }
+
+  public void resetOdometry() {
+    resetEncoders();
+    m_Odometry.resetPosition(getPose(), navX.getRotation2d());
+  }
+
+  public double getAverageEncoderDistance() {
+    return (leftMaster.getSelectedSensorPosition() + rightMaster
+      .getSelectedSensorPosition()) / 2.0;
+  }
+
   public double getAngle() {
     return navX.getAngle() % 360;
+  }
+
+  public void zeroHeading() {
+    navX.reset();
+  }
+
+  public double getHeading() {
+    return navX.getRotation2d().getDegrees();
+  }
+
+  public double getTurnRate() {
+    return -navX.getRate();
+  }
+
+  public void setMaxOutput(double maxOutput) {
+    drive.setMaxOutput(maxOutput);
+  }
+
+  public double getLeftEndocderValue() {
+    return leftMaster.getSelectedSensorPosition();
+  }
+
+  public double getRightEncoderValue() {
+    return rightMaster.getSelectedSensorPosition();
+  }
+
+  public void resetEncoders() {
+    rightMaster.setSelectedSensorPosition(0);
+    leftMaster.setSelectedSensorPosition(0);
   }
 
   @Override

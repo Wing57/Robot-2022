@@ -20,7 +20,8 @@ public final class Constants {
   // *****************************************
   // ********** DRIVE TRAIN ******************
   // *****************************************
-  public static final int RIGHT_MOTOR_1 = 3;
+  public static final class DriveConstants {
+    public static final int RIGHT_MOTOR_1 = 3;
   public static final int RIGHT_MOTOR_2 = 2;
   public static final int RIGHT_MOTOR_3 = 14;
   public static final int LEFT_MOTOR_1 = 4;
@@ -38,7 +39,8 @@ public final class Constants {
 
   // Speed During AUTO
   public static final double AUTONOMOUS_SPEED = 0.4;
-
+  }
+  
   // *****************************************
   // ************** SHOOTER ******************
   // *****************************************

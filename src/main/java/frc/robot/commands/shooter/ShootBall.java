@@ -6,7 +6,7 @@ package frc.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-import frc.robot.Constants;
+import frc.robot.Constants.Shooters;
 import frc.robot.subsystems.Shooter;
 
 public class ShootBall extends CommandBase {
@@ -26,8 +26,8 @@ public class ShootBall extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooter.setShooterSpeed(Constants.SHOOT_SPEED);
-    shooter.setBackSpinSpeed(Constants.BACKSPIN_SPEED);
+    shooter.setShooterSpeed(Shooters.SHOOT_SPEED);
+    shooter.setBackSpinSpeed(Shooters.BACKSPIN_SPEED);
   }
 
   // Called once the command ends or is interrupted.

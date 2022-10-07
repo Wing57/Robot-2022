@@ -10,11 +10,12 @@ import com.rambots4571.rampage.joystick.Controller;
 import com.rambots4571.rampage.joystick.Gamepad;
 import com.rambots4571.rampage.joystick.Gamepad.Button;
 
-
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 
+import frc.robot.Constants.Ctake;
+import frc.robot.Constants.Shooters;
 import frc.robot.commands.auton.AutoShoot;
 import frc.robot.commands.auton.TestCommandGroup;
 import frc.robot.commands.auton.TurnCommand;
@@ -25,7 +26,6 @@ import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Index;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
-
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -48,7 +48,6 @@ public class RobotContainer {
   private final Shooter shooter;
   private final Intake intake;
   private final Index index;
-  
 
   // commands
   private final TankDriveCommand tankDriveCommand;
@@ -69,7 +68,6 @@ public class RobotContainer {
     shooter = new Shooter();
     intake = new Intake();
     index = new Index();
-    
 
     // (driveController) X -> SHIFT GEARS
     tankDriveCommand = new TankDriveCommand(driveTrain, driveController.getButton(
@@ -101,8 +99,8 @@ public class RobotContainer {
     // right bumper -> shoot ball
 
     gamepad.getButton(Gamepad.Button.RightBumper).whileHeld(new RunEndCommand(() -> {
-      shooter.setShooterSpeed(Constants.SHOOT_SPEED);
-      shooter.setBackSpinSpeed(Constants.BACKSPIN_SPEED);
+      shooter.setShooterSpeed(Shooters.SHOOT_SPEED);
+      shooter.setBackSpinSpeed(Shooters.BACKSPIN_SPEED);
     }, () -> {
       shooter.stopShooter();
       shooter.stopBackSpinMotor();
@@ -110,13 +108,11 @@ public class RobotContainer {
 
     // A -> intake ball
 
-    gamepad.getButton(Button.A).whileHeld(setIntakeCommand(Constants.INTAKE_SPEED),
-      false);
+    gamepad.getButton(Button.A).whileHeld(setIntakeCommand(Ctake.INTAKE_SPEED), false);
 
     // B -> Outtake
 
-    gamepad.getButton(Button.B).whileHeld(setIntakeCommand(-Constants.INTAKE_SPEED),
-      false);
+    gamepad.getButton(Button.B).whileHeld(setIntakeCommand(-Ctake.INTAKE_SPEED), false);
 
     // X -> Index
 

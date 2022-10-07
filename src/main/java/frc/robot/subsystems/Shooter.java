@@ -4,13 +4,15 @@
 
 package frc.robot.subsystems;
 
-import java.util.Arrays;
-import java.util.List;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+
+import frc.robot.Constants.Shooters;
+import java.util.Arrays;
+import java.util.List;
 
 public class Shooter extends SubsystemBase {
   private final WPI_TalonFX shooterMotor, backSpinMotor;
@@ -19,8 +21,8 @@ public class Shooter extends SubsystemBase {
   private final List<WPI_TalonFX> bothMotors;
 
   public Shooter() {
-    shooterMotor = new WPI_TalonFX(Constants.SHOOTER_MOTOR_1);
-    backSpinMotor = new WPI_TalonFX(Constants.SHOOTER_MOTOR_2);
+    shooterMotor = new WPI_TalonFX(Shooters.SHOOTER_MOTOR_1);
+    backSpinMotor = new WPI_TalonFX(Shooters.SHOOTER_MOTOR_2);
 
     bothMotors = Arrays.asList(shooterMotor, backSpinMotor);
 

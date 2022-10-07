@@ -22,9 +22,8 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import frc.robot.Constants;
+import frc.robot.Constants.Ctake;
 import frc.robot.Constants.DriveConstants;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -117,8 +116,8 @@ public class DriveTrain extends SubsystemBase {
     // DifferentialDrive
     drive = new DifferentialDrive(leftMaster, rightMaster);
 
-    shifter = new DoubleSolenoid(Constants.MODULE_NUMBER, PneumaticsModuleType.REVPH,
-    DriveConstants.SHIFTER_FORWARD_CHANNEL, DriveConstants.SHIFTER_REVERSE_CHANNEL);
+    shifter = new DoubleSolenoid(Ctake.MODULE_NUMBER, PneumaticsModuleType.REVPH,
+      DriveConstants.SHIFTER_FORWARD_CHANNEL, DriveConstants.SHIFTER_REVERSE_CHANNEL);
 
     navX = new AHRS();
   }

@@ -7,7 +7,7 @@ package frc.robot.commands.auton;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-import frc.robot.Constants;
+import frc.robot.Constants.Shooters;
 import frc.robot.subsystems.Shooter;
 
 public class AutoShoot extends CommandBase {
@@ -31,7 +31,7 @@ public class AutoShoot extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooter.setShooterSpeed(Constants.SHOOT_SPEED);
+    shooter.setShooterSpeed(Shooters.SHOOT_SPEED);
   }
 
   // Called once the command ends or is interrupted.
@@ -43,6 +43,6 @@ public class AutoShoot extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return timer.get() >= Constants.AUTO_SHOOT_TIME;
+    return timer.get() >= Shooters.AUTO_SHOOT_TIME;
   }
 }

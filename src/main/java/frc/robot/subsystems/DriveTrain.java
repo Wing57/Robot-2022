@@ -79,7 +79,7 @@ public class DriveTrain extends SubsystemBase {
     // **********************************************
 
     // TODO: Adjust rampRate
-    rampRate = 0.35;
+    rampRate = 0.25;
     timeoutMs = 15;
 
     allMotors.forEach(motor -> {

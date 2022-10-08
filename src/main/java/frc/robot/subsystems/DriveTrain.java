@@ -5,13 +5,12 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
-import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
-import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.kauailabs.navx.frc.AHRS;
 
@@ -48,8 +47,6 @@ public class DriveTrain extends SubsystemBase {
   private final DifferentialDriveOdometry m_Odometry;
 
   private final AHRS navX;
-
-  private final TalonFXConfiguration config;
 
   private final StatorCurrentLimitConfiguration statorLimitConfig =
     new StatorCurrentLimitConfiguration(true, 40, 70, 2);
@@ -114,9 +111,10 @@ public class DriveTrain extends SubsystemBase {
     leftMotor3.follow(leftMaster);
     leftMotor3.setInverted(InvertType.FollowMaster);
 
-    config = new TalonFXConfiguration();
-    config.primaryPID.selectedFeedbackSensor = TalonFXFeedbackDevice.IntegratedSensor
-      .toFeedbackDevice();
+    leftMaster.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0,
+      timeoutMs);
+    rightMaster.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0,
+      timeoutMs);
 
     navX = new AHRS();
 

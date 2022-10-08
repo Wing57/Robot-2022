@@ -74,10 +74,12 @@ public final class Constants {
     public static final double BACKSPIN_SPEED = 0.48;
     // good speed value is 0.45
 
-    //////// LIMELIGHT VALUES////////////
-    public static final double[] LIMELIGHT_DISTANCE_K = {
-      0.0, -5.61, 119
-    };
+    ////////// LIMELIGHT VALUES////////////
+
+    // TODO: Get real angles for Lensheight and MountAngle
+    public static final double MountAngleDegrees = 45;
+    public static final double LensHeightInches = 30;
+    public static final double GoalHeightInches = 104;
   }
 
   // *****************************************

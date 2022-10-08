@@ -131,9 +131,12 @@ public class DriveTrain extends SubsystemBase {
 
   @Override
   public void periodic() {
-    m_Odometry.update(navX.getRotation2d(), leftMaster.getSelectedSensorPosition(),
-      rightMaster.getSelectedSensorPosition());
+    updateOdometry();
   }
+
+  // *****************************************
+  // ************** Driving ******************
+  // *****************************************
 
   public void drive(double left, double right) {
     drive.tankDrive(left, right);
@@ -148,8 +151,33 @@ public class DriveTrain extends SubsystemBase {
     shifter.set(oppValue);
   }
 
-  public Pose2d getPose() {
-    return m_Odometry.getPoseMeters();
+  // *****************************************
+  // ************* Robot Angle ***************
+  // *****************************************
+
+  public double getAngle() {
+    return navX.getAngle() % 360;
+  }
+
+  public double getHeading() {
+    return navX.getRotation2d().getDegrees();
+  }
+
+  public void zeroHeading() {
+    navX.reset();
+  }
+
+  public double getTurnRate() {
+    return -navX.getRate();
+  }
+
+  // ********************************************
+  // ************ Odometry Functions ************
+  // ********************************************
+
+  public void updateOdometry() {
+    m_Odometry.update(navX.getRotation2d(), leftMaster.getSelectedSensorPosition(),
+      rightMaster.getSelectedSensorPosition());
   }
 
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
@@ -162,29 +190,17 @@ public class DriveTrain extends SubsystemBase {
     m_Odometry.resetPosition(getPose(), navX.getRotation2d());
   }
 
+  public Pose2d getPose() {
+    return m_Odometry.getPoseMeters();
+  }
+
+  // *****************************************
+  // ************** Encoders *****************
+  // *****************************************
+
   public double getAverageEncoderDistance() {
     return (leftMaster.getSelectedSensorPosition() + rightMaster
       .getSelectedSensorPosition()) / 2.0;
-  }
-
-  public double getAngle() {
-    return navX.getAngle() % 360;
-  }
-
-  public void zeroHeading() {
-    navX.reset();
-  }
-
-  public double getHeading() {
-    return navX.getRotation2d().getDegrees();
-  }
-
-  public double getTurnRate() {
-    return -navX.getRate();
-  }
-
-  public void setMaxOutput(double maxOutput) {
-    drive.setMaxOutput(maxOutput);
   }
 
   public double getLeftEndocderValue() {
@@ -198,6 +214,10 @@ public class DriveTrain extends SubsystemBase {
   public void resetEncoders() {
     rightMaster.setSelectedSensorPosition(0);
     leftMaster.setSelectedSensorPosition(0);
+  }
+
+  public void setMaxOutput(double maxOutput) {
+    drive.setMaxOutput(maxOutput);
   }
 
   @Override

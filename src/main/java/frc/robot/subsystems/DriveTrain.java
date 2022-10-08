@@ -39,6 +39,9 @@ public class DriveTrain extends SubsystemBase {
   private final WPI_TalonFX leftMotor2;
   private final WPI_TalonFX leftMotor3;
 
+  private final WPI_TalonFX[] rightMotors;
+  private final WPI_TalonFX[] leftMotors;
+
   private final List<WPI_TalonFX> allMotors;
 
   private final DoubleSolenoid shifter;
@@ -64,12 +67,17 @@ public class DriveTrain extends SubsystemBase {
    */
   public DriveTrain() {
     // Talons
-    rightMaster = new WPI_TalonFX(DriveConstants.RIGHT_MOTOR_1);
-    rightMotor2 = new WPI_TalonFX(DriveConstants.RIGHT_MOTOR_2);
-    rightMotor3 = new WPI_TalonFX(DriveConstants.RIGHT_MOTOR_3);
-    leftMaster = new WPI_TalonFX(DriveConstants.LEFT_MOTOR_1);
-    leftMotor2 = new WPI_TalonFX(DriveConstants.LEFT_MOTOR_2);
-    leftMotor3 = new WPI_TalonFX(DriveConstants.LEFT_MOTOR_3);
+    rightMotors = new WPI_TalonFX[] {
+      rightMaster = new WPI_TalonFX(DriveConstants.RIGHT_MOTOR_1), rightMotor2 =
+        new WPI_TalonFX(DriveConstants.RIGHT_MOTOR_2), rightMotor3 = new WPI_TalonFX(
+          DriveConstants.RIGHT_MOTOR_3)
+    };
+
+    leftMotors = new WPI_TalonFX[] {
+      leftMaster = new WPI_TalonFX(DriveConstants.LEFT_MOTOR_1), leftMotor2 =
+        new WPI_TalonFX(DriveConstants.LEFT_MOTOR_2), leftMotor3 = new WPI_TalonFX(
+          DriveConstants.LEFT_MOTOR_3)
+    };
 
     allMotors = Arrays.asList(rightMaster, rightMotor2, rightMotor3, leftMaster,
       leftMotor2, leftMotor3);
@@ -157,6 +165,8 @@ public class DriveTrain extends SubsystemBase {
     return navX.getAngle() % 360;
   }
 
+  // Return robot heading in degrees, from -180 to 180
+
   public double getHeading() {
     return navX.getRotation2d().getDegrees();
   }
@@ -212,6 +222,23 @@ public class DriveTrain extends SubsystemBase {
   public void resetEncoders() {
     rightMaster.setSelectedSensorPosition(0);
     leftMaster.setSelectedSensorPosition(0);
+  }
+
+  // *****************************************
+  // ************** Voltage ******************
+  // *****************************************
+
+  public void tankDriveVolts(double leftVolts, double rightVolts) {
+    for (WPI_TalonFX motor : leftMotors) {
+      motor.setVoltage(leftVolts);
+
+    }
+
+    for (WPI_TalonFX motor : rightMotors) {
+      motor.setVoltage(rightVolts);
+    }
+
+    drive.feed();
   }
 
   public void setMaxOutput(double maxOutput) {

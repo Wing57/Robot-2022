@@ -59,7 +59,7 @@ public class DriveTrain extends SubsystemBase {
 
   private final NeutralMode neutralMode = NeutralMode.Brake;
 
-  private final double rampRate;
+  private double rampRate;
   private final int timeoutMs;
 
   /**
@@ -225,7 +225,8 @@ public class DriveTrain extends SubsystemBase {
     builder.setSmartDashboardType("DriveTrain");
     builder.addDoubleProperty("Angle", this::getAngle, null);
     builder.addDoubleProperty("ramp rate", () -> rampRate, r -> {
-      allMotors.forEach(motor -> motor.configOpenloopRamp(r, timeoutMs));
+      rampRate = r;
+      allMotors.forEach(motor -> motor.configOpenloopRamp(rampRate, timeoutMs));
     });
   }
 }

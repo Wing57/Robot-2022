@@ -74,6 +74,10 @@ public class DriveTrain extends SubsystemBase {
     allMotors = Arrays.asList(rightMaster, rightMotor2, rightMotor3, leftMaster,
       leftMotor2, leftMotor3);
 
+    // **********************************************
+    // ************** Falcon Configs ****************
+    // **********************************************
+
     // TODO: Adjust rampRate
     rampRate = 0.35;
     timeoutMs = 15;
@@ -157,6 +161,8 @@ public class DriveTrain extends SubsystemBase {
     return navX.getAngle() % 360;
   }
 
+  // Return robot heading in degrees, from -180 to 180
+
   public double getHeading() {
     return navX.getRotation2d().getDegrees();
   }
@@ -212,6 +218,16 @@ public class DriveTrain extends SubsystemBase {
   public void resetEncoders() {
     rightMaster.setSelectedSensorPosition(0);
     leftMaster.setSelectedSensorPosition(0);
+  }
+
+  // *****************************************
+  // ************** Voltage ******************
+  // *****************************************
+
+  public void tankDriveVolts(double leftVolts, double rightVolts) {
+    leftMaster.setVoltage(leftVolts);
+    rightMaster.setVoltage(rightVolts);
+    drive.feed();
   }
 
   public void setMaxOutput(double maxOutput) {

@@ -10,11 +10,16 @@ import com.rambots4571.rampage.joystick.Controller;
 import com.rambots4571.rampage.joystick.Gamepad;
 import com.rambots4571.rampage.joystick.Gamepad.Button;
 
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 
+import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.Ctake;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.Shooters;
 import frc.robot.commands.auton.AutoShoot;
 import frc.robot.commands.auton.TestCommandGroup;
@@ -139,6 +144,19 @@ public class RobotContainer {
    */
 
   public Command getAutonomousCommand() {
+
+    // Voltage constraint makes sure we dont accelerate too fast during auton
+
+    var autoVoltageConstraint = new DifferentialDriveVoltageConstraint(
+      new SimpleMotorFeedforward(DriveConstants.ksVolts,
+        DriveConstants.kvVoltSecondsPerMeter,
+        DriveConstants.kaVoltSecondsSquaredPerMeter), DriveConstants.kDriveKinematics,
+      10);
+
+    TrajectoryConfig config = new TrajectoryConfig(AutoConstants.kMaxSpeedMetersPerSecond,
+      AutoConstants.kMaxAccelerationMetersPerSecondSquared).setKinematics(
+        DriveConstants.kDriveKinematics).addConstraint(autoVoltageConstraint);
+
     return turnCommand;
   }
 

@@ -241,6 +241,7 @@ public class DriveTrain extends SubsystemBase {
     builder.setSmartDashboardType("DriveTrain");
     builder.addDoubleProperty("Angle", this::getAngle, null);
     builder.addDoubleProperty("ramp rate", () -> rampRate, r -> {
+      System.out.println("setting ramp rate");
       rampRate = r;
       allMotors.forEach(motor -> motor.configOpenloopRamp(rampRate, timeoutMs));
     });

@@ -125,7 +125,7 @@ spotless {
         }
         ratchetFrom 'HEAD'
         toggleOffOn()
-        eclipse().configFile('custom-code-style.xml')
+        googleJavaFormat()
         importOrder('com.rambots4571', 'edu.wpi')
         removeUnusedImports()
         trimTrailingWhitespace()

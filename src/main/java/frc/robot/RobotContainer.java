@@ -42,20 +42,19 @@ import frc.robot.subsystems.Shooter;
 import java.util.List;
 
 /**
- * This class is where the bulk of the robot should be declared. Since
- * Command-based is a "declarative" paradigm, very little robot logic should
- * actually be handled in the {@link Robot} periodic methods (other than the
- * scheduler calls). Instead, the structure of the robot (including subsystems,
- * commands, and button mappings) should be declared here.
+ * This class is where the bulk of the robot should be declared. Since Command-based is a
+ * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
+ * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
+ * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
   // joysticks
-  public static final Controller<Gamepad.Button, Gamepad.Axis> gamepad = Gamepad.make(
-    Constants.XBOXCONTROLLER);
-  public static final Controller<Gamepad.Button, Gamepad.Axis> driveController = Gamepad
-    .make(Constants.XBOXCONTROLLER2);
+  public static final Controller<Gamepad.Button, Gamepad.Axis> gamepad =
+      Gamepad.make(Constants.XBOXCONTROLLER);
+  public static final Controller<Gamepad.Button, Gamepad.Axis> driveController =
+      Gamepad.make(Constants.XBOXCONTROLLER2);
 
   // subsystems
   private final DriveTrain driveTrain;
@@ -73,10 +72,7 @@ public class RobotContainer {
   public static AutoShoot autoShoot;
   public static TestCommandGroup group;
 
-  /**
-   * The container for the robot. Contains subsystems, OI devices, and
-   * commands.
-   */
+  /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     driveTrain = new DriveTrain();
     shooter = new Shooter();
@@ -84,8 +80,8 @@ public class RobotContainer {
     index = new Index();
 
     // (driveController) X -> SHIFT GEARS
-    tankDriveCommand = new TankDriveCommand(driveTrain, driveController.getButton(
-      Gamepad.Button.X));
+    tankDriveCommand =
+        new TankDriveCommand(driveTrain, driveController.getButton(Gamepad.Button.X));
 
     driveTrain.setDefaultCommand(tankDriveCommand);
 
@@ -102,23 +98,29 @@ public class RobotContainer {
   }
 
   /**
-   * Use this method to define your button->command mappings. Buttons can be
-   * created by instantiating a {@link GenericHID} or one of its subclasses
-   * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and
-   * then passing it to a
-   * {@link edu.wpi.first.wpililibj2.command.button.JoystickButton}.
+   * Use this method to define your button->command mappings. Buttons can be created by
+   * instantiating a {@link GenericHID} or one of its subclasses ({@link
+   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
+   * edu.wpi.first.wpililibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
 
     // right bumper -> shoot ball
 
-    gamepad.getButton(Gamepad.Button.RightBumper).whileHeld(new RunEndCommand(() -> {
-      shooter.setShooterSpeed(Shooters.SHOOT_SPEED);
-      shooter.setBackSpinSpeed(Shooters.BACKSPIN_SPEED);
-    }, () -> {
-      shooter.stopShooter();
-      shooter.stopBackSpinMotor();
-    }, shooter), false);
+    gamepad
+        .getButton(Gamepad.Button.RightBumper)
+        .whileHeld(
+            new RunEndCommand(
+                () -> {
+                  shooter.setShooterSpeed(Shooters.SHOOT_SPEED);
+                  shooter.setBackSpinSpeed(Shooters.BACKSPIN_SPEED);
+                },
+                () -> {
+                  shooter.stopShooter();
+                  shooter.stopBackSpinMotor();
+                },
+                shooter),
+            false);
 
     // A -> intake ball
 
@@ -141,9 +143,7 @@ public class RobotContainer {
 
     // (driveController) left bumper -> toggle intake up / down
 
-    driveController.getButton(Button.LeftBumper).whenPressed(intake::togglePiston,
-      intake);
-
+    driveController.getButton(Button.LeftBumper).whenPressed(intake::togglePiston, intake);
   }
 
   /**
@@ -151,47 +151,50 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-
   public Command getAutonomousCommand() {
 
     // Voltage constraint makes sure we dont accelerate too fast during auton
 
-    var autoVoltageConstraint = new DifferentialDriveVoltageConstraint(
-      new SimpleMotorFeedforward(DriveConstants.ksVolts,
-        DriveConstants.kvVoltSecondsPerMeter,
-        DriveConstants.kaVoltSecondsSquaredPerMeter), DriveConstants.kDriveKinematics,
-      10);
+    var autoVoltageConstraint =
+        new DifferentialDriveVoltageConstraint(
+            new SimpleMotorFeedforward(
+                DriveConstants.ksVolts,
+                DriveConstants.kvVoltSecondsPerMeter,
+                DriveConstants.kaVoltSecondsSquaredPerMeter),
+            DriveConstants.kDriveKinematics,
+            10);
 
-    TrajectoryConfig config = new TrajectoryConfig(AutoConstants.kMaxSpeedMetersPerSecond,
-      AutoConstants.kMaxAccelerationMetersPerSecondSquared).setKinematics(
-        DriveConstants.kDriveKinematics).addConstraint(autoVoltageConstraint);
+    TrajectoryConfig config =
+        new TrajectoryConfig(
+                AutoConstants.kMaxSpeedMetersPerSecond,
+                AutoConstants.kMaxAccelerationMetersPerSecondSquared)
+            .setKinematics(DriveConstants.kDriveKinematics)
+            .addConstraint(autoVoltageConstraint);
 
-    Trajectory firstTrajectory = TrajectoryGenerator.generateTrajectory(new Pose2d(0, 0,
-      new Rotation2d(0)), List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
-      new Pose2d(3, 0, new Rotation2d(0)), config);
+    Trajectory firstTrajectory =
+        TrajectoryGenerator.generateTrajectory(
+            new Pose2d(0, 0, new Rotation2d(0)),
+            List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
+            new Pose2d(3, 0, new Rotation2d(0)),
+            config);
 
     driveTrain.resetOdometry(firstTrajectory.getInitialPose());
 
-    // spotless:off
-RamseteCommand ramseteCommand = 
+    RamseteCommand ramseteCommand =
         new RamseteCommand(
-          firstTrajectory,
-          driveTrain::getPose, 
-          new RamseteController(
-              AutoConstants.kRamseteB,
-              AutoConstants.kRamseteZeta), 
-          new SimpleMotorFeedforward(
-              DriveConstants.ksVolts,
-              DriveConstants.kvVoltSecondsPerMeter,
-              DriveConstants.kaVoltSecondsSquaredPerMeter), 
-          DriveConstants.kDriveKinematics,
-          driveTrain::getWheelSpeeds,
-          new PIDController(DriveConstants.kPDriveVel, 0, 0),
-          new PIDController(DriveConstants.kPDriveVel, 0, 0), 
-          driveTrain::tankDriveVolts,
-          driveTrain
-          );
-// spotless:on
+            firstTrajectory,
+            driveTrain::getPose,
+            new RamseteController(AutoConstants.kRamseteB, AutoConstants.kRamseteZeta),
+            new SimpleMotorFeedforward(
+                DriveConstants.ksVolts,
+                DriveConstants.kvVoltSecondsPerMeter,
+                DriveConstants.kaVoltSecondsSquaredPerMeter),
+            DriveConstants.kDriveKinematics,
+            driveTrain::getWheelSpeeds,
+            new PIDController(DriveConstants.kPDriveVel, 0, 0),
+            new PIDController(DriveConstants.kPDriveVel, 0, 0),
+            driveTrain::tankDriveVolts,
+            driveTrain);
 
     return ramseteCommand.andThen(() -> driveTrain.tankDriveVolts(0, 0));
   }
@@ -203,5 +206,4 @@ RamseteCommand ramseteCommand =
   private Command setIndexCommand(double speed) {
     return new RunEndCommand(() -> index.setIndexMotor(speed), index::stop, index);
   }
-
 }

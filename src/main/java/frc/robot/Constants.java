@@ -45,13 +45,13 @@ public final class Constants {
     /////////////// SYSID VALUES ///////////////
 
     // TODO: Find real values for the love of god
-    public static final double ksVolts = 0.22;
-    public static final double kvVoltSecondsPerMeter = 1.98;
-    public static final double kaVoltSecondsSquaredPerMeter = 0.2;
+    public static final double ksVolts = 0.58;
+    public static final double kvVoltSecondsPerMeter = 3.44;
+    public static final double kaVoltSecondsSquaredPerMeter = 0.165;
 
-    public static final double kPDriveVel = 8.5;
+    public static final double kPDriveVel = 6.3;
 
-    public static final double kTrackwidthMeters = 0.69;
+    public static final double kTrackwidthMeters = 0.74551;
     public static final DifferentialDriveKinematics kDriveKinematics =
       new DifferentialDriveKinematics(kTrackwidthMeters);
 
@@ -113,8 +113,8 @@ public final class Constants {
 
   public static final class AutoConstants {
 
-    public static final double kMaxSpeedMetersPerSecond = 3;
-    public static final double kMaxAccelerationMetersPerSecondSquared = 3;
+    public static final double kMaxSpeedMetersPerSecond = 3.048;
+    public static final double kMaxAccelerationMetersPerSecondSquared = 4.328;
 
     // Reasonable baseline values for a RAMSETE follower in units of meters and
     // seconds

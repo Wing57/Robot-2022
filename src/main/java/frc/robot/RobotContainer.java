@@ -10,6 +10,8 @@ import com.rambots4571.rampage.joystick.Controller;
 import com.rambots4571.rampage.joystick.Gamepad;
 import com.rambots4571.rampage.joystick.Gamepad.Button;
 
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -21,6 +23,7 @@ import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstrai
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
 
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.Ctake;
@@ -168,6 +171,15 @@ public class RobotContainer {
       new Pose2d(3, 0, new Rotation2d(0)), config);
 
     driveTrain.resetOdometry(firstTrajectory.getInitialPose());
+
+    RamseteCommand ramseteCommand = new RamseteCommand(firstTrajectory,
+      driveTrain::getPose, new RamseteController(AutoConstants.kRamseteB,
+        AutoConstants.kRamseteZeta), new SimpleMotorFeedforward(DriveConstants.ksVolts,
+          DriveConstants.kvVoltSecondsPerMeter,
+          DriveConstants.kaVoltSecondsSquaredPerMeter), DriveConstants.kDriveKinematics,
+      driveTrain::getWheelSpeeds, new PIDController(DriveConstants.kPDriveVel, 0, 0),
+      new PIDController(DriveConstants.kPDriveVel, 0, 0), driveTrain::tankDriveVolts,
+      driveTrain);
 
     return turnCommand;
   }

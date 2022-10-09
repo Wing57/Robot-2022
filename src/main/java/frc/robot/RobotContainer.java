@@ -193,7 +193,7 @@ RamseteCommand ramseteCommand =
           );
 // spotless:on
 
-    return turnCommand;
+    return ramseteCommand.andThen(() -> driveTrain.tankDriveVolts(0, 0));
   }
 
   private Command setIntakeCommand(double speed) {

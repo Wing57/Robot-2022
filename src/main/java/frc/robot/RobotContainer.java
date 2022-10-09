@@ -172,14 +172,26 @@ public class RobotContainer {
 
     driveTrain.resetOdometry(firstTrajectory.getInitialPose());
 
-    RamseteCommand ramseteCommand = new RamseteCommand(firstTrajectory,
-      driveTrain::getPose, new RamseteController(AutoConstants.kRamseteB,
-        AutoConstants.kRamseteZeta), new SimpleMotorFeedforward(DriveConstants.ksVolts,
-          DriveConstants.kvVoltSecondsPerMeter,
-          DriveConstants.kaVoltSecondsSquaredPerMeter), DriveConstants.kDriveKinematics,
-      driveTrain::getWheelSpeeds, new PIDController(DriveConstants.kPDriveVel, 0, 0),
-      new PIDController(DriveConstants.kPDriveVel, 0, 0), driveTrain::tankDriveVolts,
-      driveTrain);
+    // spotless:off
+RamseteCommand ramseteCommand = 
+        new RamseteCommand(
+          firstTrajectory,
+          driveTrain::getPose, 
+          new RamseteController(
+              AutoConstants.kRamseteB,
+              AutoConstants.kRamseteZeta), 
+          new SimpleMotorFeedforward(
+              DriveConstants.ksVolts,
+              DriveConstants.kvVoltSecondsPerMeter,
+              DriveConstants.kaVoltSecondsSquaredPerMeter), 
+          DriveConstants.kDriveKinematics,
+          driveTrain::getWheelSpeeds,
+          new PIDController(DriveConstants.kPDriveVel, 0, 0),
+          new PIDController(DriveConstants.kPDriveVel, 0, 0), 
+          driveTrain::tankDriveVolts,
+          driveTrain
+          );
+// spotless:on
 
     return turnCommand;
   }

@@ -191,7 +191,7 @@ public class DriveTrain extends SubsystemBase {
       rightMaster.getSelectedSensorVelocity());
   }
 
-  public void resetOdometry() {
+  public void resetOdometry(Pose2d pose2d) {
     resetEncoders();
     m_Odometry.resetPosition(getPose(), navX.getRotation2d());
   }

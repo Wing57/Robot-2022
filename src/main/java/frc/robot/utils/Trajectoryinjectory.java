@@ -43,4 +43,14 @@ public final class Trajectoryinjectory {
       return NPC_TRAJECTORY;
     }
   }
+
+  public static Trajectory getTrajectory(String... paths) {
+    Trajectory trajectory = getTrajectory(paths[0]);
+
+    for (int i = 1; i < paths.length; ++i) {
+
+      trajectory = trajectory.concatenate(getTrajectory(paths[i]));
+    }
+    return trajectory;
+  }
 }

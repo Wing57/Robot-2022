@@ -4,50 +4,64 @@
 
 package frc.robot.commands.drive;
 
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.RamseteController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.DriveTrain;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
 
-public class DriveTrainRamsete extends CommandBase {
+import frc.robot.Constants.AutoConstants;
+import frc.robot.Constants.DriveConstants;
+import frc.robot.subsystems.DriveTrain;
+import frc.robot.utils.Trajectoryinjectory;
+
+public class DriveTrainRamsete extends RamseteCommand {
 
   protected Boolean resetPosition;
   protected DriveTrain driveTrain;
   protected Trajectory trajectory;
 
   public DriveTrainRamsete(DriveTrain driveTrain, Trajectory trajectory) {
-    /*  super(trajectory,
-    driveTrain::getPose,
-    new RamseteController(AutoConstants.kRamseteB, AutoConstants.kRamseteZeta),
-    new SimpleMotorFeedforward(
-        DriveConstants.ksVolts,
-        DriveConstants.kvVoltSecondsPerMeter,
-        DriveConstants.kaVoltSecondsSquaredPerMeter),
-    DriveConstants.kDriveKinematics,
-    driveTrain::getWheelSpeeds,
-    new PIDController(DriveConstants.kPDriveVel, 0, 0),
-    new PIDController(DriveConstants.kPDriveVel, 0, 0),
-    driveTrain::tankDriveVolts,
-    driveTrain);
+    super(
+        trajectory,
+        driveTrain::getPose,
+        new RamseteController(AutoConstants.kRamseteB, AutoConstants.kRamseteZeta),
+        new SimpleMotorFeedforward(
+            DriveConstants.ksVolts,
+            DriveConstants.kvVoltSecondsPerMeter,
+            DriveConstants.kaVoltSecondsSquaredPerMeter),
+        DriveConstants.kDriveKinematics,
+        driveTrain::getWheelSpeeds,
+        new PIDController(DriveConstants.kPDriveVel, 0, 0),
+        new PIDController(DriveConstants.kPDriveVel, 0, 0),
+        driveTrain::tankDriveVolts,
+        driveTrain);
 
     this.resetPosition = true;
     this.trajectory = trajectory;
     this.driveTrain = driveTrain;
-    */
   }
 
-  public DriveTrainRamsete(DriveTrain driveTrain, String path) {}
+  public DriveTrainRamsete(DriveTrain driveTrain, String path) {
+    this(driveTrain, Trajectoryinjectory.getTrajectory(path));
+  }
+
+  public DriveTrainRamsete(DriveTrain driveTrain, String... paths) {
+    this(driveTrain, Trajectoryinjectory.getTrajectory(paths));
+  }
+
+  public DriveTrainRamsete robotRelative() {
+    this.resetPosition = true;
+    return this;
+  }
 
   @Override
-  public void initialize() {}
+  public void initialize() {
+    super.initialize();
 
-  @Override
-  public void execute() {}
+    if (resetPosition) {
 
-  @Override
-  public void end(boolean interrupted) {}
-
-  @Override
-  public boolean isFinished() {
-    return false;
+      driveTrain.resetOdometry(trajectory.getInitialPose());
+    }
   }
 }

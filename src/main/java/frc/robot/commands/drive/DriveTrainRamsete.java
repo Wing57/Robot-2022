@@ -55,6 +55,11 @@ public class DriveTrainRamsete extends RamseteCommand {
     return this;
   }
 
+  public DriveTrainRamsete fieldRelative() {
+    this.resetPosition = true;
+    return this;
+  }
+
   @Override
   public void initialize() {
     super.initialize();

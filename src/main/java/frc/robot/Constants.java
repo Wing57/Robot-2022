@@ -5,16 +5,15 @@
 package frc.robot;
 
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.wpilibj.Filesystem;
+import java.nio.file.Path;
 
 /**
- * The Constants class provides a convenient place for teams to hold robot-wide
- * numerical or boolean
- * constants. This class should not be used for any other purpose. All constants
- * should be declared
+ * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
+ * constants. This class should not be used for any other purpose. All constants should be declared
  * globally (i.e. public static). Do not put anything functional in this class.
- * <p>
- * It is advised to statically import this class (or one of its inner classes)
- * wherever the
+ *
+ * <p>It is advised to statically import this class (or one of its inner classes) wherever the
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
@@ -53,7 +52,7 @@ public final class Constants {
 
     public static final double kTrackwidthMeters = 0.74551;
     public static final DifferentialDriveKinematics kDriveKinematics =
-      new DifferentialDriveKinematics(kTrackwidthMeters);
+        new DifferentialDriveKinematics(kTrackwidthMeters);
 
     public static final double kMaxSpeedMetersPerSecond = 3;
     public static final double kMaxAccelerationMetersPerSecondSquared = 3;
@@ -93,23 +92,29 @@ public final class Constants {
     public static final int MODULE_NUMBER = 20;
     public static final int INTAKE_PISTON_FORWARD_CHANNEL = 6;
     public static final int INTAKE_PISTON_REVERSE_CHANNEL = 7;
-
   }
 
   // *****************************************
   // ************** JOYSTICKS ****************
   // *****************************************
+
   public static final int LEFT_JOY = 0;
   public static final int RIGHT_JOY = 1;
   public static final int XBOXCONTROLLER = 2;
   public static final int XBOXCONTROLLER2 = 3;
 
-  // *****************************************
+  // ***************************************
   // ************** STORAGE ****************
-  // *****************************************
+  // ***************************************
 
   public static final int INDEX_MOTOR = 12;
   public static final double INDEX_SPEED = 1;
+
+  // *****************************************
+  // *************** Settings ****************
+  // *****************************************
+
+  public static final Path DEPLOY_DIRECTORY = Filesystem.getDeployDirectory().toPath();
 
   public static final class AutoConstants {
 
@@ -122,5 +127,4 @@ public final class Constants {
     public static final double kRamseteB = 2;
     public static final double kRamseteZeta = 0.7;
   }
-
 }

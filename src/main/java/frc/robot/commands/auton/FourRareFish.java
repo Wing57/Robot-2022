@@ -5,8 +5,27 @@
 package frc.robot.commands.auton;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+
+import frc.robot.Constants.AutoConstants;
+import frc.robot.RobotContainer;
+import frc.robot.commands.intake.IntakeBallForever;
+import frc.robot.commands.intake.intakeExtend;
+import frc.robot.commands.shooter.TarmacShot;
 
 public class FourRareFish extends SequentialCommandGroup {
 
-  public FourRareFish() {}
+  private static final String FOUR_FISH_SWIM = "FourRareFish/Output/2fishcuh.wpilib.json";
+  private static final String FOUR_FISH_DROWN = "FourRareFish/Output/4fishcuh.wpilib.json";
+
+  public FourRareFish(RobotContainer container) {
+
+    // Initialize Subsytems
+    addCommands(
+        new TarmacShot(container.shooter),
+        new intakeExtend(container.intake),
+        new WaitCommand(AutoConstants.INTAKE_EXTEND),
+        new IntakeBallForever(container.intake),
+        new WaitCommand(AutoConstants.SHOOTER_INITIALIZE));
+  }
 }

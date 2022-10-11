@@ -121,13 +121,13 @@ public final class Constants {
     public static final double kMaxSpeedMetersPerSecond = 3.048;
     public static final double kMaxAccelerationMetersPerSecondSquared = 4.328;
 
+    // TODO: Find deez
     public static final double INTAKE_EXTEND = 1.0;
     public static final double SHOOTER_INITIALIZE = 1.5;
     public static final double INDEX_BALL = 2.5;
     public static final double HUMAN_WAIT = 2.0;
 
     // Reasonable baseline values for a RAMSETE follower in units of meters and seconds
-
     public static final double kRamseteB = 2;
     public static final double kRamseteZeta = 0.7;
   }

@@ -86,7 +86,7 @@ public final class Constants {
   // *****************************************
   public static final class Ctake {
     public static final int INTAKE_MOTOR_1 = 15;
-    public static final double INTAKE_SPEED = 0.75;
+    public static final double INTAKE_SPEED = 0.5;
 
     // Pnuematics
     public static final int MODULE_NUMBER = 20;

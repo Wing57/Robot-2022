@@ -35,6 +35,7 @@ import frc.robot.commands.auton.TurnCommand;
 import frc.robot.commands.drive.FaceHub;
 import frc.robot.commands.drive.TankDriveCommand;
 import frc.robot.commands.shooter.ShootBall;
+import frc.robot.commands.shooter.TarmacShot;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Index;
 import frc.robot.subsystems.Intake;
@@ -57,16 +58,17 @@ public class RobotContainer {
       Gamepad.make(Constants.XBOXCONTROLLER2);
 
   // subsystems
-  private final DriveTrain driveTrain;
-  private final Shooter shooter;
-  private final Intake intake;
-  private final Index index;
+  public final DriveTrain driveTrain;
+  public final Shooter shooter;
+  public final Intake intake;
+  public final Index index;
 
   // commands
   private final TankDriveCommand tankDriveCommand;
   public static FaceHub faceHub;
 
   public static ShootBall shootBall;
+  public static TarmacShot tarmacShot;
 
   public static TurnCommand turnCommand;
   public static AutoShoot autoShoot;
@@ -88,6 +90,8 @@ public class RobotContainer {
     faceHub = new FaceHub(driveTrain);
 
     shootBall = new ShootBall(shooter);
+
+    tarmacShot = new TarmacShot(shooter);
 
     autoShoot = new AutoShoot(shooter);
 
@@ -138,7 +142,8 @@ public class RobotContainer {
 
     gamepad.getButton(Button.Y).whileHeld(setIndexCommand(-Constants.INDEX_SPEED), false);
 
-    // TODO: test face hub
+    // (driverController) A -> Face Hub
+
     driveController.getButton(Button.A).whileHeld(faceHub, false);
 
     // (driveController) left bumper -> toggle intake up / down

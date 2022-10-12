@@ -49,19 +49,17 @@ public class DriveTrain extends SubsystemBase {
   private final AHRS navX;
 
   private final StatorCurrentLimitConfiguration statorLimitConfig =
-    new StatorCurrentLimitConfiguration(true, 40, 70, 2);
+      new StatorCurrentLimitConfiguration(true, 40, 70, 2);
 
   private final SupplyCurrentLimitConfiguration supplyLimitConfig =
-    new SupplyCurrentLimitConfiguration(true, 40, 60, 4);
+      new SupplyCurrentLimitConfiguration(true, 40, 60, 4);
 
   private final NeutralMode neutralMode = NeutralMode.Brake;
 
   private double rampRate;
   private final int timeoutMs;
 
-  /**
-   * Creates a new DriveTrain.
-   */
+  /** Creates a new DriveTrain. */
   public DriveTrain() {
     // Talons
     rightMaster = new WPI_TalonFX(DriveConstants.RIGHT_MOTOR_1);
@@ -71,8 +69,8 @@ public class DriveTrain extends SubsystemBase {
     leftMotor2 = new WPI_TalonFX(DriveConstants.LEFT_MOTOR_2);
     leftMotor3 = new WPI_TalonFX(DriveConstants.LEFT_MOTOR_3);
 
-    allMotors = Arrays.asList(rightMaster, rightMotor2, rightMotor3, leftMaster,
-      leftMotor2, leftMotor3);
+    allMotors =
+        Arrays.asList(rightMaster, rightMotor2, rightMotor3, leftMaster, leftMotor2, leftMotor3);
 
     // **********************************************
     // ************** Falcon Configs ****************
@@ -82,19 +80,20 @@ public class DriveTrain extends SubsystemBase {
     rampRate = 0.25;
     timeoutMs = 15;
 
-    allMotors.forEach(motor -> {
-      // Factory Resets all TalonFX
-      motor.configFactoryDefault();
-      // Sets Motor to Brake/Coast
-      motor.setNeutralMode(neutralMode);
-      // Current limit to prevent breaker tripping. Approx at 150% of rated
-      // current supply.
-      motor.configSupplyCurrentLimit(supplyLimitConfig);
-      motor.configStatorCurrentLimit(statorLimitConfig);
-      // Ramping motor output to prevent instantaneous directional changes
-      // (Values need testing)
-      motor.configOpenloopRamp(rampRate, timeoutMs);
-    });
+    allMotors.forEach(
+        motor -> {
+          // Factory Resets all TalonFX
+          motor.configFactoryDefault();
+          // Sets Motor to Brake/Coast
+          motor.setNeutralMode(neutralMode);
+          // Current limit to prevent breaker tripping. Approx at 150% of rated
+          // current supply.
+          motor.configSupplyCurrentLimit(supplyLimitConfig);
+          motor.configStatorCurrentLimit(statorLimitConfig);
+          // Ramping motor output to prevent instantaneous directional changes
+          // (Values need testing)
+          motor.configOpenloopRamp(rampRate, timeoutMs);
+        });
 
     // Same as set invert = false/gr
     TalonFXInvertType leftInvert = TalonFXInvertType.Clockwise;
@@ -115,20 +114,23 @@ public class DriveTrain extends SubsystemBase {
     leftMotor3.follow(leftMaster);
     leftMotor3.setInverted(InvertType.FollowMaster);
 
-    leftMaster.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0,
-      timeoutMs);
-    rightMaster.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0,
-      timeoutMs);
+    leftMaster.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, timeoutMs);
+    rightMaster.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, timeoutMs);
 
     navX = new AHRS();
 
     drive = new DifferentialDrive(leftMaster, rightMaster);
+    // TODO: uncomment if feed() doesn't work
+    // drive.setSafetyEnabled(false);
 
     m_Odometry = new DifferentialDriveOdometry(navX.getRotation2d());
 
-    shifter = new DoubleSolenoid(Ctake.MODULE_NUMBER, PneumaticsModuleType.REVPH,
-      DriveConstants.SHIFTER_FORWARD_CHANNEL, DriveConstants.SHIFTER_REVERSE_CHANNEL);
-
+    shifter =
+        new DoubleSolenoid(
+            Ctake.MODULE_NUMBER,
+            PneumaticsModuleType.REVPH,
+            DriveConstants.SHIFTER_FORWARD_CHANNEL,
+            DriveConstants.SHIFTER_REVERSE_CHANNEL);
   }
 
   @Override
@@ -142,6 +144,8 @@ public class DriveTrain extends SubsystemBase {
 
   public void drive(double left, double right) {
     drive.tankDrive(left, right);
+    // TODO: see if this works if not uncomment motor safety
+    drive.feed();
   }
 
   public void stopMotors() {
@@ -182,13 +186,15 @@ public class DriveTrain extends SubsystemBase {
   // ********************************************
 
   public void updateOdometry() {
-    m_Odometry.update(navX.getRotation2d(), leftMaster.getSelectedSensorPosition(),
-      rightMaster.getSelectedSensorPosition());
+    m_Odometry.update(
+        navX.getRotation2d(),
+        leftMaster.getSelectedSensorPosition(),
+        rightMaster.getSelectedSensorPosition());
   }
 
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
-    return new DifferentialDriveWheelSpeeds(leftMaster.getSelectedSensorVelocity(),
-      rightMaster.getSelectedSensorVelocity());
+    return new DifferentialDriveWheelSpeeds(
+        leftMaster.getSelectedSensorVelocity(), rightMaster.getSelectedSensorVelocity());
   }
 
   public void resetOdometry(Pose2d pose2d) {
@@ -205,8 +211,7 @@ public class DriveTrain extends SubsystemBase {
   // *****************************************
 
   public double getAverageEncoderDistance() {
-    return (leftMaster.getSelectedSensorPosition() + rightMaster
-      .getSelectedSensorPosition()) / 2.0;
+    return (leftMaster.getSelectedSensorPosition() + rightMaster.getSelectedSensorPosition()) / 2.0;
   }
 
   public double getLeftEndocderValue() {
@@ -240,10 +245,13 @@ public class DriveTrain extends SubsystemBase {
   public void initSendable(SendableBuilder builder) {
     builder.setSmartDashboardType("DriveTrain");
     builder.addDoubleProperty("Angle", this::getAngle, null);
-    builder.addDoubleProperty("ramp rate", () -> rampRate, r -> {
-      System.out.println("setting ramp rate");
-      rampRate = r;
-      allMotors.forEach(motor -> motor.configOpenloopRamp(rampRate, timeoutMs));
-    });
+    builder.addDoubleProperty(
+        "ramp rate",
+        () -> rampRate,
+        r -> {
+          System.out.println("setting ramp rate");
+          rampRate = r;
+          allMotors.forEach(motor -> motor.configOpenloopRamp(rampRate, timeoutMs));
+        });
   }
 }

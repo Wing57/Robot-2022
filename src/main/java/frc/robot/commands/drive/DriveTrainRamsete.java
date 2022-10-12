@@ -56,7 +56,7 @@ public class DriveTrainRamsete extends RamseteCommand {
   }
 
   public DriveTrainRamsete fieldRelative() {
-    this.resetPosition = true;
+    this.resetPosition = false;
     return this;
   }
 

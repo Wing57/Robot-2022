@@ -16,9 +16,9 @@ import frc.robot.commands.shooter.TarmacShot;
 
 public class FourRareFish extends SequentialCommandGroup {
 
-  private static final String FOUR_FISH_SWIM = "deploy/paths/2fishcuh.wpilib.json";
-  private static final String FOUR_FISH_GLUP = "deploy/paths/2fishglup.wpilib.json";
-  private static final String FOUR_FISH_DROWN = "deploy/paths/4fishcuh.wpilib.json";
+  private static final String FOUR_FISH_SWIM = "paths/2fishcuh.wpilib.json";
+  private static final String FOUR_FISH_GLUP = "paths/2fishglup.wpilib.json";
+  private static final String FOUR_FISH_DROWN = "paths/4fishcuh.wpilib.json";
 
   public FourRareFish(RobotContainer container) {
 

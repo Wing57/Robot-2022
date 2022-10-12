@@ -31,7 +31,7 @@ public class FourRareFish extends SequentialCommandGroup {
         new WaitCommand(AutoConstants.SHOOTER_INITIALIZE));
 
     // Get first ball the line up to shoot
-    addCommands(new DriveTrainRamsete(container.driveTrain, FOUR_FISH_SWIM));
+    addCommands(new DriveTrainRamsete(container.driveTrain, FOUR_FISH_SWIM).robotRelative());
 
     addCommands();
   }

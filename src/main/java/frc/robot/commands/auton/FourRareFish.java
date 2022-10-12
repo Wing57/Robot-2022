@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.RobotContainer;
 import frc.robot.commands.drive.DriveTrainRamsete;
+import frc.robot.commands.index.IndexBall;
 import frc.robot.commands.intake.IntakeBallForever;
 import frc.robot.commands.intake.intakeExtend;
 import frc.robot.commands.shooter.TarmacShot;
@@ -33,6 +34,17 @@ public class FourRareFish extends SequentialCommandGroup {
     // Get first ball the line up to shoot
     addCommands(new DriveTrainRamsete(container.driveTrain, FOUR_FISH_SWIM).robotRelative());
 
-    addCommands();
+    // This should shoot bofa balls out bc shooter is already running
+    addCommands(new IndexBall(container.index).withTimeout(AutoConstants.INDEX_BALL));
+
+    addCommands(
+        new DriveTrainRamsete(container.driveTrain, FOUR_FISH_GLUP).fieldRelative(),
+        new IndexBall(container.index)
+            .withTimeout(AutoConstants.HUMAN_WAIT + AutoConstants.INDEX_BALL));
+
+    // Return to tarmac and shoot remaining balls
+    addCommands(
+        new DriveTrainRamsete(container.driveTrain, FOUR_FISH_DROWN).fieldRelative(),
+        new IndexBall(container.index).withTimeout(AutoConstants.INDEX_BALL));
   }
 }

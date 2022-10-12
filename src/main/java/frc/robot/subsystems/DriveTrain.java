@@ -121,7 +121,7 @@ public class DriveTrain extends SubsystemBase {
 
     drive = new DifferentialDrive(leftMaster, rightMaster);
     // TODO: uncomment if feed() doesn't work
-    // drive.setSafetyEnabled(false);
+    drive.setSafetyEnabled(false);
 
     m_Odometry = new DifferentialDriveOdometry(navX.getRotation2d());
 
@@ -145,7 +145,7 @@ public class DriveTrain extends SubsystemBase {
   public void drive(double left, double right) {
     drive.tankDrive(left, right);
     // TODO: see if this works if not uncomment motor safety
-    drive.feed();
+    // drive.feed();
   }
 
   public void stopMotors() {

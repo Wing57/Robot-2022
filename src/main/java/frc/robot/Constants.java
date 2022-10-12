@@ -44,11 +44,11 @@ public final class Constants {
     /////////////// SYSID VALUES ///////////////
 
     // TODO: Find real values for the love of god
-    public static final double ksVolts = 0.58;
-    public static final double kvVoltSecondsPerMeter = 3.44;
-    public static final double kaVoltSecondsSquaredPerMeter = 0.165;
+    public static final double ksVolts = 0.558;
+    public static final double kvVoltSecondsPerMeter = 3.4335;
+    public static final double kaVoltSecondsSquaredPerMeter = 0.171;
 
-    public static final double kPDriveVel = 6.3;
+    public static final double kPDriveVel = 3.2137;
 
     public static final double kTrackwidthMeters = 0.74551;
     public static final DifferentialDriveKinematics kDriveKinematics =

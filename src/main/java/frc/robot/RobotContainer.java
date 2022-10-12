@@ -10,26 +10,16 @@ import com.rambots4571.rampage.joystick.Controller;
 import com.rambots4571.rampage.joystick.Gamepad;
 import com.rambots4571.rampage.joystick.Gamepad.Button;
 
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.RamseteController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryConfig;
-import edu.wpi.first.math.trajectory.TrajectoryGenerator;
-import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.RamseteCommand;
 
-import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.Ctake;
-import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.Shooters;
 import frc.robot.commands.auton.AutoShoot;
+import frc.robot.commands.auton.FourRareFish;
 import frc.robot.commands.auton.TestCommandGroup;
 import frc.robot.commands.auton.TurnCommand;
 import frc.robot.commands.drive.FaceHub;
@@ -40,7 +30,6 @@ import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Index;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
-import java.util.List;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -50,6 +39,8 @@ import java.util.List;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
+
+  private static SendableChooser<Command> autonChooser = new SendableChooser<>();
 
   // joysticks
   public static final Controller<Gamepad.Button, Gamepad.Axis> gamepad =
@@ -158,50 +149,11 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
 
-    // Voltage constraint makes sure we dont accelerate too fast during auton
+    autonChooser.addOption("4ball", new FourRareFish(this));
 
-    var autoVoltageConstraint =
-        new DifferentialDriveVoltageConstraint(
-            new SimpleMotorFeedforward(
-                DriveConstants.ksVolts,
-                DriveConstants.kvVoltSecondsPerMeter,
-                DriveConstants.kaVoltSecondsSquaredPerMeter),
-            DriveConstants.kDriveKinematics,
-            10);
+    SmartDashboard.putData("autonChooser", autonChooser);
 
-    TrajectoryConfig config =
-        new TrajectoryConfig(
-                AutoConstants.kMaxSpeedMetersPerSecond,
-                AutoConstants.kMaxAccelerationMetersPerSecondSquared)
-            .setKinematics(DriveConstants.kDriveKinematics)
-            .addConstraint(autoVoltageConstraint);
-
-    Trajectory firstTrajectory =
-        TrajectoryGenerator.generateTrajectory(
-            new Pose2d(0, 0, new Rotation2d(0)),
-            List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
-            new Pose2d(3, 0, new Rotation2d(0)),
-            config);
-
-    driveTrain.resetOdometry(firstTrajectory.getInitialPose());
-
-    RamseteCommand ramseteCommand =
-        new RamseteCommand(
-            firstTrajectory,
-            driveTrain::getPose,
-            new RamseteController(AutoConstants.kRamseteB, AutoConstants.kRamseteZeta),
-            new SimpleMotorFeedforward(
-                DriveConstants.ksVolts,
-                DriveConstants.kvVoltSecondsPerMeter,
-                DriveConstants.kaVoltSecondsSquaredPerMeter),
-            DriveConstants.kDriveKinematics,
-            driveTrain::getWheelSpeeds,
-            new PIDController(DriveConstants.kPDriveVel, 0, 0),
-            new PIDController(DriveConstants.kPDriveVel, 0, 0),
-            driveTrain::tankDriveVolts,
-            driveTrain);
-
-    return ramseteCommand.andThen(() -> driveTrain.tankDriveVolts(0, 0));
+    return autonChooser.getSelected();
   }
 
   private Command setIntakeCommand(double speed) {

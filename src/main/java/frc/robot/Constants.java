@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.Filesystem;
 import java.nio.file.Path;
@@ -56,6 +59,13 @@ public final class Constants {
 
     public static final double kMaxSpeedMetersPerSecond = 3;
     public static final double kMaxAccelerationMetersPerSecondSquared = 3;
+  }
+
+  public interface Odometry {
+    Translation2d STARTING_TRANSLATION = new Translation2d();
+    Rotation2d STARTING_ANGLE = new Rotation2d();
+
+    Pose2d STARTING_POSITION = new Pose2d(STARTING_TRANSLATION, STARTING_ANGLE);
   }
 
   // *****************************************

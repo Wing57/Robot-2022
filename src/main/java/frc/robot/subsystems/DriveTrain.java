@@ -22,8 +22,10 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import frc.robot.Constants;
 import frc.robot.Constants.Ctake;
 import frc.robot.Constants.DriveConstants;
 import java.util.Arrays;
@@ -45,6 +47,7 @@ public class DriveTrain extends SubsystemBase {
 
   private final DifferentialDrive drive;
   private final DifferentialDriveOdometry m_Odometry;
+  private final Field2d field2d;
 
   private final AHRS navX;
 
@@ -124,6 +127,8 @@ public class DriveTrain extends SubsystemBase {
     drive.setSafetyEnabled(false);
 
     m_Odometry = new DifferentialDriveOdometry(navX.getRotation2d());
+    field2d = new Field2d();
+    reset(Constants.Odometry.STARTING_POSITION);
 
     shifter =
         new DoubleSolenoid(
@@ -195,14 +200,19 @@ public class DriveTrain extends SubsystemBase {
         leftMaster.getSelectedSensorVelocity(), rightMaster.getSelectedSensorVelocity());
   }
 
-  public void resetOdometry(Pose2d pose2d) {
+  public void reset(Pose2d pose2d) {
     navX.reset();
     resetEncoders();
-    m_Odometry.resetPosition(getPose(), navX.getRotation2d());
+    m_Odometry.resetPosition(pose2d, navX.getRotation2d());
   }
 
   public Pose2d getPose() {
+    updateOdometry();
     return m_Odometry.getPoseMeters();
+  }
+
+  public void reset() {
+    reset(getPose());
   }
 
   // *****************************************

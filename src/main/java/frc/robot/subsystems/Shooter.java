@@ -17,6 +17,7 @@ import java.util.List;
 public class Shooter extends SubsystemBase {
   private final WPI_TalonFX shooterMotor, backSpinMotor;
   private final TalonFXInvertType backSpinInvert;
+  private final TalonFXInvertType shooterInvert;
 
   private final List<WPI_TalonFX> bothMotors;
 
@@ -26,16 +27,20 @@ public class Shooter extends SubsystemBase {
 
     bothMotors = Arrays.asList(shooterMotor, backSpinMotor);
 
-    bothMotors.forEach(motor -> {
-      // Factory Resets all TalonFX
-      motor.configFactoryDefault();
+    bothMotors.forEach(
+        motor -> {
+          // Factory Resets all TalonFX
+          motor.configFactoryDefault();
 
-      // Sets the motor state as either brake or coast
-      motor.setNeutralMode(NeutralMode.Brake);
-    });
+          // Sets the motor state as either brake or coast
+          motor.setNeutralMode(NeutralMode.Brake);
+        });
 
     backSpinInvert = TalonFXInvertType.Clockwise;
     backSpinMotor.setInverted(backSpinInvert);
+
+    shooterInvert = TalonFXInvertType.Clockwise;
+    shooterMotor.setInverted(shooterInvert);
   }
 
   @Override
@@ -45,7 +50,6 @@ public class Shooter extends SubsystemBase {
 
   public void setShooterSpeed(double speed) {
     shooterMotor.set(speed);
-
   }
 
   public void setReverseShooterSpeed(double speed) {
@@ -54,7 +58,6 @@ public class Shooter extends SubsystemBase {
 
   public void setBackSpinSpeed(double speed) {
     backSpinMotor.set(speed);
-
   }
 
   // public void setTurretSpeed(double speed) {

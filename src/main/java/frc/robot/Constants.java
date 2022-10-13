@@ -67,22 +67,22 @@ public final class Constants {
   // ************** SHOOTER ******************
   // *****************************************
   public static final class Shooters {
-    public static final int SHOOTER_MOTOR_1 = 8;
-    public static final int SHOOTER_MOTOR_2 = 7;
+    public static final int SHOOTER_MOTOR_1 = 7;
+    public static final int SHOOTER_MOTOR_2 = 8;
     public static final int TURRET_MOTOR = 9;
 
     public static final double AUTO_SHOOT_TIME = 6.0;
     public static final double LL_SHOT_HEIGHT = 5;
-    public static final double SHOOT_SPEED = 0.68;
+    public static final double SHOOT_SPEED = 0.42;
     // good speed value is 0.38
-    public static final double BACKSPIN_SPEED = 0.48;
+    public static final double BACKSPIN_SPEED = 0.25;
     // good speed value is 0.45
 
     ////////// LIMELIGHT VALUES////////////
 
     // TODO: Get real angles for Lensheight and MountAngle
-    public static final double MountAngleDegrees = 45;
-    public static final double LensHeightInches = 30;
+    public static final double MountAngleDegrees = 28;
+    public static final double LensHeightInches = 31.5;
     public static final double GoalHeightInches = 104;
   }
 

@@ -17,12 +17,10 @@ public class Vision implements Sendable {
   private static final Limelight limelight = Limelight.getInstance();
   private static Vision instance;
 
-  private Vision() {
-  }
+  private Vision() {}
 
   public static Vision getInstance() {
-    if (instance == null)
-      instance = new Vision();
+    if (instance == null) instance = new Vision();
     return instance;
   }
 
@@ -44,10 +42,10 @@ public class Vision implements Sendable {
   // Gets the estimated distance from the robot to the target
   public double getEstimatedDistance() {
     double offset = getVerticalOffset();
-    double angleGoalDegrees = Shooters.MountAngleDegrees - offset;
+    double angleGoalDegrees = Shooters.MountAngleDegrees + offset;
     double angleGoalRadians = angleGoalDegrees * (Math.PI / 180.0);
-    double estimatedDistance = (Shooters.GoalHeightInches - Shooters.LensHeightInches)
-      / Math.tan(angleGoalRadians);
+    double estimatedDistance =
+        (Shooters.GoalHeightInches - Shooters.LensHeightInches) / Math.tan(angleGoalRadians);
     return estimatedDistance;
   }
 

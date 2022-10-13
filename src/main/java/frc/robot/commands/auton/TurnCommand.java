@@ -39,8 +39,7 @@ public class TurnCommand extends CommandBase {
   @Override
   public void execute() {
     SmartDashboard.putData("Turn Controller", controller);
-    double output = MathUtil.clamp(controller.calculate(driveTrain.getAngle()), -0.8,
-      0.8);
+    double output = MathUtil.clamp(controller.calculate(driveTrain.getRawGyroAngle()), -0.8, 0.8);
     driveTrain.drive(output, -output);
   }
 

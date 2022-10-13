@@ -66,7 +66,7 @@ public class DriveTrainRamsete extends RamseteCommand {
 
     if (resetPosition) {
 
-      driveTrain.reset(trajectory.getInitialPose());
+      driveTrain.resetOdometry(trajectory.getInitialPose());
     }
   }
 }

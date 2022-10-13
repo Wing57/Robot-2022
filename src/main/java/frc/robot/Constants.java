@@ -44,6 +44,8 @@ public final class Constants {
     // Speed During AUTO
     public static final double AUTONOMOUS_SPEED = 0.4;
 
+    public static Boolean USING_GYRO = true;
+
     /////////////// SYSID VALUES ///////////////
 
     // TODO: Find real values for the love of god
@@ -59,13 +61,6 @@ public final class Constants {
 
     public static final double kMaxSpeedMetersPerSecond = 3;
     public static final double kMaxAccelerationMetersPerSecondSquared = 3;
-  }
-
-  public interface Odometry {
-    Translation2d STARTING_TRANSLATION = new Translation2d();
-    Rotation2d STARTING_ANGLE = new Rotation2d();
-
-    Pose2d STARTING_POSITION = new Pose2d(STARTING_TRANSLATION, STARTING_ANGLE);
   }
 
   // *****************************************
@@ -125,6 +120,13 @@ public final class Constants {
   // *****************************************
 
   public static final Path DEPLOY_DIRECTORY = Filesystem.getDeployDirectory().toPath();
+
+  public interface Odometry {
+    Translation2d STARTING_TRANSLATION = new Translation2d();
+    Rotation2d STARTING_ANGLE = new Rotation2d();
+
+    Pose2d STARTING_POSITION = new Pose2d(STARTING_TRANSLATION, STARTING_ANGLE);
+  }
 
   public static final class AutoConstants {
 

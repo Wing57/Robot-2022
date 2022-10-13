@@ -13,8 +13,10 @@ import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.kauailabs.navx.frc.AHRS;
+import com.stuypulse.stuylib.math.Angle;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.util.sendable.SendableBuilder;
@@ -47,7 +49,7 @@ public class DriveTrain extends SubsystemBase {
 
   private final DifferentialDrive drive;
   private final DifferentialDriveOdometry m_Odometry;
-  private final Field2d field2d;
+  private final Field2d field;
 
   private final AHRS navX;
 
@@ -127,8 +129,8 @@ public class DriveTrain extends SubsystemBase {
     drive.setSafetyEnabled(false);
 
     m_Odometry = new DifferentialDriveOdometry(navX.getRotation2d());
-    field2d = new Field2d();
-    reset(Constants.Odometry.STARTING_POSITION);
+    field = new Field2d();
+    resetOdometry(Constants.Odometry.STARTING_POSITION);
 
     shifter =
         new DoubleSolenoid(
@@ -136,11 +138,6 @@ public class DriveTrain extends SubsystemBase {
             PneumaticsModuleType.REVPH,
             DriveConstants.SHIFTER_FORWARD_CHANNEL,
             DriveConstants.SHIFTER_REVERSE_CHANNEL);
-  }
-
-  @Override
-  public void periodic() {
-    updateOdometry();
   }
 
   // *****************************************
@@ -166,14 +163,34 @@ public class DriveTrain extends SubsystemBase {
   // ************* Robot Angle ***************
   // *****************************************
 
-  public double getAngle() {
+  // Returns the robots angle as a double
+  public double getRawGyroAngle() {
     return navX.getAngle() % 360;
   }
 
-  // Return robot heading in degrees, from -180 to 180
+  // Returns the robots angle as a double using encoders (continous))
+  private double getRawEncoderAngle() {
+    double distance = getLeftEndocderValue() - getRightEncoderValue();
+    return Math.toDegrees(distance / DriveConstants.kTrackwidthMeters);
+  }
 
+  // Gets current Angle of the Robot using encoders
+  public Angle getEncoderAngle() {
+    return Angle.fromDegrees(getRawEncoderAngle());
+  }
+
+  // Gets current robot angle
+  public Angle getGyroAngle() {
+    return Angle.fromDegrees(navX.getAngle());
+  }
+
+  // Return robot heading in degrees, from -180 to 180
   public double getHeading() {
     return navX.getRotation2d().getDegrees();
+  }
+
+  public Angle getAngle() {
+    return DriveConstants.USING_GYRO ? getGyroAngle() : getEncoderAngle();
   }
 
   public void zeroHeading() {
@@ -190,7 +207,7 @@ public class DriveTrain extends SubsystemBase {
 
   public void updateOdometry() {
     m_Odometry.update(
-        navX.getRotation2d(),
+        getRotation2d(),
         leftMaster.getSelectedSensorPosition(),
         rightMaster.getSelectedSensorPosition());
   }
@@ -200,10 +217,21 @@ public class DriveTrain extends SubsystemBase {
         leftMaster.getSelectedSensorVelocity(), rightMaster.getSelectedSensorVelocity());
   }
 
-  public void reset(Pose2d pose2d) {
+  public Rotation2d getRotation2d() {
+
+    // TODO: Test if it needs to be negative or nah
+
+    return getAngle().negative().getRotation2d();
+  }
+
+  public void resetOdometry(Pose2d pose2d) {
     navX.reset();
     resetEncoders();
-    m_Odometry.resetPosition(pose2d, navX.getRotation2d());
+    m_Odometry.resetPosition(pose2d, getRotation2d());
+  }
+
+  public Field2d getField() {
+    return field;
   }
 
   public Pose2d getPose() {
@@ -212,7 +240,7 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public void reset() {
-    reset(getPose());
+    resetOdometry(getPose());
   }
 
   // *****************************************
@@ -251,9 +279,15 @@ public class DriveTrain extends SubsystemBase {
   }
 
   @Override
+  public void periodic() {
+    updateOdometry();
+    field.setRobotPose(getPose());
+  }
+
+  @Override
   public void initSendable(SendableBuilder builder) {
     builder.setSmartDashboardType("DriveTrain");
-    builder.addDoubleProperty("Angle", this::getAngle, null);
+    builder.addDoubleProperty("Angle", this::getRawGyroAngle, null);
     builder.addDoubleProperty(
         "ramp rate",
         () -> rampRate,

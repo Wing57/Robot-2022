@@ -125,7 +125,6 @@ public class DriveTrain extends SubsystemBase {
     navX = new AHRS();
 
     drive = new DifferentialDrive(leftMaster, rightMaster);
-    // TODO: uncomment if feed() doesn't work
     drive.setSafetyEnabled(false);
 
     m_Odometry = new DifferentialDriveOdometry(navX.getRotation2d());
@@ -146,8 +145,6 @@ public class DriveTrain extends SubsystemBase {
 
   public void drive(double left, double right) {
     drive.tankDrive(left, right);
-    // TODO: see if this works if not uncomment motor safety
-    // drive.feed();
   }
 
   public void stopMotors() {
@@ -212,6 +209,8 @@ public class DriveTrain extends SubsystemBase {
         rightMaster.getSelectedSensorPosition());
   }
 
+  // TODO: get the speed in m/s and not raw units
+  // find the distance per pulse.
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
     return new DifferentialDriveWheelSpeeds(
         leftMaster.getSelectedSensorVelocity(), rightMaster.getSelectedSensorVelocity());

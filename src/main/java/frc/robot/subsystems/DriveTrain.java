@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants;
@@ -47,7 +48,7 @@ public class DriveTrain extends SubsystemBase {
 
   private final DifferentialDrive drive;
   private final DifferentialDriveOdometry m_Odometry;
-  private final Field2d field2d;
+  private final Field2d field;
 
   private final AHRS navX;
 
@@ -127,7 +128,7 @@ public class DriveTrain extends SubsystemBase {
     drive.setSafetyEnabled(false);
 
     m_Odometry = new DifferentialDriveOdometry(navX.getRotation2d());
-    field2d = new Field2d();
+    field = new Field2d();
     reset(Constants.Odometry.STARTING_POSITION);
 
     shifter =
@@ -136,11 +137,6 @@ public class DriveTrain extends SubsystemBase {
             PneumaticsModuleType.REVPH,
             DriveConstants.SHIFTER_FORWARD_CHANNEL,
             DriveConstants.SHIFTER_REVERSE_CHANNEL);
-  }
-
-  @Override
-  public void periodic() {
-    updateOdometry();
   }
 
   // *****************************************
@@ -211,6 +207,10 @@ public class DriveTrain extends SubsystemBase {
     return m_Odometry.getPoseMeters();
   }
 
+  public Field2d getField2d() {
+    return field;
+  }
+
   public void reset() {
     reset(getPose());
   }
@@ -248,6 +248,14 @@ public class DriveTrain extends SubsystemBase {
 
   public void setMaxOutput(double maxOutput) {
     drive.setMaxOutput(maxOutput);
+  }
+
+  @Override
+  public void periodic() {
+    updateOdometry();
+    field.setRobotPose(getPose());
+
+    SmartDashboard.putData("Field", field);
   }
 
   @Override

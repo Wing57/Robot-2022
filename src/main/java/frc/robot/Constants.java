@@ -121,11 +121,10 @@ public final class Constants {
 
   public static final Path DEPLOY_DIRECTORY = Filesystem.getDeployDirectory().toPath();
 
-  public interface Odometry {
-    Translation2d STARTING_TRANSLATION = new Translation2d();
-    Rotation2d STARTING_ANGLE = new Rotation2d();
-
-    Pose2d STARTING_POSITION = new Pose2d(STARTING_TRANSLATION, STARTING_ANGLE);
+  public static class Odometry {
+    public static Translation2d STARTING_TRANSLATION = new Translation2d();
+    public static Rotation2d STARTING_ANGLE = new Rotation2d();
+    public static Pose2d STARTING_POSITION = new Pose2d(STARTING_TRANSLATION, STARTING_ANGLE);
   }
 
   public static final class AutoConstants {
@@ -139,7 +138,8 @@ public final class Constants {
     public static final double INDEX_BALL = 2.5;
     public static final double HUMAN_WAIT = 2.0;
 
-    // Reasonable baseline values for a RAMSETE follower in units of meters and seconds
+    // Reasonable baseline values for a RAMSETE follower in units of meters and
+    // seconds
     public static final double kRamseteB = 2;
     public static final double kRamseteZeta = 0.7;
   }

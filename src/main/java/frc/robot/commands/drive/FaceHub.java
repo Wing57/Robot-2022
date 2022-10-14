@@ -6,7 +6,6 @@ package frc.robot.commands.drive;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import frc.robot.Vision;
@@ -34,19 +33,18 @@ public class FaceHub extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if (vision.hasValidTarget())
-      controller.setSetpoint(0);
+    if (vision.hasValidTarget()) controller.setSetpoint(0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    SmartDashboard.putData("Face Hub Controller", controller);
-    SmartDashboard.putData("Vision", vision);
+    // face hub controller is already added by default on LW
+    // SmartDashboard.putData("Face Hub Controller", controller);
+    // SmartDashboard.putData("Vision", vision);
 
     double xOffset = vision.getHorizontalOffset();
-    if (xOffset == Integer.MAX_VALUE)
-      this.cancel();
+    if (xOffset == Integer.MAX_VALUE) this.cancel();
 
     double output = MathUtil.clamp(controller.calculate(xOffset), -maxOutput, maxOutput);
 

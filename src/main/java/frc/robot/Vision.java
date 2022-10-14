@@ -11,13 +11,16 @@ import com.rambots4571.rampage.vision.ReadValue;
 
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.util.sendable.SendableRegistry;
 import frc.robot.Constants.Shooters;
 
 public class Vision implements Sendable {
   private static final Limelight limelight = Limelight.getInstance();
   private static Vision instance;
 
-  private Vision() {}
+  private Vision() {
+    SendableRegistry.add(instance, "Vision");
+  }
 
   public static Vision getInstance() {
     if (instance == null) instance = new Vision();

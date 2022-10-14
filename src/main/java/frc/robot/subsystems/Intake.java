@@ -23,7 +23,7 @@ public class Intake extends SubsystemBase {
   private final int timeoutMs;
 
   public Intake() {
-    intakeMotor = new WPI_TalonSRX(Ctake.INTAKE_MOTOR_1);
+    intakeMotor = new WPI_TalonSRX(Ctake.INTAKE_MOTOR);
 
     rampRate = 0.20;
     timeoutMs = 15;
@@ -31,19 +31,21 @@ public class Intake extends SubsystemBase {
     intakeMotor.configOpenloopRamp(rampRate, timeoutMs);
 
     comp = new Compressor(Ctake.MODULE_NUMBER, PneumaticsModuleType.REVPH);
-    piston = new DoubleSolenoid(Ctake.MODULE_NUMBER, PneumaticsModuleType.REVPH,
-      Ctake.INTAKE_PISTON_FORWARD_CHANNEL, Ctake.INTAKE_PISTON_REVERSE_CHANNEL);
+    piston =
+        new DoubleSolenoid(
+            Ctake.MODULE_NUMBER,
+            PneumaticsModuleType.REVPH,
+            Ctake.INTAKE_PISTON_FORWARD_CHANNEL,
+            Ctake.INTAKE_PISTON_REVERSE_CHANNEL);
 
     comp.enableDigital();
   }
 
   @Override
-  public void periodic() {
-  }
+  public void periodic() {}
 
   public void togglePiston() {
-    Value oppositeValue = piston.get() == Value.kForward ? Value.kReverse
-      : Value.kForward;
+    Value oppositeValue = piston.get() == Value.kForward ? Value.kReverse : Value.kForward;
     piston.set(oppositeValue);
   }
 

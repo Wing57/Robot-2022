@@ -30,13 +30,11 @@ public class FaceHub extends CommandBase {
     controller.setTolerance(2.0);
   }
 
-  // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     if (vision.hasValidTarget()) controller.setSetpoint(0);
   }
 
-  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     // face hub controller is already added by default on LW
@@ -51,13 +49,11 @@ public class FaceHub extends CommandBase {
     driveTrain.drive(-output, output);
   }
 
-  // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     driveTrain.stopMotors();
   }
 
-  // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     return !vision.hasValidTarget() || controller.atSetpoint();

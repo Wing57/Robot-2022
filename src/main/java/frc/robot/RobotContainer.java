@@ -10,17 +10,13 @@ import com.rambots4571.rampage.joystick.Controller;
 import com.rambots4571.rampage.joystick.Gamepad;
 import com.rambots4571.rampage.joystick.Gamepad.Button;
 
-import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
 import frc.robot.Constants.Ctake;
 import frc.robot.Constants.Shooters;
-import frc.robot.commands.auton.AutoShoot;
 import frc.robot.commands.auton.FourRareFish;
-import frc.robot.commands.auton.TestCommandGroup;
 import frc.robot.commands.auton.TurnCommand;
 import frc.robot.commands.drive.FaceHub;
 import frc.robot.commands.drive.TankDriveCommand;
@@ -62,8 +58,6 @@ public class RobotContainer {
   public static TarmacShot tarmacShot;
 
   public static TurnCommand turnCommand;
-  public static AutoShoot autoShoot;
-  public static TestCommandGroup group;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -84,20 +78,9 @@ public class RobotContainer {
 
     tarmacShot = new TarmacShot(shooter);
 
-    autoShoot = new AutoShoot(shooter);
-
-    group = new TestCommandGroup(driveTrain, autoShoot, turnCommand);
-
-    // Configure the button bindings
     configureButtonBindings();
   }
 
-  /**
-   * Use this method to define your button->command mappings. Buttons can be created by
-   * instantiating a {@link GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
-   * edu.wpi.first.wpililibj2.command.button.JoystickButton}.
-   */
   private void configureButtonBindings() {
 
     // right bumper -> shoot ball

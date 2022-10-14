@@ -25,10 +25,10 @@ public final class Constants {
   // ********** DRIVE TRAIN ******************
   // *****************************************
   public static final class DriveConstants {
-    public static final int RIGHT_MOTOR_1 = 3;
+    public static final int RIGHT_MASTER = 3;
     public static final int RIGHT_MOTOR_2 = 2;
     public static final int RIGHT_MOTOR_3 = 14;
-    public static final int LEFT_MOTOR_1 = 4;
+    public static final int LEFT_MASTER = 4;
     public static final int LEFT_MOTOR_2 = 5;
     public static final int LEFT_MOTOR_3 = 6;
 
@@ -67,20 +67,16 @@ public final class Constants {
   // ************** SHOOTER ******************
   // *****************************************
   public static final class Shooters {
-    public static final int SHOOTER_MOTOR_1 = 7;
-    public static final int SHOOTER_MOTOR_2 = 8;
-    public static final int TURRET_MOTOR = 9;
+    public static final int SHOOTER_MOTOR = 7;
+    public static final int BACKSPIN_MOTOR = 8;
 
     public static final double AUTO_SHOOT_TIME = 6.0;
-    public static final double LL_SHOT_HEIGHT = 5;
+
     public static final double SHOOT_SPEED = 0.42;
-    // good speed value is 0.38
     public static final double BACKSPIN_SPEED = 0.25;
-    // good speed value is 0.45
 
     ////////// LIMELIGHT VALUES////////////
 
-    // TODO: Get real angles for Lensheight and MountAngle
     public static final double MountAngleDegrees = 28;
     public static final double LensHeightInches = 31.5;
     public static final double GoalHeightInches = 104;
@@ -90,7 +86,7 @@ public final class Constants {
   // ************** INTAKE *******************
   // *****************************************
   public static final class Ctake {
-    public static final int INTAKE_MOTOR_1 = 15;
+    public static final int INTAKE_MOTOR = 15;
     public static final double INTAKE_SPEED = 0.5;
 
     // Pnuematics

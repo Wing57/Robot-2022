@@ -22,8 +22,8 @@ public class Shooter extends SubsystemBase {
   private final List<WPI_TalonFX> bothMotors;
 
   public Shooter() {
-    shooterMotor = new WPI_TalonFX(Shooters.SHOOTER_MOTOR_1);
-    backSpinMotor = new WPI_TalonFX(Shooters.SHOOTER_MOTOR_2);
+    shooterMotor = new WPI_TalonFX(Shooters.SHOOTER_MOTOR);
+    backSpinMotor = new WPI_TalonFX(Shooters.BACKSPIN_MOTOR);
 
     bothMotors = Arrays.asList(shooterMotor, backSpinMotor);
 
@@ -52,10 +52,6 @@ public class Shooter extends SubsystemBase {
     shooterMotor.set(speed);
   }
 
-  public void setReverseShooterSpeed(double speed) {
-    shooterMotor.set(-speed);
-  }
-
   public void setBackSpinSpeed(double speed) {
     backSpinMotor.set(speed);
   }
@@ -65,10 +61,6 @@ public class Shooter extends SubsystemBase {
   // }
 
   public void stopShooter() {
-    shooterMotor.set(0);
-  }
-
-  public void stopReverseShooter() {
     shooterMotor.set(0);
   }
 

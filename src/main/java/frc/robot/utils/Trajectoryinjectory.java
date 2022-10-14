@@ -1,14 +1,14 @@
 package frc.robot.utils;
 
 import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
 
 import edu.wpi.first.math.trajectory.Trajectory;
-import java.io.IOException;
 
 public final class Trajectoryinjectory {
 
-  public static Trajectory getTrajectory(String path, double maxVel, double maxAccel)
-      throws IOException {
+  public static PathPlannerTrajectory getPath(String path, double maxVel, double maxAccel) {
+
     return PathPlanner.loadPath(path, 3.048, 4.328);
   }
 

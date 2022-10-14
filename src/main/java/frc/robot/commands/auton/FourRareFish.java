@@ -4,6 +4,9 @@
 
 package frc.robot.commands.auton;
 
+import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
+
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
@@ -13,6 +16,7 @@ import frc.robot.commands.drive.DriveTrainRamsete;
 import frc.robot.commands.index.IndexBall;
 import frc.robot.commands.intake.IntakeBallForever;
 import frc.robot.commands.intake.intakeExtend;
+import frc.robot.commands.shooter.TarmacShot;
 
 public class FourRareFish extends SequentialCommandGroup {
 
@@ -20,10 +24,14 @@ public class FourRareFish extends SequentialCommandGroup {
   private static final String FOUR_FISH_GLUP = "paths/2fishglup.wpilib.json";
   private static final String FOUR_FISH_DROWN = "paths/4fishcuh.wpilib.json";
 
+  private static final PathPlannerTrajectory FIRST_FISH_CUH =
+      PathPlanner.loadPath("FIRST_FISH_CUH", 0, 0);
+
   public FourRareFish(RobotContainer container) {
 
     // Initialize Subsytems
     addCommands(
+        new TarmacShot(container.shooter),
         new intakeExtend(container.intake),
         new WaitCommand(AutoConstants.INTAKE_EXTEND),
         new IntakeBallForever(container.intake),

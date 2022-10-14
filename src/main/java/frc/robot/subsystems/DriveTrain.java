@@ -285,7 +285,7 @@ public class DriveTrain extends SubsystemBase {
 
   @Override
   public void initSendable(SendableBuilder builder) {
-    builder.setSmartDashboardType("DriveTrain");
+    super.initSendable(builder);
     builder.addDoubleProperty("Angle", this::getRawGyroAngle, null);
     builder.addDoubleProperty(
         "ramp rate",

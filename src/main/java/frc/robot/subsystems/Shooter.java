@@ -75,16 +75,16 @@ public class Shooter extends SubsystemBase {
     builder.addDoubleProperty(
         "Shooter Speed",
         () -> Shooters.SHOOT_SPEED,
-        SS -> {
-          SS = Shooters.SHOOT_SPEED;
-          setShooterSpeed(SS);
+        ss -> {
+          ss = Shooters.SHOOT_SPEED;
+          setShooterSpeed(ss);
         });
     builder.addDoubleProperty(
         "Backspin Speed",
         () -> Shooters.BACKSPIN_SPEED,
-        BS -> {
-          BS = Shooters.BACKSPIN_SPEED;
-          setBackSpinSpeed(BS);
+        bs -> {
+          bs = Shooters.BACKSPIN_SPEED;
+          setBackSpinSpeed(bs);
         });
   }
 }

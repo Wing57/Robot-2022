@@ -22,6 +22,10 @@ public class Shooter extends SubsystemBase {
 
   private final List<WPI_TalonFX> bothMotors;
 
+  // initializing default speeds
+  private double shooterSpeed = Shooters.SHOOT_SPEED;
+  private double backspinSpeed = Shooters.BACKSPIN_SPEED;
+
   public Shooter() {
     shooterMotor = new WPI_TalonFX(Shooters.SHOOTER_MOTOR);
     backSpinMotor = new WPI_TalonFX(Shooters.BACKSPIN_MOTOR);
@@ -74,17 +78,17 @@ public class Shooter extends SubsystemBase {
     super.initSendable(builder);
     builder.addDoubleProperty(
         "Shooter Speed",
-        () -> Shooters.SHOOT_SPEED,
-        ss -> {
-          ss = Shooters.SHOOT_SPEED;
-          setShooterSpeed(ss);
+        () -> shooterSpeed,
+        speed -> {
+          shooterSpeed = speed;
+          setShooterSpeed(speed);
         });
     builder.addDoubleProperty(
         "Backspin Speed",
-        () -> Shooters.BACKSPIN_SPEED,
-        bs -> {
-          bs = Shooters.BACKSPIN_SPEED;
-          setBackSpinSpeed(bs);
+        () -> backspinSpeed,
+        speed -> {
+          backspinSpeed = speed;
+          setBackSpinSpeed(backspinSpeed);
         });
   }
 }

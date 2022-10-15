@@ -23,8 +23,8 @@ public class Shooter extends SubsystemBase {
   private final List<WPI_TalonFX> bothMotors;
 
   // initializing default speeds
-  private double shooterSpeed = Shooters.SHOOT_SPEED;
-  private double backspinSpeed = Shooters.BACKSPIN_SPEED;
+  private double shooterSpeed = 0;
+  private double backspinSpeed = 0;
 
   public Shooter() {
     shooterMotor = new WPI_TalonFX(Shooters.SHOOTER_MOTOR);

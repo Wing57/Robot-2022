@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants.Shooters;
@@ -66,5 +67,24 @@ public class Shooter extends SubsystemBase {
 
   public void stopBackSpinMotor() {
     backSpinMotor.set(0);
+  }
+
+  @Override
+  public void initSendable(SendableBuilder builder) {
+    super.initSendable(builder);
+    builder.addDoubleProperty(
+        "Shooter Speed",
+        () -> Shooters.SHOOT_SPEED,
+        SS -> {
+          SS = Shooters.SHOOT_SPEED;
+          setShooterSpeed(SS);
+        });
+    builder.addDoubleProperty(
+        "Backspin Speed",
+        () -> Shooters.BACKSPIN_SPEED,
+        BS -> {
+          BS = Shooters.BACKSPIN_SPEED;
+          setBackSpinSpeed(BS);
+        });
   }
 }

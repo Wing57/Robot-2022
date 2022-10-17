@@ -70,6 +70,10 @@ public class Shooter extends SubsystemBase {
     return shooterMotor.getSelectedSensorVelocity();
   }
 
+  public double getBackSpinVelocity() {
+    return backSpinMotor.getSelectedSensorVelocity();
+  }
+
   public double getTargetVelocity() {
     return m_targetVelocity.get();
   }
@@ -117,5 +121,6 @@ public class Shooter extends SubsystemBase {
           setBackSpinSpeed(backspinSpeed);
         });
     builder.addDoubleProperty("Actual ShooterSpeed", this::getShooterVelocity, null);
+    builder.addDoubleProperty("Actual BackSpinSpeed", this::getBackSpinVelocity, null);
   }
 }

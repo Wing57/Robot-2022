@@ -26,7 +26,7 @@ public class FaceHub extends CommandBase {
   public FaceHub(DriveTrain driveTrain) {
     this.driveTrain = driveTrain;
     addRequirements(driveTrain);
-    controller = new PIDController(kP, kI, kD);
+    controller = new PIDController(0.48, 0.988162, 0.05829);
     controller.setTolerance(2.0);
   }
 

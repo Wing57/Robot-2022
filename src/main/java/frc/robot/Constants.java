@@ -74,8 +74,8 @@ public final class Constants {
 
     public static final double AUTO_SHOOT_TIME = 6.0;
 
-    public static final double SHOOT_SPEED = 0.42;
-    public static final double BACKSPIN_SPEED = 0.25;
+    public static final double SHOOT_SPEED = 0.52;
+    public static final double BACKSPIN_SPEED = 0.42;
 
     ////////// LIMELIGHT VALUES ////////////
 
@@ -111,7 +111,7 @@ public final class Constants {
   // *****************************************
   public static final class Ctake {
     public static final int INTAKE_MOTOR = 15;
-    public static final double INTAKE_SPEED = 0.5;
+    public static final double INTAKE_SPEED = 0.6;
 
     // Pnuematics
     public static final int MODULE_NUMBER = 20;

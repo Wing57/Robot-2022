@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
@@ -26,8 +27,8 @@ public class Shooter extends SubsystemBase {
   private final List<WPI_TalonFX> bothMotors;
 
   // initializing default speeds
-  private double shooterSpeed = 0;
-  private double backspinSpeed = 0;
+  private double shooterPower = 0;
+  private double backspinPower = 0;
   private final SmartNumber m_targetVelocity;
 
   public Shooter() {
@@ -45,6 +46,8 @@ public class Shooter extends SubsystemBase {
 
           // Sets the motor state as either brake or coast
           motor.setNeutralMode(NeutralMode.Brake);
+          // setting sensor mode
+          motor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 10);
         });
 
     backSpinInvert = TalonFXInvertType.Clockwise;
@@ -66,11 +69,11 @@ public class Shooter extends SubsystemBase {
     shooterMotor.setVoltage(feedVoltage);
   }
 
-  public double getShooterVelocity() {
+  public double getShooterRawVelocity() {
     return shooterMotor.getSelectedSensorVelocity();
   }
 
-  public double getBackSpinVelocity() {
+  public double getBackSpinRawVelocity() {
     return backSpinMotor.getSelectedSensorVelocity();
   }
 
@@ -91,10 +94,6 @@ public class Shooter extends SubsystemBase {
     backSpinMotor.set(speed);
   }
 
-  // public void setTurretSpeed(double speed) {
-  // turretMotor.set(speed);
-  // }
-
   public void stopShooter() {
     shooterMotor.set(0);
   }
@@ -103,24 +102,35 @@ public class Shooter extends SubsystemBase {
     backSpinMotor.set(0);
   }
 
+  /**
+   * ticks 10 100ms 60s 1 rev ------ x --------- x ------- x ------------ 100ms 1s 1min 2048 ticks
+   *
+   * @param ticksPer100ms
+   * @return vel in RPM
+   */
+  public double convertRawToRPM(double ticksPer100ms) {
+    return ticksPer100ms * 600.0 / 2048.0;
+  }
+
   @Override
   public void initSendable(SendableBuilder builder) {
     super.initSendable(builder);
     builder.addDoubleProperty(
-        "Shooter Speed",
-        () -> shooterSpeed,
-        speed -> {
-          shooterSpeed = speed;
-          setShooterSpeed(speed);
+        "Shooter Power",
+        () -> shooterPower,
+        p -> {
+          shooterPower = p;
+          setShooterSpeed(shooterPower);
         });
     builder.addDoubleProperty(
-        "Backspin Speed",
-        () -> backspinSpeed,
-        speed -> {
-          backspinSpeed = speed;
-          setBackSpinSpeed(backspinSpeed);
+        "Backspin Power",
+        () -> backspinPower,
+        p -> {
+          backspinPower = p;
+          setBackSpinSpeed(backspinPower);
         });
-    builder.addDoubleProperty("Actual ShooterSpeed", this::getShooterVelocity, null);
-    builder.addDoubleProperty("Actual BackSpinSpeed", this::getBackSpinVelocity, null);
+    builder.addDoubleProperty("Raw Shooter Vel", this::getShooterRawVelocity, null);
+    builder.addDoubleProperty("Raw BackSpinSpeed", this::getBackSpinRawVelocity, null);
+    builder.addDoubleProperty("Shooter RPM", () -> convertRawToRPM(getShooterRawVelocity()), null);
   }
 }

@@ -16,9 +16,9 @@ public class FaceHub extends CommandBase {
   private final PIDController controller;
   private final Vision vision = Vision.getInstance();
 
-  private final double kP = 0.2;
-  private final double kI = 0;
-  private final double kD = 0;
+  private final double kP = 0.48;
+  private final double kI = 0.988162;
+  private final double kD = 0.05829;
 
   private final double maxOutput = 0.7;
 
@@ -26,7 +26,7 @@ public class FaceHub extends CommandBase {
   public FaceHub(DriveTrain driveTrain) {
     this.driveTrain = driveTrain;
     addRequirements(driveTrain);
-    controller = new PIDController(0.48, 0.988162, 0.05829);
+    controller = new PIDController(kP, kI, kD);
     controller.setTolerance(2.0);
   }
 

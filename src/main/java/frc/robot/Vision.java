@@ -16,14 +16,13 @@ import frc.robot.Constants.Shooters;
 
 public class Vision implements Sendable {
   private static final Limelight limelight = Limelight.getInstance();
-  private static Vision instance;
+  private static Vision instance = new Vision();
 
   private Vision() {
-    SendableRegistry.add(instance, "Vision");
+    SendableRegistry.addLW(this, "Vision");
   }
 
   public static Vision getInstance() {
-    if (instance == null) instance = new Vision();
     return instance;
   }
 

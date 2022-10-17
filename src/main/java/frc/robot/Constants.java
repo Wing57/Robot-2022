@@ -11,6 +11,8 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.Filesystem;
 import java.nio.file.Path;
 
+import com.rambots4571.rampage.util.LinearInterpolator;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -75,11 +77,28 @@ public final class Constants {
     public static final double SHOOT_SPEED = 0.42;
     public static final double BACKSPIN_SPEED = 0.25;
 
-    ////////// LIMELIGHT VALUES////////////
+    ////////// LIMELIGHT VALUES ////////////
 
     public static final double MountAngleDegrees = 28;
     public static final double LensHeightInches = 31.5;
     public static final double GoalHeightInches = 104;
+
+    ////////// DISTANCE//SPEED DATA ////////
+
+    public static final double[][] SHOOTER_SPEED_ARRAY = {
+      {89, 0.5},
+      {136.5, 0.52},
+      {176.5, 0.65}
+    };
+
+    public static final double[][] BACKSPIN_SPEED_ARRAY = {
+      {89, 0.4},
+      {136.5, 0.42},
+      {176.5, 0.55}
+    };
+
+    public static final LinearInterpolator SHOOTER_SPEED_INTERPOLATOR = new LinearInterpolator(SHOOTER_SPEED_ARRAY);
+    public static final LinearInterpolator BACKSPIN_SPEED_INTERPOLATOR = new LinearInterpolator(BACKSPIN_SPEED_ARRAY);
   }
 
   // *****************************************

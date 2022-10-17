@@ -4,14 +4,14 @@
 
 package frc.robot;
 
+import com.rambots4571.rampage.util.LinearInterpolator;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.Filesystem;
 import java.nio.file.Path;
-
-import com.rambots4571.rampage.util.LinearInterpolator;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -83,7 +83,7 @@ public final class Constants {
     public static final double LensHeightInches = 31.5;
     public static final double GoalHeightInches = 104;
 
-    ////////// DISTANCE//SPEED DATA ////////
+    ////////// DISTANCE//SPEED DATA /////////
 
     public static final double[][] SHOOTER_SPEED_ARRAY = {
       {89, 0.5},
@@ -97,11 +97,13 @@ public final class Constants {
       {176.5, 0.55}
     };
 
-    public static final LinearInterpolator SHOOTER_SPEED_INTERPOLATOR = new LinearInterpolator(SHOOTER_SPEED_ARRAY);
-    public static final LinearInterpolator BACKSPIN_SPEED_INTERPOLATOR = new LinearInterpolator(BACKSPIN_SPEED_ARRAY);
+    public static final LinearInterpolator SHOOTER_SPEED_INTERPOLATOR =
+        new LinearInterpolator(SHOOTER_SPEED_ARRAY);
+    public static final LinearInterpolator BACKSPIN_SPEED_INTERPOLATOR =
+        new LinearInterpolator(BACKSPIN_SPEED_ARRAY);
 
-    //TODO: Find real error
-    public static final double MAX_SPEED_ERROR = 0.05;
+    // TODO: Find real error
+    public static final double MAX_SPEED_ERROR = 0.03;
   }
 
   // *****************************************

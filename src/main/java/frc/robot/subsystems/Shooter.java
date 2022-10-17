@@ -28,9 +28,11 @@ public class Shooter extends SubsystemBase {
   // initializing default speeds
   private double shooterSpeed = 0;
   private double backspinSpeed = 0;
-  
+  private final SmartNumber m_targetVelocity;
 
   public Shooter() {
+    m_targetVelocity = new SmartNumber("Target Velocity", 0.0);
+
     shooterMotor = new WPI_TalonFX(Shooters.SHOOTER_MOTOR);
     backSpinMotor = new WPI_TalonFX(Shooters.BACKSPIN_MOTOR);
 
@@ -50,13 +52,14 @@ public class Shooter extends SubsystemBase {
 
     shooterInvert = TalonFXInvertType.Clockwise;
     shooterMotor.setInverted(shooterInvert);
-    
   }
 
   public void setShooterVelocity(double speed) {
     SmartDashboard.putNumber("Desired Speed", speed);
 
-    //TODO: Find actual ff gains
+    m_targetVelocity.set(speed);
+
+    // TODO: Find actual ff gains
     SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0.1, 0.2, 0.3);
     double feedVoltage = feedforward.calculate(speed);
 
@@ -64,11 +67,12 @@ public class Shooter extends SubsystemBase {
   }
 
   public double getShooterVelocity() {
-
     return shooterMotor.getSelectedSensorVelocity();
   }
 
-
+  public double getTargetVelocity() {
+    return m_targetVelocity.get();
+  }
 
   @Override
   public void periodic() {

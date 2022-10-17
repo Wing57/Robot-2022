@@ -7,8 +7,11 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.stuypulse.stuylib.network.SmartNumber;
 
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants.Shooters;
@@ -25,6 +28,7 @@ public class Shooter extends SubsystemBase {
   // initializing default speeds
   private double shooterSpeed = 0;
   private double backspinSpeed = 0;
+  
 
   public Shooter() {
     shooterMotor = new WPI_TalonFX(Shooters.SHOOTER_MOTOR);
@@ -46,7 +50,25 @@ public class Shooter extends SubsystemBase {
 
     shooterInvert = TalonFXInvertType.Clockwise;
     shooterMotor.setInverted(shooterInvert);
+    
   }
+
+  public void setShooterVelocity(double speed) {
+    SmartDashboard.putNumber("Desired Speed", speed);
+
+    //TODO: Find actual ff gains
+    SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0.1, 0.2, 0.3);
+    double feedVoltage = feedforward.calculate(speed);
+
+    shooterMotor.setVoltage(feedVoltage);
+  }
+
+  public double getShooterVelocity() {
+
+    return shooterMotor.getSelectedSensorVelocity();
+  }
+
+
 
   @Override
   public void periodic() {
@@ -90,5 +112,6 @@ public class Shooter extends SubsystemBase {
           backspinSpeed = speed;
           setBackSpinSpeed(backspinSpeed);
         });
+    builder.addDoubleProperty("Actual ShooterSpeed", this::getShooterVelocity, null);
   }
 }

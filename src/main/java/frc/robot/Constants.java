@@ -99,6 +99,9 @@ public final class Constants {
 
     public static final LinearInterpolator SHOOTER_SPEED_INTERPOLATOR = new LinearInterpolator(SHOOTER_SPEED_ARRAY);
     public static final LinearInterpolator BACKSPIN_SPEED_INTERPOLATOR = new LinearInterpolator(BACKSPIN_SPEED_ARRAY);
+
+    //TODO: Find real error
+    public static final double MAX_SPEED_ERROR = 0.05;
   }
 
   // *****************************************

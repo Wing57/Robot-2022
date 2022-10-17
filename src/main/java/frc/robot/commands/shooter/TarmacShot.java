@@ -4,15 +4,12 @@
 
 package frc.robot.commands.shooter;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
-
 import frc.robot.Constants.Shooters;
 import frc.robot.subsystems.Shooter;
 
-public class TarmacShot extends CommandBase {
+public class TarmacShot extends SetShooterSpeed {
   /** Creates a new TarmacShot. */
   public TarmacShot(Shooter shooter) {
-
-    new SetShooterSpeed(shooter, Shooters.SHOOT_SPEED, Shooters.BACKSPIN_SPEED);
+    super(shooter, Shooters.SHOOT_SPEED, Shooters.BACKSPIN_SPEED);
   }
 }

@@ -4,14 +4,13 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import com.stuypulse.stuylib.network.SmartNumber;
 
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.util.sendable.SendableBuilder;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants.Shooters;
@@ -26,12 +25,10 @@ public class Shooter extends SubsystemBase {
   private final List<WPI_TalonFX> bothMotors;
 
   // initializing default speeds
-  private double shooterSpeed = 0;
-  private double backspinSpeed = 0;
-  private final SmartNumber m_targetVelocity;
+  private double shooterPower = 0;
+  private double backspinPower = 0;
 
   public Shooter() {
-    m_targetVelocity = new SmartNumber("Target Velocity", 0.0);
 
     shooterMotor = new WPI_TalonFX(Shooters.SHOOTER_MOTOR);
     backSpinMotor = new WPI_TalonFX(Shooters.BACKSPIN_MOTOR);
@@ -45,6 +42,8 @@ public class Shooter extends SubsystemBase {
 
           // Sets the motor state as either brake or coast
           motor.setNeutralMode(NeutralMode.Brake);
+          // setting sensor mode
+          motor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 10);
         });
 
     backSpinInvert = TalonFXInvertType.Clockwise;
@@ -55,23 +54,17 @@ public class Shooter extends SubsystemBase {
   }
 
   public void setShooterVelocity(double speed) {
-    SmartDashboard.putNumber("Desired Speed", speed);
-
-    m_targetVelocity.set(speed);
-
-    // TODO: Find actual ff gains
     SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0.1, 0.2, 0.3);
     double feedVoltage = feedforward.calculate(speed);
-
     shooterMotor.setVoltage(feedVoltage);
   }
 
-  public double getShooterVelocity() {
+  public double getShooterRawVelocity() {
     return shooterMotor.getSelectedSensorVelocity();
   }
 
-  public double getTargetVelocity() {
-    return m_targetVelocity.get();
+  public double getBackSpinRawVelocity() {
+    return backSpinMotor.getSelectedSensorVelocity();
   }
 
   @Override
@@ -87,10 +80,6 @@ public class Shooter extends SubsystemBase {
     backSpinMotor.set(speed);
   }
 
-  // public void setTurretSpeed(double speed) {
-  // turretMotor.set(speed);
-  // }
-
   public void stopShooter() {
     shooterMotor.set(0);
   }
@@ -99,23 +88,35 @@ public class Shooter extends SubsystemBase {
     backSpinMotor.set(0);
   }
 
+  /**
+   * ticks 10 100ms 60s 1 rev ------ x --------- x ------- x ------------ 100ms 1s 1min 2048 ticks
+   *
+   * @param ticksPer100ms
+   * @return vel in RPM
+   */
+  public double convertRawToRPM(double ticksPer100ms) {
+    return ticksPer100ms * 600.0 / 2048.0;
+  }
+
   @Override
   public void initSendable(SendableBuilder builder) {
     super.initSendable(builder);
     builder.addDoubleProperty(
-        "Shooter Speed",
-        () -> shooterSpeed,
-        speed -> {
-          shooterSpeed = speed;
-          setShooterSpeed(speed);
+        "Shooter Power",
+        () -> shooterPower,
+        p -> {
+          shooterPower = p;
+          setShooterSpeed(shooterPower);
         });
     builder.addDoubleProperty(
-        "Backspin Speed",
-        () -> backspinSpeed,
-        speed -> {
-          backspinSpeed = speed;
-          setBackSpinSpeed(backspinSpeed);
+        "Backspin Power",
+        () -> backspinPower,
+        p -> {
+          backspinPower = p;
+          setBackSpinSpeed(backspinPower);
         });
-    builder.addDoubleProperty("Actual ShooterSpeed", this::getShooterVelocity, null);
+    builder.addDoubleProperty("Raw Shooter Vel", this::getShooterRawVelocity, null);
+    builder.addDoubleProperty("Raw BackSpinSpeed", this::getBackSpinRawVelocity, null);
+    builder.addDoubleProperty("Shooter RPM", () -> convertRawToRPM(getShooterRawVelocity()), null);
   }
 }

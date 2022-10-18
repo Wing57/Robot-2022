@@ -102,12 +102,16 @@ public class Shooter extends SubsystemBase {
     backSpinMotor.set(0);
   }
 
+  // spotless:off
   /**
-   * ticks 10 100ms 60s 1 rev ------ x --------- x ------- x ------------ 100ms 1s 1min 2048 ticks
+   * ticks     10 100ms     60s        1 rev
+   * ------ x --------- x ------- x ------------
+   * 100ms        1s        1min     2048 ticks
    *
    * @param ticksPer100ms
    * @return vel in RPM
    */
+  // spotless:on
   public double convertRawToRPM(double ticksPer100ms) {
     return ticksPer100ms * 600.0 / 2048.0;
   }

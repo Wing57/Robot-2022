@@ -6,6 +6,10 @@ package frc.robot;
 
 import com.rambots4571.rampage.util.LinearInterpolator;
 
+import com.stuypulse.stuylib.control.feedback.PIDController;
+import com.stuypulse.stuylib.network.SmartNumber;
+
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -50,7 +54,6 @@ public final class Constants {
 
     /////////////// SYSID VALUES ///////////////
 
-    // TODO: Find real values for the love of god
     public static final double ksVolts = 0.558;
     public static final double kvVoltSecondsPerMeter = 3.4335;
     public static final double kaVoltSecondsSquaredPerMeter = 0.171;
@@ -103,7 +106,31 @@ public final class Constants {
         new LinearInterpolator(BACKSPIN_SPEED_ARRAY);
 
     // TODO: Find real error
-    public static final double MAX_SPEED_ERROR = 0.03;
+    public static final double MAX_SPEED_ERROR = 150;
+
+    public static final double MIN_RPM = 100;
+
+    public interface ShooterFF {
+      double Ks = 0.53467;
+      double Kv = 0.10845;
+      double Ka = 0.01518;
+
+      static SimpleMotorFeedforward getController() {
+        return new SimpleMotorFeedforward(ShooterFF.Ks, ShooterFF.Kv, ShooterFF.Ka);
+      }
+    }
+
+    public interface ShooterPID {
+      double kP = 0.14636;
+      double kI = 0.0;
+      double kD = 0.0;
+
+      static PIDController getController() {
+        return new PIDController(kP, kI, kD);
+      }
+    }
+    // TODO: Find how much time it takes for the shooter to get to 63.2% of the target speed
+    public static final SmartNumber RC = new SmartNumber("Shooter RC", 0.3);
   }
 
   // *****************************************

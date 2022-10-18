@@ -129,6 +129,27 @@ public final class Constants {
         return new PIDController(kP, kI, kD);
       }
     }
+
+    // TODO: Get backspin values from folder
+    public interface BackSpinFF {
+      double Ks = 0.0;
+      double Kv = 0.0;
+      double Ka = 0.0;
+
+      static SimpleMotorFeedforward getController() {
+        return new SimpleMotorFeedforward(BackSpinFF.Ks, BackSpinFF.Kv, BackSpinFF.Ka);
+      }
+    }
+
+    public interface BackSpinPID {
+      double kP = 0.0;
+      double kI = 0.0;
+      double kD = 0.0;
+
+      static PIDController getController() {
+        return new PIDController(kP, kI, kD);
+      }
+    }
     // TODO: Find how much time it takes for the shooter to get to 63.2% of the target speed
     public static final SmartNumber RC = new SmartNumber("Shooter RC", 0.3);
   }

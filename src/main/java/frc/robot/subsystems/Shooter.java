@@ -27,8 +27,10 @@ public class Shooter extends SubsystemBase {
   private final List<WPI_TalonFX> bothMotors;
 
   private final PIDFlywheel shooter;
+  private final PIDFlywheel backSpin;
 
   private final SmartNumber m_targetVelocity;
+  private final SmartNumber m_targetBackVelocity;
   private final IFilter targetFilter;
 
   // initializing default speeds
@@ -37,6 +39,7 @@ public class Shooter extends SubsystemBase {
 
   public Shooter() {
     m_targetVelocity = new SmartNumber("Target Velocity", 0.0);
+    m_targetBackVelocity = new SmartNumber("Target Back Velocity", 0.0);
 
     // Basically a better ramprate; reduces encoder noise/motor jerk without introducing much delay
     targetFilter = new LowPassFilter(Shooters.RC);
@@ -67,12 +70,22 @@ public class Shooter extends SubsystemBase {
     shooter =
         new PIDFlywheel(
             shooterMotor, Shooters.ShooterFF.getController(), Shooters.ShooterPID.getController());
+
+    backSpin =
+        new PIDFlywheel(
+            backSpinMotor,
+            Shooters.BackSpinFF.getController(),
+            Shooters.BackSpinPID.getController());
   }
 
   /*** Shooter Control ***/
 
   public void setShooterVelocity(double speed) {
     m_targetVelocity.set(speed);
+  }
+
+  public void setBackSpinVelocity(double speed) {
+    m_targetBackVelocity.set(speed);
   }
 
   /*** Encoder Readings ***/
@@ -85,9 +98,13 @@ public class Shooter extends SubsystemBase {
     return backSpinMotor.getSelectedSensorVelocity();
   }
 
-  // This automatically converts the Talon FX raw 100 ticks per ms into RPM
+  // TODO: If this doesnt work then use mahims method (I sincerelt apologize for being stubborn)
   public double getShooterRPM() {
     return shooter.getVelocity();
+  }
+
+  public double getBackSpinRPM() {
+    return backSpin.getVelocity();
   }
 
   /*** Shooter Readings ***/
@@ -98,6 +115,14 @@ public class Shooter extends SubsystemBase {
 
   public double getTargetVelocity() {
     return targetFilter.get(getRawTargetVelocity());
+  }
+
+  public double getRawBackTargetVelocity() {
+    return m_targetBackVelocity.get();
+  }
+
+  public double getTargetBackVelocity() {
+    return targetFilter.get(getRawBackTargetVelocity());
   }
 
   public boolean isReady() {
@@ -123,11 +148,18 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
     double setpoint = getTargetVelocity();
+    double bSetpoint = getTargetBackVelocity();
 
     if (setpoint < Shooters.MIN_RPM) {
       shooter.stop();
     } else {
       shooter.setVelocity(setpoint);
+    }
+
+    if (setpoint < Shooters.MIN_RPM) {
+      backSpin.stop();
+    } else {
+      backSpin.setBSVelocity(bSetpoint);
     }
   }
 
@@ -165,5 +197,14 @@ public class Shooter extends SubsystemBase {
     builder.addDoubleProperty("Raw Shooter Vel", this::getShooterRawVelocity, null);
     builder.addDoubleProperty("Raw BackSpinSpeed", this::getBackSpinRawVelocity, null);
     builder.addDoubleProperty("Shooter RPM", this::getShooterRPM, null);
+    builder.addDoubleProperty("BackSpin RPM", this::getBackSpinRPM, null);
+    builder.addDoubleProperty(
+        "Reliable Shooter RPM",
+        () -> convertRawToRPM(shooterMotor.getSelectedSensorVelocity()),
+        null);
+    builder.addDoubleProperty(
+        "Reliable BackSpin RPM",
+        () -> convertRawToRPM(backSpinMotor.getSelectedSensorVelocity()),
+        null);
   }
 }

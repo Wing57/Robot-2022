@@ -39,7 +39,7 @@ public class PIDFlywheel extends SubsystemBase {
   }
 
   public double getVelocity() {
-    return shooterMotor.getSelectedSensorVelocity();
+    return shooterMotor.getSelectedSensorVelocity() * 600.0 / 2048.0;
   }
 
   @Override
@@ -47,7 +47,6 @@ public class PIDFlywheel extends SubsystemBase {
     if (this.m_targetVelocity < 200) {
 
       shooterMotor.stopMotor();
-
     } else {
       double ff = feedforward.calculate(this.m_targetVelocity);
       double fb = feedback.update(this.m_targetVelocity, getVelocity());

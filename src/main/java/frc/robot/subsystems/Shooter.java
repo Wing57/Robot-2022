@@ -9,10 +9,10 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.stuypulse.stuylib.network.SmartNumber;
+import com.stuypulse.stuylib.streams.filters.IFilter;
+import com.stuypulse.stuylib.streams.filters.LowPassFilter;
 
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.util.sendable.SendableBuilder;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants.Shooters;
@@ -26,13 +26,20 @@ public class Shooter extends SubsystemBase {
 
   private final List<WPI_TalonFX> bothMotors;
 
+  private final PIDFlywheel shooter;
+
+  private final SmartNumber m_targetVelocity;
+  private final IFilter targetFilter;
+
   // initializing default speeds
   private double shooterPower = 0;
   private double backspinPower = 0;
-  private final SmartNumber m_targetVelocity;
 
   public Shooter() {
     m_targetVelocity = new SmartNumber("Target Velocity", 0.0);
+
+    // Basically a better ramprate; reduces encoder noise/motor jerk without introducing much delay
+    targetFilter = new LowPassFilter(Shooters.RC);
 
     shooterMotor = new WPI_TalonFX(Shooters.SHOOTER_MOTOR);
     backSpinMotor = new WPI_TalonFX(Shooters.BACKSPIN_MOTOR);
@@ -45,7 +52,8 @@ public class Shooter extends SubsystemBase {
           motor.configFactoryDefault();
 
           // Sets the motor state as either brake or coast
-          motor.setNeutralMode(NeutralMode.Brake);
+          motor.setNeutralMode(NeutralMode.Coast);
+
           // setting sensor mode
           motor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 10);
         });
@@ -55,19 +63,19 @@ public class Shooter extends SubsystemBase {
 
     shooterInvert = TalonFXInvertType.Clockwise;
     shooterMotor.setInverted(shooterInvert);
+
+    shooter =
+        new PIDFlywheel(
+            shooterMotor, Shooters.ShooterFF.getController(), Shooters.ShooterPID.getController());
   }
+
+  /*** Shooter Control ***/
 
   public void setShooterVelocity(double speed) {
-    SmartDashboard.putNumber("Desired Speed", speed);
-
     m_targetVelocity.set(speed);
-
-    // TODO: Find actual ff gains
-    SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0.1, 0.2, 0.3);
-    double feedVoltage = feedforward.calculate(speed);
-
-    shooterMotor.setVoltage(feedVoltage);
   }
+
+  /*** Encoder Readings ***/
 
   public double getShooterRawVelocity() {
     return shooterMotor.getSelectedSensorVelocity();
@@ -77,13 +85,23 @@ public class Shooter extends SubsystemBase {
     return backSpinMotor.getSelectedSensorVelocity();
   }
 
-  public double getTargetVelocity() {
+  // This automatically converts the Talon FX raw 100 ticks per ms into RPM
+  public double getShooterRPM() {
+    return shooter.getVelocity();
+  }
+
+  /*** Shooter Readings ***/
+
+  public double getRawTargetVelocity() {
     return m_targetVelocity.get();
   }
 
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
+  public double getTargetVelocity() {
+    return targetFilter.get(getRawTargetVelocity());
+  }
+
+  public boolean isReady() {
+    return Math.abs(getShooterRPM() - getTargetVelocity()) < Shooters.MAX_SPEED_ERROR;
   }
 
   public void setShooterSpeed(double speed) {
@@ -100,6 +118,17 @@ public class Shooter extends SubsystemBase {
 
   public void stopBackSpinMotor() {
     backSpinMotor.set(0);
+  }
+
+  @Override
+  public void periodic() {
+    double setpoint = getTargetVelocity();
+
+    if (setpoint < Shooters.MIN_RPM) {
+      shooter.stop();
+    } else {
+      shooter.setVelocity(setpoint);
+    }
   }
 
   // spotless:off
@@ -135,6 +164,6 @@ public class Shooter extends SubsystemBase {
         });
     builder.addDoubleProperty("Raw Shooter Vel", this::getShooterRawVelocity, null);
     builder.addDoubleProperty("Raw BackSpinSpeed", this::getBackSpinRawVelocity, null);
-    builder.addDoubleProperty("Shooter RPM", () -> convertRawToRPM(getShooterRawVelocity()), null);
+    builder.addDoubleProperty("Shooter RPM", this::getShooterRPM, null);
   }
 }

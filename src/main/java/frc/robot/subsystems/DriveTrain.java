@@ -239,6 +239,10 @@ public class DriveTrain extends SubsystemBase {
     return m_Odometry.getPoseMeters();
   }
 
+  public Field2d getField2d() {
+    return field;
+  }
+
   public void reset() {
     resetOdometry(getPose());
   }

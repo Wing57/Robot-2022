@@ -14,6 +14,7 @@ import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants.Shooters;
+import frc.robot.Constants.Shooters.SFF;
 import java.util.Arrays;
 import java.util.List;
 
@@ -54,7 +55,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public void setShooterVelocity(double speed) {
-    SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0.1, 0.2, 0.3);
+    SimpleMotorFeedforward feedforward = SFF.ShooterFF();
     double feedVoltage = feedforward.calculate(speed);
     shooterMotor.setVoltage(feedVoltage);
   }
@@ -112,5 +113,7 @@ public class Shooter extends SubsystemBase {
     builder.addDoubleProperty("Raw Shooter Vel", this::getShooterRawVelocity, null);
     builder.addDoubleProperty("Raw BackSpinSpeed", this::getBackSpinRawVelocity, null);
     builder.addDoubleProperty("Shooter RPM", () -> convertRawToRPM(getShooterRawVelocity()), null);
+    builder.addDoubleProperty(
+        "BackSpin RPM", () -> convertRawToRPM(getBackSpinRawVelocity()), null);
   }
 }

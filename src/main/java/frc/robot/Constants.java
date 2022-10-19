@@ -6,6 +6,7 @@ package frc.robot;
 
 import com.rambots4571.rampage.util.LinearInterpolator;
 
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -104,6 +105,17 @@ public final class Constants {
 
     // TODO: Find real error
     public static final double MAX_SPEED_ERROR = 0.03;
+
+    ///////// FF GAINS ////////
+    public interface SFF {
+      double Ks = 0.53467;
+      double Kv = 0.10845;
+      double Ka = 0.01518;
+
+      static SimpleMotorFeedforward ShooterFF() {
+        return new SimpleMotorFeedforward(SFF.Ks, SFF.Kv, SFF.Ka);
+      }
+    }
   }
 
   // *****************************************

@@ -75,7 +75,7 @@ public final class Constants {
 
     public static final double AUTO_SHOOT_TIME = 6.0;
 
-    public static final double SHOOT_SPEED = 0.42;
+    public static final double SHOOT_SPEED = 0.50;
     public static final double BACKSPIN_SPEED = 0.25;
 
     ////////// LIMELIGHT VALUES ////////////
@@ -105,16 +105,16 @@ public final class Constants {
 
     // TODO: Find real error
     public static final double MAX_SPEED_ERROR = 0.03;
+  }
 
-    ///////// FF GAINS ////////
-    public interface SFF {
-      double Ks = 0.53467;
-      double Kv = 0.10845;
-      double Ka = 0.01518;
+  public static class SFF {
 
-      static SimpleMotorFeedforward ShooterFF() {
-        return new SimpleMotorFeedforward(SFF.Ks, SFF.Kv, SFF.Ka);
-      }
+    public static final double Ks = 0.53467;
+    public static final double Kv = 0.10845;
+    public static final double Ka = 0.01518;
+
+    public static SimpleMotorFeedforward ShooterFF() {
+      return new SimpleMotorFeedforward(SFF.Ks, SFF.Kv, SFF.Ka);
     }
   }
 

@@ -21,6 +21,7 @@ import frc.robot.commands.auton.TurnCommand;
 import frc.robot.commands.drive.FaceHub;
 import frc.robot.commands.drive.TankDriveCommand;
 import frc.robot.commands.shooter.ShootBall;
+import frc.robot.commands.shooter.ShootOvunque;
 import frc.robot.commands.shooter.TarmacShot;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Index;
@@ -53,6 +54,7 @@ public class RobotContainer {
   // commands
   private final TankDriveCommand tankDriveCommand;
   public static FaceHub faceHub;
+  public static ShootOvunque shootOvunque;
 
   public static ShootBall shootBall;
   public static TarmacShot tarmacShot;
@@ -78,6 +80,8 @@ public class RobotContainer {
 
     tarmacShot = new TarmacShot(shooter);
 
+    shootOvunque = new ShootOvunque(shooter);
+
     configureButtonBindings();
   }
 
@@ -99,6 +103,18 @@ public class RobotContainer {
                 },
                 shooter),
             false);
+    driveController
+        .getButton(Gamepad.Button.RightBumper)
+        .whileHeld(
+            new RunEndCommand(
+                () -> {
+                  shooter.setShooterVelocity(Shooters.SHOOT_SPEED);
+                },
+                () -> {
+                  shooter.stopShooter();
+                },
+                shooter),
+            false);
 
     // A -> intake ball
 
@@ -115,6 +131,10 @@ public class RobotContainer {
     // Y -> Reverse Index
 
     gamepad.getButton(Button.Y).whileHeld(setIndexCommand(-Constants.INDEX_SPEED), false);
+
+    // Left Bumper -> Shoot Anywhere
+
+    gamepad.getButton(Gamepad.Button.LeftBumper).whileHeld(shootOvunque, false);
 
     // (driverController) A -> Face Hub
 

@@ -14,7 +14,6 @@ import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants.Shooters;
-import frc.robot.Constants.Shooters.SFF;
 import java.util.Arrays;
 import java.util.List;
 
@@ -55,9 +54,9 @@ public class Shooter extends SubsystemBase {
   }
 
   public void setShooterVelocity(double speed) {
-    SimpleMotorFeedforward feedforward = SFF.ShooterFF();
+    SimpleMotorFeedforward feedforward = frc.robot.Constants.SFF.ShooterFF();
     double feedVoltage = feedforward.calculate(speed);
-    shooterMotor.setVoltage(feedVoltage);
+    shooterMotor.set(feedVoltage);
   }
 
   public double getShooterRawVelocity() {
@@ -69,9 +68,7 @@ public class Shooter extends SubsystemBase {
   }
 
   @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-  }
+  public void periodic() {}
 
   public void setShooterSpeed(double speed) {
     shooterMotor.set(speed);

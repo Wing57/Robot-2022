@@ -50,7 +50,6 @@ public class RobotContainer {
   public final Shooter shooter;
   public final Intake intake;
   public final Index index;
-  public final Vision vision;
 
   // commands
   private final TankDriveCommand tankDriveCommand;
@@ -69,7 +68,6 @@ public class RobotContainer {
     shooter = new Shooter();
     intake = new Intake();
     index = new Index();
-    vision = new Vision();
 
     // (driveController) X -> SHIFT GEARS
     tankDriveCommand =
@@ -83,7 +81,7 @@ public class RobotContainer {
 
     tarmacShot = new TarmacShot(shooter);
 
-    shootOvunque = new ShootOvunque(shooter, vision);
+    shootOvunque = new ShootOvunque(shooter);
 
     configureButtonBindings();
   }
@@ -123,7 +121,7 @@ public class RobotContainer {
 
     gamepad.getButton(Button.Y).whileHeld(setIndexCommand(-Constants.INDEX_SPEED), false);
 
-    // LeftBumer -> ShootOvunque 
+    // LeftBumer -> ShootOvunque
 
     gamepad.getButton(Gamepad.Button.LeftBumper).whileHeld(shootOvunque, false);
 

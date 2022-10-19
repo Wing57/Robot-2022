@@ -7,37 +7,36 @@ package frc.robot.commands.shooter;
 import com.stuypulse.stuylib.streams.booleans.BStream;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Vision;
+
 import frc.robot.Constants.Shooters;
+import frc.robot.Vision;
 import frc.robot.subsystems.Shooter;
 
 public class ShootOvunque extends CommandBase {
 
-  Shooter m_shooter;
-  Vision m_vision;
+  private final Shooter shooter;
+  private final Vision vision = Vision.getInstance();
 
   BStream shooterReady;
 
-  public ShootOvunque(Shooter shooter, Vision vision) {
-    m_shooter = shooter;
-    m_vision = vision;
+  public ShootOvunque(Shooter shooter) {
+    this.shooter = shooter;
 
-    shooterReady = BStream.create(() -> shooter.isReady())
-    .and(() -> vision.hasValidTarget());
+    shooterReady = BStream.create(() -> this.shooter.isReady()).and(() -> vision.hasValidTarget());
 
     addRequirements(shooter);
   }
 
   @Override
   public void execute() {
-    if (m_vision.hasValidTarget()) {
-      
-      double distance = m_vision.getEstimatedDistance();
-      m_shooter.setShooterVelocity(Shooters.SHOOTER_SPEED_INTERPOLATOR.getInterpolatedValue(distance));
-      m_shooter.setBackSpinVelocity(Shooters.BACKSPIN_SPEED_INTERPOLATOR.getInterpolatedValue(distance));
-    }
-      else {
-        System.out.println("No Target Innit");
+    if (vision.hasValidTarget()) {
+      double distance = vision.getEstimatedDistance();
+      shooter.setShooterVelocity(
+          Shooters.SHOOTER_SPEED_INTERPOLATOR.getInterpolatedValue(distance));
+      shooter.setBackSpinVelocity(
+          Shooters.BACKSPIN_SPEED_INTERPOLATOR.getInterpolatedValue(distance));
+    } else {
+      System.out.println("No Target Innit");
     }
   }
 }

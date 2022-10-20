@@ -86,6 +86,7 @@ public final class Constants {
 
     ////////// DISTANCE//SPEED DATA /////////
 
+    // TODO: change the voltage to raw units
     public static final double[][] SHOOTER_SPEED_ARRAY = {
       {89, 0.5},
       {136.5, 0.52},

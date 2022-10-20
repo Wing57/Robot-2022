@@ -24,13 +24,13 @@ public class SetShooterRPM extends CommandBase {
     addRequirements(this.shooter);
     controller = new PIDController(kP, kI, kD);
     // 5% tolerance
-    controller.setTolerance(setpointRPM * 0.05);
+    rawSetpoint = shooter.convertRPMToRaw(setpointRPM);
+    controller.setTolerance(rawSetpoint * 0.05);
     ff = Constants.SFF.getShooterFF();
   }
 
   @Override
   public void initialize() {
-    rawSetpoint = shooter.convertRPMToRaw(setpointRPM);
     controller.setSetpoint(rawSetpoint);
   }
 

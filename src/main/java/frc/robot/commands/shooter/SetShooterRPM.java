@@ -31,11 +31,7 @@ public class SetShooterRPM extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    double xOff = Vision.getInstance().getHorizontalOffset();
-    // 2º tolerance = -2 < xoff < 2
-    boolean isFacingHub = xOff > -2 && xOff < 2;
-    // command wont work if it isnt facing the hub
-    return !isFacingHub;
+    return !Vision.getInstance().isFacingHub();
   }
 
   @Override

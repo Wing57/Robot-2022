@@ -72,12 +72,17 @@ public class Vision implements Sendable {
     limelight.setCamMode(mode);
   }
 
+  public boolean isFacingHub() {
+    return Math.abs(getHorizontalOffset()) < 2;
+  }
+
   @Override
   public void initSendable(SendableBuilder builder) {
     builder.setSmartDashboardType("Limelight Values");
     builder.addBooleanProperty("has valid target", this::hasValidTarget, null);
     builder.addDoubleProperty("xOff", this::getHorizontalOffset, null);
     builder.addDoubleProperty("yOff", this::getVerticalOffset, null);
+    builder.addBooleanProperty("is facing hub", this::isFacingHub, null);
     builder.addDoubleProperty("estimate distance", this::getEstimatedDistance, null);
   }
 }

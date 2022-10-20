@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import frc.robot.Constants;
+import frc.robot.Vision;
 import frc.robot.subsystems.Shooter;
 
 public class SetShooterRPM extends CommandBase {
@@ -53,8 +54,11 @@ public class SetShooterRPM extends CommandBase {
 
   @Override
   public boolean isFinished() {
+    double xOff = Vision.getInstance().getHorizontalOffset();
+    // 2º tolerance = -2 < xoff < 2
+    boolean isFacingHub = xOff > -2 && xOff < 2;
     // command wont work if it isnt facing the hub
-    return !shooter.isFacingHub();
+    return !isFacingHub;
   }
 
   @Override

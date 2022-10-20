@@ -14,7 +14,6 @@ import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants.Shooters;
-import frc.robot.Vision;
 import java.util.Arrays;
 import java.util.List;
 
@@ -97,12 +96,6 @@ public class Shooter extends SubsystemBase {
 
   public double convertRPMToRaw(double rpm) {
     return rpm * 2048.0 / 600.0;
-  }
-
-  public boolean isFacingHub() {
-    double xOff = Vision.getInstance().getHorizontalOffset();
-    // -2 < xoff <2
-    return xOff > -2 && xOff < 2;
   }
 
   @Override

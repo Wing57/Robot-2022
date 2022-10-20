@@ -88,15 +88,15 @@ public final class Constants {
 
     // TODO: change the voltage to raw units
     public static final double[][] SHOOTER_SPEED_ARRAY = {
-      {89, 0.5},
-      {136.5, 0.52},
-      {176.5, 0.65}
+      {89, 10050},
+      {136.5, 10190},
+      {176.5, 13160}
     };
 
     public static final double[][] BACKSPIN_SPEED_ARRAY = {
-      {89, 0.4},
-      {136.5, 0.42},
-      {176.5, 0.55}
+      {89, 8000},
+      {136.5, 8720},
+      {176.5, 10920}
     };
 
     public static final LinearInterpolator SHOOTER_SPEED_INTERPOLATOR =

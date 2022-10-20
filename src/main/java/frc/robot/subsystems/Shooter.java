@@ -54,9 +54,13 @@ public class Shooter extends SubsystemBase {
   }
 
   public void setShooterVelocity(double speed) {
-    SimpleMotorFeedforward feedforward = frc.robot.Constants.SFF.ShooterFF();
+    SimpleMotorFeedforward feedforward = frc.robot.Constants.SFF.getShooterFF();
     double feedVoltage = feedforward.calculate(speed);
     shooterMotor.set(feedVoltage);
+  }
+
+  public void setShooterVoltage(double v) {
+    shooterMotor.setVoltage(v);
   }
 
   public double getShooterRawVelocity() {
@@ -88,6 +92,10 @@ public class Shooter extends SubsystemBase {
 
   public double convertRawToRPM(double ticksPer100ms) {
     return ticksPer100ms * 600.0 / 2048.0;
+  }
+
+  public double convertRPMToRaw(double rpm) {
+    return rpm * 2048.0 / 600.0;
   }
 
   @Override

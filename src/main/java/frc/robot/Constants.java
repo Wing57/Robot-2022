@@ -113,7 +113,7 @@ public final class Constants {
     public static final double Kv = 0.10845;
     public static final double Ka = 0.01518;
 
-    public static SimpleMotorFeedforward ShooterFF() {
+    public static SimpleMotorFeedforward getShooterFF() {
       return new SimpleMotorFeedforward(SFF.Ks, SFF.Kv, SFF.Ka);
     }
   }

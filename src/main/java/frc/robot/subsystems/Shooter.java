@@ -9,11 +9,15 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import frc.robot.Constants;
 import frc.robot.Constants.Shooters;
+import frc.robot.utils.MotorController;
 import java.util.Arrays;
 import java.util.List;
 
@@ -24,12 +28,23 @@ public class Shooter extends SubsystemBase {
 
   private final List<WPI_TalonFX> bothMotors;
 
+  // TODO: tune these values
+  // shooter pid
+  private final double ksP = 0.0, ksI = 0.0, ksD = 0.0;
+  // backspin pid
+  private final double kbP = 0.0, kbI = 0.0, kbD = 0.0;
+  private final PIDController shooterFeedback;
+  private final PIDController backSpinFeedback;
+  private final SimpleMotorFeedforward sff;
+  private final SimpleMotorFeedforward bff;
+  private final MotorController shooterController;
+  private final MotorController backspinController;
+
   // initializing default speeds
   private double shooterPower = 0;
   private double backspinPower = 0;
 
   public Shooter() {
-
     shooterMotor = new WPI_TalonFX(Shooters.SHOOTER_MOTOR);
     backSpinMotor = new WPI_TalonFX(Shooters.BACKSPIN_MOTOR);
 
@@ -51,6 +66,15 @@ public class Shooter extends SubsystemBase {
 
     shooterInvert = TalonFXInvertType.Clockwise;
     shooterMotor.setInverted(shooterInvert);
+
+    sff = new SimpleMotorFeedforward(Constants.SFF.Ks, Constants.SFF.Kv, Constants.SFF.Ka);
+    shooterFeedback = new PIDController(ksP, ksI, ksD);
+    shooterController = new MotorController(shooterMotor, sff, shooterFeedback);
+
+    // TODO: URGENT use the ff values from sysid for backspin
+    bff = new SimpleMotorFeedforward(Constants.SFF.Ks, Constants.SFF.Kv, Constants.SFF.Ka);
+    backSpinFeedback = new PIDController(kbP, kbI, kbD);
+    backspinController = new MotorController(backSpinMotor, bff, backSpinFeedback);
   }
 
   public void setShooterVelocity(double speed) {
@@ -64,18 +88,39 @@ public class Shooter extends SubsystemBase {
   }
 
   public double getShooterRawVelocity() {
-    return shooterMotor.getSelectedSensorVelocity();
+    return shooterController.getRawSpeed();
   }
 
   public double getBackSpinRawVelocity() {
     return backSpinMotor.getSelectedSensorVelocity();
   }
 
+  public static double convertRawToRPM(double ticksPer100ms) {
+    return ticksPer100ms * 600.0 / 2048.0;
+  }
+
+  public static double convertRPMToRaw(double rpm) {
+    return rpm * 2048.0 / 600.0;
+  }
+
   @Override
-  public void periodic() {}
+  public void periodic() {
+    SmartDashboard.putData("shooter/shooter PID", shooterFeedback);
+    SmartDashboard.putData("shooter/backspin PID", backSpinFeedback);
+    SmartDashboard.putData("shooter/shooter controller", shooterController);
+    SmartDashboard.putData("shooter/backspin controller", backspinController);
+  }
 
   public void setShooterSpeed(double speed) {
     shooterMotor.set(speed);
+  }
+
+  public void setShooterRPM(double rpm) {
+    shooterController.setRPM(rpm);
+  }
+
+  public void setBackspinRPM(double rpm) {
+    backspinController.setRPM(rpm);
   }
 
   public void setBackSpinSpeed(double speed) {
@@ -90,12 +135,9 @@ public class Shooter extends SubsystemBase {
     backSpinMotor.set(0);
   }
 
-  public double convertRawToRPM(double ticksPer100ms) {
-    return ticksPer100ms * 600.0 / 2048.0;
-  }
-
-  public double convertRPMToRaw(double rpm) {
-    return rpm * 2048.0 / 600.0;
+  public void runControllers() {
+    shooterController.run();
+    backspinController.run();
   }
 
   @Override
@@ -117,8 +159,5 @@ public class Shooter extends SubsystemBase {
         });
     builder.addDoubleProperty("Raw Shooter Vel", this::getShooterRawVelocity, null);
     builder.addDoubleProperty("Raw BackSpinSpeed", this::getBackSpinRawVelocity, null);
-    builder.addDoubleProperty("Shooter RPM", () -> convertRawToRPM(getShooterRawVelocity()), null);
-    builder.addDoubleProperty(
-        "BackSpin RPM", () -> convertRawToRPM(getBackSpinRawVelocity()), null);
   }
 }

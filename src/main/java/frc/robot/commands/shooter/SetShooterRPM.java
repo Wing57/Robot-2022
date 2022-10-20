@@ -53,7 +53,8 @@ public class SetShooterRPM extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return false;
+    // command wont work if it isnt facing the hub
+    return !shooter.isFacingHub();
   }
 
   @Override

@@ -51,7 +51,6 @@ public final class Constants {
 
     /////////////// SYSID VALUES ///////////////
 
-    // TODO: Find real values for the love of god
     public static final double ksVolts = 0.558;
     public static final double kvVoltSecondsPerMeter = 3.4335;
     public static final double kaVoltSecondsSquaredPerMeter = 0.171;

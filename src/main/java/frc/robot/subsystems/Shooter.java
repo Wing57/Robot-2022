@@ -30,9 +30,9 @@ public class Shooter extends SubsystemBase {
 
   // TODO: tune these values
   // shooter pid
-  private final double ksP = 0.0, ksI = 0.0, ksD = 0.0;
+  private final double ksP = 0.144, ksI = 0.0, ksD = 0.0;
   // backspin pid
-  private final double kbP = 0.0, kbI = 0.0, kbD = 0.0;
+  private final double kbP = 0.04993, kbI = 0.0, kbD = 0.0;
   private final PIDController shooterFeedback;
   private final PIDController backSpinFeedback;
   private final SimpleMotorFeedforward sff;

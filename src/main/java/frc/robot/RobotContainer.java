@@ -20,6 +20,7 @@ import frc.robot.commands.auton.FourRareFish;
 import frc.robot.commands.auton.TurnCommand;
 import frc.robot.commands.drive.FaceHub;
 import frc.robot.commands.drive.TankDriveCommand;
+import frc.robot.commands.shooter.SetShooterRPM;
 import frc.robot.commands.shooter.ShootBall;
 import frc.robot.commands.shooter.ShootOvunque;
 import frc.robot.commands.shooter.TarmacShot;
@@ -58,6 +59,7 @@ public class RobotContainer {
 
   public static ShootBall shootBall;
   public static TarmacShot tarmacShot;
+  public static SetShooterRPM setShooterRPM;
 
   public static TurnCommand turnCommand;
 
@@ -81,6 +83,8 @@ public class RobotContainer {
     tarmacShot = new TarmacShot(shooter);
 
     shootOvunque = new ShootOvunque(shooter);
+
+    setShooterRPM = new SetShooterRPM(shooter, 2944, 2400);
 
     configureButtonBindings();
   }
@@ -134,7 +138,7 @@ public class RobotContainer {
 
     // Left Bumper -> Shoot Anywhere
 
-    gamepad.getButton(Gamepad.Button.LeftBumper).whileHeld(shootOvunque, false);
+    gamepad.getButton(Gamepad.Button.LeftBumper).whileHeld(setShooterRPM, false);
 
     // (driverController) A -> Face Hub
 

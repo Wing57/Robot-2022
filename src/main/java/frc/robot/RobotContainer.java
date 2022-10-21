@@ -9,6 +9,7 @@ import com.rambots4571.rampage.command.RunEndCommand;
 import com.rambots4571.rampage.joystick.Controller;
 import com.rambots4571.rampage.joystick.Gamepad;
 import com.rambots4571.rampage.joystick.Gamepad.Button;
+import com.rambots4571.rampage.joystick.component.DPadButton.Direction;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -88,7 +89,7 @@ public class RobotContainer {
 
   private void configureButtonBindings() {
 
-    // right bumper -> shoot ball
+    // Right bumper -> shoot ball
 
     gamepad
         .getButton(Gamepad.Button.RightBumper)
@@ -102,6 +103,54 @@ public class RobotContainer {
                   shooter.stop();
                 },
                 shooter),
+            false);
+    
+    // DPAD UP -> Tarmac shot
+
+    gamepad
+    .getDPadButton(Direction.UP)
+    .whileHeld(
+        new RunEndCommand(
+            () -> {
+              shooter.setShooterSpeed(Shooters.TARMAC_SPEED);
+              shooter.setBackSpinSpeed(Shooters.TARMAC_BSPEED);
+            },
+            () -> {
+              shooter.stop();
+            },
+            shooter), 
+            false);
+    
+    // DPAD RIGHT -> Cage shot
+
+    gamepad
+    .getDPadButton(Direction.RIGHT)
+    .whileHeld(
+        new RunEndCommand(
+            () -> {
+              shooter.setShooterSpeed(Shooters.CAGE_SPEED);
+              shooter.setBackSpinSpeed(Shooters.CAGE_BSPEED);
+            },
+            () -> {
+              shooter.stop();
+            },
+            shooter), 
+            false);
+    
+    // DPAD DOWN -> Launchpad shot
+
+    gamepad
+    .getDPadButton(Direction.DOWN)
+    .whileHeld(
+        new RunEndCommand(
+            () -> {
+              shooter.setShooterSpeed(Shooters.LAUNCHPAD_SPEED);
+              shooter.setBackSpinSpeed(Shooters.LAUNCHPAD_BSPEED);
+            },
+            () -> {
+              shooter.stop();
+            },
+            shooter), 
             false);
 
     // A -> intake ball

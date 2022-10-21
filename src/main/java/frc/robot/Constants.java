@@ -74,8 +74,19 @@ public final class Constants {
 
     public static final double AUTO_SHOOT_TIME = 6.0;
 
+    /////////// SHOOTER SPEEDS //////////////
+
     public static final double SHOOT_SPEED = 0.50;
     public static final double BACKSPIN_SPEED = 0.25;
+
+    public static final double TARMAC_SPEED = 0.50;
+    public static final double TARMAC_BSPEED = 0.40;
+
+    public static final double CAGE_SPEED = 0.52;
+    public static final double CAGE_BSPEED = 0.42;
+
+    public static final double LAUNCHPAD_SPEED = 0.65;
+    public static final double LAUNCHPAD_BSPEED = 0.55;
 
     ////////// LIMELIGHT VALUES ////////////
 

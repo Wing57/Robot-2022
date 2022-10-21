@@ -74,10 +74,12 @@ public class Shooter extends SubsystemBase {
     sff = new SimpleMotorFeedforward(Constants.SFF.Ks, Constants.SFF.Kv, Constants.SFF.Ka);
     shooterController = new MotorController(shooterMotor, sff);
     shooterController.setPID(ksP, ksI, ksD);
+    shooterController.setTolerance(50); // rpm
 
     bff = new SimpleMotorFeedforward(Constants.BFF.Ks, Constants.BFF.Kv, Constants.BFF.Ka);
     backspinController = new MotorController(backSpinMotor, bff);
     backspinController.setPID(kbP, kbI, kbD);
+    backspinController.setTolerance(50); // rpm
   }
 
   public double getShooterRawVelocity() {

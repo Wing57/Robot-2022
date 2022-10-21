@@ -17,7 +17,7 @@ public class MotorController implements Sendable {
   private int kPIDLoopIdx;
   private final int timeoutMs = Constants.timeoutMs;
 
-  private double targetRPM;
+  private double targetRPM, toleranceRPM;
 
   public MotorController(WPI_TalonFX motor, SimpleMotorFeedforward ff) {
     this.motor = motor;
@@ -47,6 +47,16 @@ public class MotorController implements Sendable {
     setMotorPID(tuner.getkP(), tuner.getkI(), tuner.getkD());
   }
 
+  /**
+   * How much RPM can it be off by
+   *
+   * @param rpm
+   */
+  public void setTolerance(double rpm) {
+    toleranceRPM = rpm;
+    motor.configAllowableClosedloopError(kPIDLoopIdx, convertRPMToRaw(rpm));
+  }
+
   public double getRawSpeed() {
     return motor.getSelectedSensorVelocity(kPIDLoopIdx);
   }
@@ -70,12 +80,17 @@ public class MotorController implements Sendable {
     motor.set(ControlMode.Velocity, rawSpeed, DemandType.ArbitraryFeedForward, ff.calculate(rps));
   }
 
+  public boolean isAtSpeed() {
+    return Math.abs(targetRPM - getRPM()) < toleranceRPM;
+  }
+
   @Override
   public void initSendable(SendableBuilder builder) {
     builder.setSmartDashboardType("MotorController");
     builder.addDoubleProperty("raw speed", this::getRawSpeed, null);
     builder.addDoubleProperty("rpm", this::getRPM, null);
     builder.addDoubleProperty("target RPM", () -> this.targetRPM, null);
+    builder.addBooleanProperty("is at speed", this::isAtSpeed, null);
     tuner.initSendable(builder);
   }
 }

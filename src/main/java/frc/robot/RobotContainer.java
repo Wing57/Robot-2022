@@ -99,20 +99,7 @@ public class RobotContainer {
                   shooter.setBackSpinSpeed(Shooters.BACKSPIN_SPEED);
                 },
                 () -> {
-                  shooter.stopShooter();
-                  shooter.stopBackSpinMotor();
-                },
-                shooter),
-            false);
-    driveController
-        .getButton(Gamepad.Button.RightBumper)
-        .whileHeld(
-            new RunEndCommand(
-                () -> {
-                  shooter.setShooterVelocity(Shooters.SHOOT_SPEED);
-                },
-                () -> {
-                  shooter.stopShooter();
+                  shooter.stop();
                 },
                 shooter),
             false);

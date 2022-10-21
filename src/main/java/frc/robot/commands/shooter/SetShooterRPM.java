@@ -36,7 +36,6 @@ public class SetShooterRPM extends CommandBase {
 
   @Override
   public void end(boolean interrupted) {
-    shooter.stopShooter();
-    shooter.stopBackSpinMotor();
+    shooter.stop();
   }
 }

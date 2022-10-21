@@ -77,12 +77,6 @@ public class Shooter extends SubsystemBase {
     backspinController = new MotorController(backSpinMotor, bff, backSpinFeedback);
   }
 
-  public void setShooterVelocity(double speed) {
-    SimpleMotorFeedforward feedforward = frc.robot.Constants.SFF.getShooterFF();
-    double feedVoltage = feedforward.calculate(speed);
-    shooterMotor.set(feedVoltage);
-  }
-
   public void setShooterVoltage(double v) {
     shooterMotor.setVoltage(v);
   }
@@ -111,6 +105,8 @@ public class Shooter extends SubsystemBase {
     SmartDashboard.putData("shooter/backspin controller", backspinController);
   }
 
+  /*** SHOOTER CONTROL ***/
+  
   public void setShooterSpeed(double speed) {
     shooterMotor.set(speed);
   }
@@ -127,11 +123,8 @@ public class Shooter extends SubsystemBase {
     backSpinMotor.set(speed);
   }
 
-  public void stopShooter() {
+  public void stop() {
     shooterMotor.set(0);
-  }
-
-  public void stopBackSpinMotor() {
     backSpinMotor.set(0);
   }
 

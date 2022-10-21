@@ -173,6 +173,8 @@ public final class Constants {
   // *************** Settings ****************
   // *****************************************
 
+  public static final int timeoutMs = 10;
+
   public static final Path DEPLOY_DIRECTORY = Filesystem.getDeployDirectory().toPath();
 
   public static class Odometry {

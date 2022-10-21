@@ -20,13 +20,13 @@ public class SetShooterRPM extends CommandBase {
 
   @Override
   public void initialize() {
-    this.shooter.setShooterRPM(shooterRPM);
-    this.shooter.setBackspinRPM(backspinRPM);
+    this.shooter.resetSensors();
   }
 
   @Override
   public void execute() {
-    shooter.runControllers();
+    this.shooter.setShooterRPM(shooterRPM);
+    this.shooter.setBackspinRPM(backspinRPM);
   }
 
   @Override

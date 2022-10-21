@@ -9,10 +9,8 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.util.sendable.SendableBuilder;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants;
@@ -33,16 +31,13 @@ public class Shooter extends SubsystemBase {
   private final double ksP = 0.144, ksI = 0.0, ksD = 0.0;
   // backspin pid
   private final double kbP = 0.04993, kbI = 0.0, kbD = 0.0;
-  private final PIDController shooterFeedback;
-  private final PIDController backSpinFeedback;
+
   private final SimpleMotorFeedforward sff;
   private final SimpleMotorFeedforward bff;
   private final MotorController shooterController;
   private final MotorController backspinController;
 
-  // initializing default speeds
-  private double shooterPower = 0;
-  private double backspinPower = 0;
+  private final int timeoutMs = Constants.timeoutMs;
 
   public Shooter() {
     shooterMotor = new WPI_TalonFX(Shooters.SHOOTER_MOTOR);
@@ -54,34 +49,39 @@ public class Shooter extends SubsystemBase {
         motor -> {
           // Factory Resets all TalonFX
           motor.configFactoryDefault();
-
           // Sets the motor state as either brake or coast
-          motor.setNeutralMode(NeutralMode.Brake);
+          motor.setNeutralMode(NeutralMode.Coast);
           // setting sensor mode
-          motor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 10);
+          motor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, timeoutMs);
+
+          motor.configNominalOutputForward(0, timeoutMs);
+          motor.configNominalOutputReverse(0, timeoutMs);
+          motor.configPeakOutputForward(1, timeoutMs);
+          motor.configPeakOutputReverse(-1, timeoutMs);
+          motor.configClosedloopRamp(0.15, timeoutMs);
         });
 
     backSpinInvert = TalonFXInvertType.Clockwise;
+    // TODO: make sure sensor gives positve value when motor is flashing green
+    // backSpinMotor.setSensorPhase(true);
     backSpinMotor.setInverted(backSpinInvert);
 
     shooterInvert = TalonFXInvertType.Clockwise;
+    // TODO: same thing here
+    // shooterMotor.setSensorPhase(true);
     shooterMotor.setInverted(shooterInvert);
 
     sff = new SimpleMotorFeedforward(Constants.SFF.Ks, Constants.SFF.Kv, Constants.SFF.Ka);
-    shooterFeedback = new PIDController(ksP, ksI, ksD);
-    shooterController = new MotorController(shooterMotor, sff, shooterFeedback);
+    shooterController = new MotorController(shooterMotor, sff);
+    shooterController.setPID(ksP, ksI, ksD);
 
     bff = new SimpleMotorFeedforward(Constants.BFF.Ks, Constants.BFF.Kv, Constants.BFF.Ka);
-    backSpinFeedback = new PIDController(kbP, kbI, kbD);
-    backspinController = new MotorController(backSpinMotor, bff, backSpinFeedback);
-  }
-
-  public void setShooterVoltage(double v) {
-    shooterMotor.setVoltage(v);
+    backspinController = new MotorController(backSpinMotor, bff);
+    backspinController.setPID(kbP, kbI, kbD);
   }
 
   public double getShooterRawVelocity() {
-    return shooterController.getRawSpeed();
+    return shooterMotor.getSelectedSensorVelocity();
   }
 
   public double getBackSpinRawVelocity() {
@@ -96,13 +96,13 @@ public class Shooter extends SubsystemBase {
     return rpm * 2048.0 / 600.0;
   }
 
-  @Override
-  public void periodic() {
-    SmartDashboard.putData("shooter/shooter PID", shooterFeedback);
-    SmartDashboard.putData("shooter/backspin PID", backSpinFeedback);
-    SmartDashboard.putData("shooter/shooter controller", shooterController);
-    SmartDashboard.putData("shooter/backspin controller", backspinController);
+  public void resetSensors() {
+    shooterMotor.setSelectedSensorPosition(0, 0, timeoutMs);
+    backSpinMotor.setSelectedSensorPosition(0, 0, timeoutMs);
   }
+
+  @Override
+  public void periodic() {}
 
   /*** SHOOTER CONTROL ***/
 
@@ -110,16 +110,16 @@ public class Shooter extends SubsystemBase {
     shooterMotor.set(speed);
   }
 
-  public void setShooterRPM(double rpm) {
-    shooterController.setRPM(rpm);
-  }
-
-  public void setBackspinRPM(double rpm) {
-    backspinController.setRPM(rpm);
-  }
-
   public void setBackSpinSpeed(double speed) {
     backSpinMotor.set(speed);
+  }
+
+  public void setShooterRPM(double shooterRPM) {
+    shooterController.setRPM(shooterRPM);
+  }
+
+  public void setBackspinRPM(double backspinRPM) {
+    backspinController.setRPM(backspinRPM);
   }
 
   public void stop() {
@@ -127,29 +127,10 @@ public class Shooter extends SubsystemBase {
     backSpinMotor.set(0);
   }
 
-  public void runControllers() {
-    shooterController.run();
-    backspinController.run();
-  }
-
   @Override
   public void initSendable(SendableBuilder builder) {
     super.initSendable(builder);
-    builder.addDoubleProperty(
-        "Shooter Power",
-        () -> shooterPower,
-        p -> {
-          shooterPower = p;
-          setShooterSpeed(shooterPower);
-        });
-    builder.addDoubleProperty(
-        "Backspin Power",
-        () -> backspinPower,
-        p -> {
-          backspinPower = p;
-          setBackSpinSpeed(backspinPower);
-        });
-    builder.addDoubleProperty("Raw Shooter Vel", this::getShooterRawVelocity, null);
-    builder.addDoubleProperty("Raw BackSpinSpeed", this::getBackSpinRawVelocity, null);
+    shooterController.initSendable(builder);
+    backspinController.initSendable(builder);
   }
 }

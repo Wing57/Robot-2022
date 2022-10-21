@@ -1,28 +1,54 @@
 package frc.robot.utils;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
+import frc.robot.Constants;
 
 public class MotorController implements Sendable {
   private final WPI_TalonFX motor;
-  private final SimpleMotorFeedforward feedforward;
-  private final PIDController feedback;
+  private final PIDTuner tuner;
+  private final SimpleMotorFeedforward ff;
+
+  private int kPIDLoopIdx;
+  private final int timeoutMs = Constants.timeoutMs;
 
   private double targetRPM;
 
-  public MotorController(
-      WPI_TalonFX motor, SimpleMotorFeedforward feedforward, PIDController feedback) {
+  public MotorController(WPI_TalonFX motor, SimpleMotorFeedforward ff) {
     this.motor = motor;
-    this.feedforward = feedforward;
-    this.feedback = feedback;
+    this.ff = ff;
+    this.tuner = new PIDTuner();
+    this.tuner.setUpdater(this::updatePID);
+    this.kPIDLoopIdx = 0;
+  }
+
+  public void setkPIDLoopIdx(int kPIDLoopIdx) {
+    this.kPIDLoopIdx = kPIDLoopIdx;
+  }
+
+  public void setPID(double kP, double kI, double kD) {
+    this.tuner.setPID(kP, kI, kD);
+    setMotorPID(kP, kI, kD);
+  }
+
+  private void setMotorPID(double kP, double kI, double kD) {
+    motor.config_kP(kPIDLoopIdx, kP, timeoutMs);
+    motor.config_kI(kPIDLoopIdx, kI, timeoutMs);
+    motor.config_kD(kPIDLoopIdx, kD, timeoutMs);
+  }
+
+  /** This syncs up the tuner PIDF values with the motor. This should be run frequently */
+  public void updatePID(PIDTuner tuner) {
+    setMotorPID(tuner.getkP(), tuner.getkI(), tuner.getkD());
   }
 
   public double getRawSpeed() {
-    return motor.getSelectedSensorVelocity();
+    return motor.getSelectedSensorVelocity(kPIDLoopIdx);
   }
 
   public double convertRawToRPM(double ticksPer100ms) {
@@ -33,31 +59,15 @@ public class MotorController implements Sendable {
     return rpm * 2048.0 / 600.0;
   }
 
-  public void setVoltage(double voltage) {
-    motor.setVoltage(voltage);
-  }
-
   public double getRPM() {
     return convertRawToRPM(getRawSpeed());
   }
 
   public void setRPM(double rpm) {
-    // 5º tolerance
-    feedback.setTolerance(convertRPMToRaw(rpm) * 0.05);
     targetRPM = rpm;
-  }
-
-  public void run() {
-    double rawSetpoint = convertRPMToRaw(targetRPM);
-    double rps = getRPM() / 60;
-    double ff = feedforward.calculate(rps);
-    double fb = feedback.calculate(getRawSpeed(), rawSetpoint);
-
-    setVoltage(ff + fb);
-  }
-
-  public boolean isAtSpeed() {
-    return feedback.atSetpoint();
+    double rawSpeed = convertRPMToRaw(rpm);
+    double rps = rpm / 60;
+    motor.set(ControlMode.Velocity, rawSpeed, DemandType.ArbitraryFeedForward, ff.calculate(rps));
   }
 
   @Override
@@ -66,6 +76,6 @@ public class MotorController implements Sendable {
     builder.addDoubleProperty("raw speed", this::getRawSpeed, null);
     builder.addDoubleProperty("rpm", this::getRPM, null);
     builder.addDoubleProperty("target RPM", () -> this.targetRPM, null);
-    builder.addBooleanProperty("is at target Speed", this::isAtSpeed, null);
+    tuner.initSendable(builder);
   }
 }

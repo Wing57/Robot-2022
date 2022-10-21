@@ -19,6 +19,7 @@ import frc.robot.Constants.Ctake;
 import frc.robot.Constants.Shooters;
 import frc.robot.commands.auton.FourRareFish;
 import frc.robot.commands.auton.TurnCommand;
+import frc.robot.commands.auton.TwoBall;
 import frc.robot.commands.drive.FaceHub;
 import frc.robot.commands.drive.TankDriveCommand;
 import frc.robot.commands.shooter.SetShooterRPM;
@@ -61,6 +62,7 @@ public class RobotContainer {
   public static SetShooterRPM setShooterRPM;
 
   public static TurnCommand turnCommand;
+  public static TwoBall twoBall;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -81,8 +83,9 @@ public class RobotContainer {
 
     tarmacShot = new TarmacShot(shooter);
 
-
     setShooterRPM = new SetShooterRPM(shooter, 2944, 2400);
+
+    twoBall = new TwoBall(this);
 
     configureButtonBindings();
   }
@@ -104,53 +107,53 @@ public class RobotContainer {
                 },
                 shooter),
             false);
-    
+
     // DPAD UP -> Tarmac shot
 
     gamepad
-    .getDPadButton(Direction.UP)
-    .whileHeld(
-        new RunEndCommand(
-            () -> {
-              shooter.setShooterSpeed(Shooters.TARMAC_SPEED);
-              shooter.setBackSpinSpeed(Shooters.TARMAC_BSPEED);
-            },
-            () -> {
-              shooter.stop();
-            },
-            shooter), 
+        .getDPadButton(Direction.UP)
+        .whileHeld(
+            new RunEndCommand(
+                () -> {
+                  shooter.setShooterSpeed(Shooters.TARMAC_SPEED);
+                  shooter.setBackSpinSpeed(Shooters.TARMAC_BSPEED);
+                },
+                () -> {
+                  shooter.stop();
+                },
+                shooter),
             false);
-    
+
     // DPAD RIGHT -> Cage shot
 
     gamepad
-    .getDPadButton(Direction.RIGHT)
-    .whileHeld(
-        new RunEndCommand(
-            () -> {
-              shooter.setShooterSpeed(Shooters.CAGE_SPEED);
-              shooter.setBackSpinSpeed(Shooters.CAGE_BSPEED);
-            },
-            () -> {
-              shooter.stop();
-            },
-            shooter), 
+        .getDPadButton(Direction.RIGHT)
+        .whileHeld(
+            new RunEndCommand(
+                () -> {
+                  shooter.setShooterSpeed(Shooters.CAGE_SPEED);
+                  shooter.setBackSpinSpeed(Shooters.CAGE_BSPEED);
+                },
+                () -> {
+                  shooter.stop();
+                },
+                shooter),
             false);
-    
+
     // DPAD DOWN -> Launchpad shot
 
     gamepad
-    .getDPadButton(Direction.DOWN)
-    .whileHeld(
-        new RunEndCommand(
-            () -> {
-              shooter.setShooterSpeed(Shooters.LAUNCHPAD_SPEED);
-              shooter.setBackSpinSpeed(Shooters.LAUNCHPAD_BSPEED);
-            },
-            () -> {
-              shooter.stop();
-            },
-            shooter), 
+        .getDPadButton(Direction.DOWN)
+        .whileHeld(
+            new RunEndCommand(
+                () -> {
+                  shooter.setShooterSpeed(Shooters.LAUNCHPAD_SPEED);
+                  shooter.setBackSpinSpeed(Shooters.LAUNCHPAD_BSPEED);
+                },
+                () -> {
+                  shooter.stop();
+                },
+                shooter),
             false);
 
     // A -> intake ball
@@ -187,13 +190,15 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
-
+  public void configureAutons() {
     autonChooser.addOption("4ball", new FourRareFish(this));
 
     SmartDashboard.putData("autonChooser", autonChooser);
+  }
 
-    return autonChooser.getSelected();
+  public Command getAutonomousCommand() {
+
+    return twoBall;
   }
 
   private Command setIntakeCommand(double speed) {

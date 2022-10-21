@@ -16,9 +16,9 @@ public class FaceHub extends CommandBase {
   private final PIDController controller;
   private final Vision vision = Vision.getInstance();
 
-  private final double kP = 0.2;
-  private final double kI = 0;
-  private final double kD = 0;
+  private final double kP = 0.1125;
+  private final double kI = 0.196;
+  private final double kD = 0.025;
 
   private final double maxOutput = 0.7;
 

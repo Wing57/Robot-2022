@@ -22,7 +22,6 @@ import frc.robot.commands.drive.FaceHub;
 import frc.robot.commands.drive.TankDriveCommand;
 import frc.robot.commands.shooter.SetShooterRPM;
 import frc.robot.commands.shooter.ShootBall;
-import frc.robot.commands.shooter.ShootOvunque;
 import frc.robot.commands.shooter.TarmacShot;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Index;
@@ -55,7 +54,6 @@ public class RobotContainer {
   // commands
   private final TankDriveCommand tankDriveCommand;
   public static FaceHub faceHub;
-  public static ShootOvunque shootOvunque;
 
   public static ShootBall shootBall;
   public static TarmacShot tarmacShot;
@@ -82,7 +80,6 @@ public class RobotContainer {
 
     tarmacShot = new TarmacShot(shooter);
 
-    shootOvunque = new ShootOvunque(shooter);
 
     setShooterRPM = new SetShooterRPM(shooter, 2944, 2400);
 

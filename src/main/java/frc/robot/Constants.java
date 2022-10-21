@@ -129,6 +129,17 @@ public final class Constants {
     }
   }
 
+  public static class BFF {
+
+    public static final double Ks = 0.48369;
+    public static final double Kv = 0.10595;
+    public static final double Ka = 0.0023568;
+
+    public static SimpleMotorFeedforward getBackSpinFF() {
+      return new SimpleMotorFeedforward(BFF.Ks, BFF.Kv, BFF.Ka);
+    }
+  }
+
   // *****************************************
   // ************** INTAKE *******************
   // *****************************************

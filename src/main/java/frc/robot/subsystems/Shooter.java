@@ -71,8 +71,7 @@ public class Shooter extends SubsystemBase {
     shooterFeedback = new PIDController(ksP, ksI, ksD);
     shooterController = new MotorController(shooterMotor, sff, shooterFeedback);
 
-    // TODO: URGENT use the ff values from sysid for backspin
-    bff = new SimpleMotorFeedforward(Constants.SFF.Ks, Constants.SFF.Kv, Constants.SFF.Ka);
+    bff = new SimpleMotorFeedforward(Constants.BFF.Ks, Constants.BFF.Kv, Constants.BFF.Ka);
     backSpinFeedback = new PIDController(kbP, kbI, kbD);
     backspinController = new MotorController(backSpinMotor, bff, backSpinFeedback);
   }
@@ -106,7 +105,7 @@ public class Shooter extends SubsystemBase {
   }
 
   /*** SHOOTER CONTROL ***/
-  
+
   public void setShooterSpeed(double speed) {
     shooterMotor.set(speed);
   }

@@ -10,6 +10,6 @@ import frc.robot.subsystems.Shooter;
 public class TarmacShot extends SetShooterSpeed {
   /** Creates a new TarmacShot. */
   public TarmacShot(Shooter shooter) {
-    super(shooter, Shooters.SHOOT_SPEED, Shooters.BACKSPIN_SPEED);
+    super(shooter, Shooters.TARMAC_SPEED, Shooters.TARMAC_BSPEED);
   }
 }

@@ -18,4 +18,10 @@ public class IntakeBallForever extends InstantCommand {
   public void initialize() {
     intake.setIntakeMotor(-Ctake.INTAKE_SPEED);
   }
+
+  @Override
+  public void end(boolean interrupted) {
+    intake.stop();
+  }
+
 }

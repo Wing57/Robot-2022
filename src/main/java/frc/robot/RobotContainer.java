@@ -174,7 +174,7 @@ public class RobotContainer {
 
     // Left Bumper -> Shoot Anywhere
 
-    gamepad.getButton(Gamepad.Button.LeftBumper).whileHeld(setShooterRPM, false);
+    // gamepad.getButton(Gamepad.Button.LeftBumper).whileHeld(setShooterRPM, false);
 
     // (driverController) A -> Face Hub
 

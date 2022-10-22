@@ -25,4 +25,9 @@ public class SetShooterSpeed extends InstantCommand {
     shooter.setShooterSpeed(targetSpeed);
     shooter.setBackSpinSpeed(targetBackSpeed);
   }
+
+  @Override
+  public void end(boolean interrupted) {
+    shooter.stop();
+  }
 }

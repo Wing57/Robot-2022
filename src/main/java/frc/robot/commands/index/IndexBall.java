@@ -19,4 +19,13 @@ public class IndexBall extends InstantCommand {
 
     index.setIndexMotor(Constants.INDEX_SPEED);
   }
+
+  @Override
+  public void end(boolean interrupted) {
+    index.stop();
+  }
+
+
 }
+
+

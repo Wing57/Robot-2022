@@ -23,7 +23,7 @@ public class TwoBall extends SequentialCommandGroup {
         new WaitCommand(AutoConstants.SHOOTER_INITIALIZE));
 
     addCommands(
-      new InsideShot(container.shooter),
+      new TarmacShot(container.shooter),
       new DriveTimedCommand(container.driveTrain, 3));
   }
 

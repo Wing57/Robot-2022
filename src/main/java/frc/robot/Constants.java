@@ -79,6 +79,11 @@ public final class Constants {
     public static final double SHOOT_SPEED = 0.50;
     public static final double BACKSPIN_SPEED = 0.25;
 
+    //TODO: UPADTE THESE SPEEDS FROM THE IRON RAM LAPTOP
+
+    public static final double INSIDE_SPEED = .50;
+    public static final double INSIDE_BSPEED = 0.40;
+
     public static final double TARMAC_SPEED = 0.50;
     public static final double TARMAC_BSPEED = 0.40;
 

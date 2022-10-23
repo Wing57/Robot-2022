@@ -23,5 +23,4 @@ public class IntakeBallForever extends InstantCommand {
   public void end(boolean interrupted) {
     intake.stop();
   }
-
 }

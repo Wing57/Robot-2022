@@ -80,6 +80,11 @@ public class Shooter extends SubsystemBase {
     backspinController = new MotorController(backSpinMotor, bff);
     backspinController.setPID(kbP, kbI, kbD);
     backspinController.setTolerance(50); // rpm
+
+    addChild("shooter", shooterController);
+    addChild("shooter PID", shooterController.getTuner());
+    addChild("backspin", backspinController);
+    addChild("backspin PID", backspinController.getTuner());
   }
 
   public double getShooterRawVelocity() {
@@ -132,7 +137,5 @@ public class Shooter extends SubsystemBase {
   @Override
   public void initSendable(SendableBuilder builder) {
     super.initSendable(builder);
-    shooterController.initSendable(builder);
-    backspinController.initSendable(builder);
   }
 }

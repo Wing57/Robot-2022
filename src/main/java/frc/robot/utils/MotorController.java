@@ -4,6 +4,8 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
+import com.rambots4571.rampage.tools.PIDTuner;
+
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
@@ -45,6 +47,10 @@ public class MotorController implements Sendable {
   /** This syncs up the tuner PIDF values with the motor. This should be run frequently */
   public void updatePID(PIDTuner tuner) {
     setMotorPID(tuner.getkP(), tuner.getkI(), tuner.getkD());
+  }
+
+  public PIDTuner getTuner() {
+    return this.tuner;
   }
 
   /**
@@ -91,6 +97,5 @@ public class MotorController implements Sendable {
     builder.addDoubleProperty("rpm", this::getRPM, null);
     builder.addDoubleProperty("target RPM", () -> this.targetRPM, null);
     builder.addBooleanProperty("is at speed", this::isAtSpeed, null);
-    tuner.initSendable(builder);
   }
 }

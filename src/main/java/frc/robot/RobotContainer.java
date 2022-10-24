@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 import frc.robot.Constants.Ctake;
 import frc.robot.Constants.Shooters;
+import frc.robot.commands.auton.DriveTimedCommand;
 import frc.robot.commands.auton.FourRareFish;
 import frc.robot.commands.auton.TurnCommand;
 import frc.robot.commands.auton.TwoBall;
@@ -63,6 +64,7 @@ public class RobotContainer {
 
   public static TurnCommand turnCommand;
   public static TwoBall twoBall;
+  public static DriveTimedCommand driveTimedCommand;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -87,6 +89,8 @@ public class RobotContainer {
 
     twoBall = new TwoBall(this);
 
+    driveTimedCommand = new DriveTimedCommand(driveTrain, 4);
+
     configureButtonBindings();
   }
 
@@ -99,8 +103,8 @@ public class RobotContainer {
         .whileHeld(
             new RunEndCommand(
                 () -> {
-                  shooter.setShooterSpeed(Shooters.SHOOT_SPEED);
-                  shooter.setBackSpinSpeed(Shooters.BACKSPIN_SPEED);
+                  shooter.setShooterSpeed(1);
+                  shooter.setBackSpinSpeed(1);
                 },
                 () -> {
                   shooter.stop();
@@ -174,7 +178,7 @@ public class RobotContainer {
 
     // Left Bumper -> Shoot Anywhere
 
-    // gamepad.getButton(Gamepad.Button.LeftBumper).whileHeld(setShooterRPM, false);
+    gamepad.getButton(Gamepad.Button.LeftBumper).whileHeld(setShooterRPM, false);
 
     // (driverController) A -> Face Hub
 
@@ -198,7 +202,7 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
 
-    return twoBall;
+    return driveTimedCommand;
   }
 
   private Command setIntakeCommand(double speed) {

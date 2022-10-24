@@ -1,8 +1,6 @@
 package frc.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-
-import frc.robot.Vision;
 import frc.robot.subsystems.Shooter;
 
 public class SetShooterRPM extends CommandBase {
@@ -31,7 +29,7 @@ public class SetShooterRPM extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return !Vision.getInstance().isFacingHub();
+    return false;
   }
 
   @Override

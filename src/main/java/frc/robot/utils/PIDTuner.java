@@ -20,7 +20,7 @@ public class PIDTuner implements Sendable {
 
   @Override
   public void initSendable(SendableBuilder builder) {
-    builder.setSmartDashboardType("PIDController");
+    builder.setSmartDashboardType("Tuner");
     builder.addDoubleProperty("kP", this::getkP, this::setkP);
     builder.addDoubleProperty("kI", this::getkI, this::setkI);
     builder.addDoubleProperty("kD", this::getkD, this::setkD);

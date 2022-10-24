@@ -28,9 +28,9 @@ public class Shooter extends SubsystemBase {
 
   // TODO: tune these values
   // shooter pid
-  private final double ksP = 0.3, ksI = 0, ksD = 0.6;
+  private final double ksP = 1, ksI = 0.0000, ksD = 5.0;
   // backspin pid
-  private final double kbP = 0.04993, kbI = 0.5, kbD = 0.0;
+  private final double kbP = 0.8, kbI = 0.0, kbD = 1.0;
 
   private final SimpleMotorFeedforward sff;
   private final SimpleMotorFeedforward bff;
@@ -58,7 +58,7 @@ public class Shooter extends SubsystemBase {
           motor.configNominalOutputReverse(0, timeoutMs);
           motor.configPeakOutputForward(1, timeoutMs);
           motor.configPeakOutputReverse(-1, timeoutMs);
-          motor.configClosedloopRamp(0.15, timeoutMs);
+          motor.configClosedloopRamp(0.0, timeoutMs);
         });
 
     backSpinInvert = TalonFXInvertType.Clockwise;
@@ -74,12 +74,15 @@ public class Shooter extends SubsystemBase {
     sff = new SimpleMotorFeedforward(Constants.SFF.Ks, Constants.SFF.Kv, Constants.SFF.Ka);
     shooterController = new MotorController(shooterMotor, sff);
     shooterController.setPID(ksP, ksI, ksD);
-    shooterController.setTolerance(50); // rpm
+    shooterController.setTolerance(200); // rpm
 
     bff = new SimpleMotorFeedforward(Constants.BFF.Ks, Constants.BFF.Kv, Constants.BFF.Ka);
     backspinController = new MotorController(backSpinMotor, bff);
     backspinController.setPID(kbP, kbI, kbD);
-    backspinController.setTolerance(50); // rpm
+    backspinController.setTolerance(200); // rpm
+
+    addChild("shooter", shooterController);
+    addChild("backspin", backspinController);
   }
 
   public double getShooterRawVelocity() {
@@ -132,7 +135,5 @@ public class Shooter extends SubsystemBase {
   @Override
   public void initSendable(SendableBuilder builder) {
     super.initSendable(builder);
-    shooterController.initSendable(builder);
-    backspinController.initSendable(builder);
   }
 }

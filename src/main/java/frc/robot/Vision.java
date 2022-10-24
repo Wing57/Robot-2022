@@ -11,18 +11,18 @@ import com.rambots4571.rampage.vision.ReadValue;
 
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.util.sendable.SendableRegistry;
 import frc.robot.Constants.Shooters;
 
 public class Vision implements Sendable {
   private static final Limelight limelight = Limelight.getInstance();
-  private static Vision instance;
+  private static Vision instance = new Vision();
 
   private Vision() {
+    SendableRegistry.addLW(this, "Vision");
   }
 
   public static Vision getInstance() {
-    if (instance == null)
-      instance = new Vision();
     return instance;
   }
 
@@ -44,10 +44,10 @@ public class Vision implements Sendable {
   // Gets the estimated distance from the robot to the target
   public double getEstimatedDistance() {
     double offset = getVerticalOffset();
-    double angleGoalDegrees = Shooters.MountAngleDegrees - offset;
+    double angleGoalDegrees = Shooters.MountAngleDegrees + offset;
     double angleGoalRadians = angleGoalDegrees * (Math.PI / 180.0);
-    double estimatedDistance = (Shooters.GoalHeightInches - Shooters.LensHeightInches)
-      / Math.tan(angleGoalRadians);
+    double estimatedDistance =
+        (Shooters.GoalHeightInches - Shooters.LensHeightInches) / Math.tan(angleGoalRadians);
     return estimatedDistance;
   }
 
@@ -72,12 +72,17 @@ public class Vision implements Sendable {
     limelight.setCamMode(mode);
   }
 
+  public boolean isFacingHub() {
+    return Math.abs(getHorizontalOffset()) < 2;
+  }
+
   @Override
   public void initSendable(SendableBuilder builder) {
     builder.setSmartDashboardType("Limelight Values");
     builder.addBooleanProperty("has valid target", this::hasValidTarget, null);
     builder.addDoubleProperty("xOff", this::getHorizontalOffset, null);
     builder.addDoubleProperty("yOff", this::getVerticalOffset, null);
+    builder.addBooleanProperty("is facing hub", this::isFacingHub, null);
     builder.addDoubleProperty("estimate distance", this::getEstimatedDistance, null);
   }
 }

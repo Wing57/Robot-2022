@@ -6,7 +6,6 @@ package frc.robot.commands.drive;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import frc.robot.Vision;
@@ -17,9 +16,9 @@ public class FaceHub extends CommandBase {
   private final PIDController controller;
   private final Vision vision = Vision.getInstance();
 
-  private final double kP = 0.2;
-  private final double kI = 0;
-  private final double kD = 0;
+  private final double kP = 0.1125;
+  private final double kI = 0.196;
+  private final double kD = 0.025;
 
   private final double maxOutput = 0.7;
 
@@ -31,35 +30,30 @@ public class FaceHub extends CommandBase {
     controller.setTolerance(2.0);
   }
 
-  // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if (vision.hasValidTarget())
-      controller.setSetpoint(0);
+    if (vision.hasValidTarget()) controller.setSetpoint(0);
   }
 
-  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    SmartDashboard.putData("Face Hub Controller", controller);
-    SmartDashboard.putData("Vision", vision);
+    // face hub controller is already added by default on LW
+    // SmartDashboard.putData("Face Hub Controller", controller);
+    // SmartDashboard.putData("Vision", vision);
 
     double xOffset = vision.getHorizontalOffset();
-    if (xOffset == Integer.MAX_VALUE)
-      this.cancel();
+    if (xOffset == Integer.MAX_VALUE) this.cancel();
 
     double output = MathUtil.clamp(controller.calculate(xOffset), -maxOutput, maxOutput);
 
     driveTrain.drive(-output, output);
   }
 
-  // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     driveTrain.stopMotors();
   }
 
-  // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     return !vision.hasValidTarget() || controller.atSetpoint();

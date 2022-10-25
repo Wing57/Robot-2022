@@ -62,13 +62,9 @@ public class Shooter extends SubsystemBase {
         });
 
     backSpinInvert = TalonFXInvertType.Clockwise;
-    // TODO: make sure sensor gives positve value when motor is flashing green
-    // backSpinMotor.setSensorPhase(true);
     backSpinMotor.setInverted(backSpinInvert);
 
     shooterInvert = TalonFXInvertType.Clockwise;
-    // TODO: same thing here
-    // shooterMotor.setSensorPhase(true);
     shooterMotor.setInverted(shooterInvert);
 
     sff = new SimpleMotorFeedforward(Constants.SFF.Ks, Constants.SFF.Kv, Constants.SFF.Ka);
@@ -82,7 +78,9 @@ public class Shooter extends SubsystemBase {
     backspinController.setTolerance(200); // rpm
 
     addChild("shooter", shooterController);
+    addChild("shooter PID", shooterController.getTuner());
     addChild("backspin", backspinController);
+    addChild("backspin PID", backspinController.getTuner());
   }
 
   public double getShooterRawVelocity() {

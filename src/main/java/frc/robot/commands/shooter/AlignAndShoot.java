@@ -12,10 +12,8 @@ public class AlignAndShoot extends SequentialCommandGroup {
 
   public AlignAndShoot(DriveTrain drive, Shooter shooter) {
     double distance = Vision.getInstance().getEstimatedDistance();
-    double shooterRawSpeed = Shooters.SHOOTER_SPEED_INTERPOLATOR.getInterpolatedValue(distance);
-    double backspinRawSpeed = Shooters.BACKSPIN_SPEED_INTERPOLATOR.getInterpolatedValue(distance);
-    double shooterRPM = Shooter.convertRawToRPM(shooterRawSpeed);
-    double backspinRPM = Shooter.convertRawToRPM(backspinRawSpeed);
+    double shooterRPM = Shooters.SHOOTER_SPEED_INTERPOLATOR.getInterpolatedValue(distance);
+    double backspinRPM = Shooters.BACKSPIN_SPEED_INTERPOLATOR.getInterpolatedValue(distance);
 
     // align with the hub and then shoot
     addCommands(new FaceHub(drive), new SetShooterRPM(shooter, shooterRPM, backspinRPM));

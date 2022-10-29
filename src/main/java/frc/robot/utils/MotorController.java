@@ -1,12 +1,10 @@
 package frc.robot.utils;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import com.rambots4571.rampage.tools.PIDTuner;
 
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import frc.robot.Constants;
@@ -14,16 +12,14 @@ import frc.robot.Constants;
 public class MotorController implements Sendable {
   private final WPI_TalonFX motor;
   private final PIDTuner tuner;
-  private final SimpleMotorFeedforward ff;
 
   private int kPIDLoopIdx;
   private final int timeoutMs = Constants.timeoutMs;
 
   private double targetRPM, toleranceRPM;
 
-  public MotorController(WPI_TalonFX motor, SimpleMotorFeedforward ff) {
+  public MotorController(WPI_TalonFX motor) {
     this.motor = motor;
-    this.ff = ff;
     this.tuner = new PIDTuner();
     this.tuner.setUpdater(this::updatePID);
     this.kPIDLoopIdx = 0;
@@ -33,20 +29,21 @@ public class MotorController implements Sendable {
     this.kPIDLoopIdx = kPIDLoopIdx;
   }
 
-  public void setPID(double kP, double kI, double kD) {
-    this.tuner.setPID(kP, kI, kD);
-    setMotorPID(kP, kI, kD);
+  public void setPIDF(double kP, double kI, double kD, double kF) {
+    this.tuner.setPIDF(kP, kI, kD, kF);
+    setMotorPIDF(kP, kI, kD, kF);
   }
 
-  private void setMotorPID(double kP, double kI, double kD) {
+  private void setMotorPIDF(double kP, double kI, double kD, double kF) {
     motor.config_kP(kPIDLoopIdx, kP, timeoutMs);
     motor.config_kI(kPIDLoopIdx, kI, timeoutMs);
     motor.config_kD(kPIDLoopIdx, kD, timeoutMs);
+    motor.config_kF(kPIDLoopIdx, kF, timeoutMs);
   }
 
   /** This syncs up the tuner PIDF values with the motor. This should be run frequently */
   public void updatePID(PIDTuner tuner) {
-    setMotorPID(tuner.getkP(), tuner.getkI(), tuner.getkD());
+    setMotorPIDF(tuner.getkP(), tuner.getkI(), tuner.getkD(), tuner.getkF());
   }
 
   public PIDTuner getTuner() {
@@ -82,8 +79,7 @@ public class MotorController implements Sendable {
   public void setRPM(double rpm) {
     targetRPM = rpm;
     double rawSpeed = convertRPMToRaw(rpm);
-    double rps = rpm / 60;
-    motor.set(ControlMode.Velocity, rawSpeed, DemandType.ArbitraryFeedForward, ff.calculate(rps));
+    motor.set(ControlMode.Velocity, rawSpeed);
   }
 
   public boolean isAtSpeed() {

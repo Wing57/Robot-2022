@@ -49,6 +49,14 @@ public class Intake extends SubsystemBase {
     piston.set(oppositeValue);
   }
 
+  public void extend() {
+    piston.set(Value.kForward);
+  }
+
+  public void retract() {
+    piston.set(Value.kReverse);
+  }
+
   public void setIntakeMotor(double speed) {
     intakeMotor.set(speed);
   }

@@ -15,7 +15,7 @@ import frc.robot.RobotContainer;
 import frc.robot.commands.drive.DriveTrainRamsete;
 import frc.robot.commands.index.IndexBall;
 import frc.robot.commands.intake.IntakeBallForever;
-import frc.robot.commands.intake.intakeExtend;
+import frc.robot.commands.intake.IntakeExtend;
 import frc.robot.commands.shooter.TarmacShot;
 
 public class FourRareFish extends SequentialCommandGroup {
@@ -32,7 +32,7 @@ public class FourRareFish extends SequentialCommandGroup {
     // Initialize Subsytems
     addCommands(
         new TarmacShot(container.shooter),
-        new intakeExtend(container.intake),
+        new IntakeExtend(container.intake),
         new WaitCommand(AutoConstants.INTAKE_EXTEND),
         new IntakeBallForever(container.intake),
         new WaitCommand(AutoConstants.SHOOTER_INITIALIZE));

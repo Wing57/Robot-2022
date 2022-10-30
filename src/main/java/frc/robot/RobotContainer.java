@@ -23,6 +23,7 @@ import frc.robot.commands.auton.TurnCommand;
 import frc.robot.commands.auton.TwoBall;
 import frc.robot.commands.drive.FaceHub;
 import frc.robot.commands.drive.TankDriveCommand;
+import frc.robot.commands.intake.IntakeBallToggle;
 import frc.robot.commands.shooter.SetShooterRPM;
 import frc.robot.commands.shooter.ShootBall;
 import frc.robot.commands.shooter.ShootBallRPM;
@@ -59,6 +60,8 @@ public class RobotContainer {
   private final TankDriveCommand tankDriveCommand;
   public static FaceHub faceHub;
 
+  public static IntakeBallToggle intakeBallToggle;
+
   public static ShootBall shootBall;
   public static TarmacShot tarmacShot;
   public static SetShooterRPM setShooterRPM;
@@ -90,6 +93,8 @@ public class RobotContainer {
     setShooterRPM = new SetShooterRPM(shooter, 2994, 2343);
 
     shootBallRPM = shootBallAtRPM(2994, 2343);
+
+    intakeBallToggle = new IntakeBallToggle(intake);
 
     twoBall = new TwoBall(this);
 
@@ -190,7 +195,7 @@ public class RobotContainer {
 
     // (driveController) left bumper -> toggle intake up / down
 
-    driveController.getButton(Button.LeftBumper).whenPressed(intake::togglePiston, intake);
+    driveController.getButton(Button.LeftBumper).whileHeld(intakeBallToggle, false);
   }
 
   /**

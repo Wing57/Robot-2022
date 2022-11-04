@@ -25,7 +25,7 @@ import java.nio.file.Path;
 public final class Constants {
 
   // *****************************************
-  // ********** DRIVE TRAIN ******************
+  // ************* DRIVE TRAIN ***************
   // *****************************************
   public static final class DriveConstants {
     public static final int RIGHT_MASTER = 3;
@@ -182,7 +182,7 @@ public final class Constants {
 
   public static final Path DEPLOY_DIRECTORY = Filesystem.getDeployDirectory().toPath();
 
-  public static class Odometry {
+  public static final class Odometry {
     public static Translation2d STARTING_TRANSLATION = new Translation2d();
     public static Rotation2d STARTING_ANGLE = new Rotation2d();
     public static Pose2d STARTING_POSITION = new Pose2d(STARTING_TRANSLATION, STARTING_ANGLE);

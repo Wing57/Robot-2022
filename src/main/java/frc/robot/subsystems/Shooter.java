@@ -56,6 +56,8 @@ public class Shooter extends SubsystemBase {
           motor.configPeakOutputReverse(-1, timeoutMs);
           motor.configVoltageCompSaturation(12, timeoutMs);
           motor.configClosedloopRamp(0.0, timeoutMs);
+          // voltage compensation
+          motor.enableVoltageCompensation(true);
         });
 
     backSpinInvert = TalonFXInvertType.Clockwise;
@@ -70,12 +72,10 @@ public class Shooter extends SubsystemBase {
     shooterController = new MotorController(shooterMotor);
     shooterController.setPIDF(ksP, ksI, ksD, ksF);
     shooterController.setTolerance(150); // rpm
-    shooterController.enableVoltageCompensation();
 
     backspinController = new MotorController(backSpinMotor);
     backspinController.setPIDF(kbP, kbI, kbD, kbF);
     backspinController.setTolerance(150); // rpm
-    backspinController.enableVoltageCompensation();
 
     addChild("shooter", shooterController);
     addChild("shooter PID", shooterController.getTuner());

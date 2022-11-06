@@ -50,6 +50,10 @@ public class MotorController implements Sendable {
     return this.tuner;
   }
 
+  public void enableVoltageCompensation() {
+    motor.enableVoltageCompensation(true);
+  }
+
   /**
    * How much RPM can it be off by
    *

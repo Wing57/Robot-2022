@@ -4,9 +4,6 @@
 
 package frc.robot.commands.auton;
 
-import com.pathplanner.lib.PathPlanner;
-import com.pathplanner.lib.PathPlannerTrajectory;
-
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
@@ -23,9 +20,6 @@ public class FourRareFish extends SequentialCommandGroup {
   private static final String FOUR_FISH_SWIM = "paths/2fishcuh.wpilib.json";
   private static final String FOUR_FISH_GLUP = "paths/2fishglup.wpilib.json";
   private static final String FOUR_FISH_DROWN = "paths/4fishcuh.wpilib.json";
-
-  private static final PathPlannerTrajectory FIRST_FISH_CUH =
-      PathPlanner.loadPath("FIRST_FISH_CUH", 0, 0);
 
   public FourRareFish(RobotContainer container) {
 

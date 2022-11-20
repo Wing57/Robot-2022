@@ -43,7 +43,7 @@ public class DriveTrainRamsete extends RamseteCommand {
   }
 
   public DriveTrainRamsete(DriveTrain driveTrain, String path) {
-    this(driveTrain, Trajectoryinjectory.getPath(path, 3.048, 4.328));
+    this(driveTrain, Trajectoryinjectory.getTrajectory(path));
   }
 
   public DriveTrainRamsete(DriveTrain driveTrain, String... paths) {

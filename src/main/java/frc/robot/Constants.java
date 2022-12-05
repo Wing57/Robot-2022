@@ -57,6 +57,16 @@ public final class Constants {
 
     public static final double kPDriveVel = 3.2137;
 
+    public static final int kCountsPerRev = 2048;
+
+    //TODO: WTF IS THIS MELODY
+    public static final int k100msPerSec = 10;
+
+    // Low gear for drivetrain
+    public static final double kGearRatio = 15.32;
+
+    public static final double kWheelRadiusInches = 3.0;
+
     public static final double kTrackwidthMeters = 0.74551;
     public static final DifferentialDriveKinematics kDriveKinematics =
         new DifferentialDriveKinematics(kTrackwidthMeters);

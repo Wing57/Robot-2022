@@ -31,6 +31,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.Ctake;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.utils.MotorController;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -53,6 +55,8 @@ public class DriveTrain extends SubsystemBase {
   private final Field2d field;
 
   private final AHRS navX;
+
+  private final MotorController unitConverter;
 
   private final StatorCurrentLimitConfiguration statorLimitConfig =
       new StatorCurrentLimitConfiguration(true, 40, 70, 2);
@@ -132,6 +136,8 @@ public class DriveTrain extends SubsystemBase {
     field = new Field2d();
     resetOdometry(Constants.Odometry.STARTING_POSITION);
 
+    unitConverter = new MotorController(leftMaster);
+
     shifter =
         new DoubleSolenoid(
             Ctake.MODULE_NUMBER,
@@ -160,23 +166,45 @@ public class DriveTrain extends SubsystemBase {
   }
 
   // *****************************************
+  // ************** Encoders *****************
+  // *****************************************
+
+  public double getLeftDistance() {
+    return unitConverter.nativeUnitsToDistanceMeters(leftMaster.getSelectedSensorPosition());
+  }
+
+  public double getRightDistance() {
+    return unitConverter.nativeUnitsToDistanceMeters(rightMaster.getSelectedSensorPosition());
+  }
+
+  public double getRawDistance() {
+    return (getLeftDistance() + getRightDistance()) / 2.0;
+  }
+
+  public double getLeftVelocity() {
+    return unitConverter.nativeUnitsToVelocity(leftMaster.getSelectedSensorVelocity());
+  }
+
+  public double getRightVelocity() {
+    return unitConverter.nativeUnitsToVelocity(rightMaster.getSelectedSensorVelocity());
+  }
+
+  public double getVelocity() {
+    return (getLeftVelocity() + getRightVelocity()) / 2.0;
+  }
+
+  public void resetEncoders() {
+    rightMaster.setSelectedSensorPosition(0);
+    leftMaster.setSelectedSensorPosition(0);
+  }
+
+  // *****************************************
   // ************* Robot Angle ***************
   // *****************************************
 
   // Returns the robots angle as a double
   public double getRawGyroAngle() {
     return navX.getAngle() % 360;
-  }
-
-  // Returns the robots angle as a double using encoders (continous))
-  private double getRawEncoderAngle() {
-    double distance = getLeftEndocderValue() - getRightEncoderValue();
-    return Math.toDegrees(distance / DriveConstants.kTrackwidthMeters);
-  }
-
-  // Gets current Angle of the Robot using encoders
-  public Angle getEncoderAngle() {
-    return Angle.fromDegrees(getRawEncoderAngle());
   }
 
   // Gets current robot angle
@@ -187,10 +215,6 @@ public class DriveTrain extends SubsystemBase {
   // Return robot heading in degrees, from -180 to 180
   public double getHeading() {
     return navX.getRotation2d().getDegrees();
-  }
-
-  public Angle getAngle() {
-    return DriveConstants.USING_GYRO ? getGyroAngle() : getEncoderAngle();
   }
 
   public void zeroHeading() {
@@ -208,22 +232,20 @@ public class DriveTrain extends SubsystemBase {
   public void updateOdometry() {
     m_Odometry.update(
         getRotation2d(),
-        leftMaster.getSelectedSensorPosition(),
-        rightMaster.getSelectedSensorPosition());
+        getLeftDistance(),
+        getRightVelocity());
   }
 
-  // TODO: get the speed in m/s and not raw units
-  // find the distance per pulse.
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
     return new DifferentialDriveWheelSpeeds(
-        leftMaster.getSelectedSensorVelocity(), rightMaster.getSelectedSensorVelocity());
+        getLeftVelocity(), getRightVelocity());
   }
 
   public Rotation2d getRotation2d() {
 
     // TODO: Test if it needs to be negative or nah
 
-    return getAngle().negative().getRotation2d();
+    return navX.getRotation2d();
   }
 
   public void resetOdometry(Pose2d pose2d) {
@@ -243,27 +265,6 @@ public class DriveTrain extends SubsystemBase {
 
   public void reset() {
     resetOdometry(getPose());
-  }
-
-  // *****************************************
-  // ************** Encoders *****************
-  // *****************************************
-
-  public double getAverageEncoderDistance() {
-    return (leftMaster.getSelectedSensorPosition() + rightMaster.getSelectedSensorPosition()) / 2.0;
-  }
-
-  public double getLeftEndocderValue() {
-    return leftMaster.getSelectedSensorPosition();
-  }
-
-  public double getRightEncoderValue() {
-    return rightMaster.getSelectedSensorPosition();
-  }
-
-  public void resetEncoders() {
-    rightMaster.setSelectedSensorPosition(0);
-    leftMaster.setSelectedSensorPosition(0);
   }
 
   // *****************************************

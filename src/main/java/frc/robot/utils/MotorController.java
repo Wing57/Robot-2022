@@ -5,9 +5,11 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import com.rambots4571.rampage.tools.PIDTuner;
 
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import frc.robot.Constants;
+import frc.robot.Constants.DriveConstants;
 
 public class MotorController implements Sendable {
   private final WPI_TalonFX motor;
@@ -84,6 +86,23 @@ public class MotorController implements Sendable {
 
   public boolean isAtSpeed() {
     return Math.abs(targetRPM - getRPM()) < toleranceRPM;
+  }
+
+  // This only works for low gear with a 15.32:1 gear reduction
+  public double nativeUnitsToDistanceMeters(double sensorCounts){
+    double motorRotations = (double)sensorCounts / DriveConstants.kCountsPerRev;
+    double wheelRotations = motorRotations / DriveConstants.kGearRatio;
+    double positionMeters = wheelRotations * (2 * Math.PI * Units.inchesToMeters(DriveConstants.kWheelRadiusInches));
+    return positionMeters;
+  }
+
+  // This only works for low gear with a 15.32:1 gear reduction
+  public double nativeUnitsToVelocity(double sensorCountsPer100ms) {
+    double motorRotationsPer100ms = sensorCountsPer100ms / DriveConstants.kCountsPerRev;
+    double motorRotationsPerSecond = motorRotationsPer100ms * DriveConstants.k100msPerSec;
+    double wheelRotationsPerSecond = motorRotationsPerSecond * DriveConstants.kGearRatio;
+    double VelocityMetersPerSec = wheelRotationsPerSecond * (2 * Math.PI * Units.inchesToMeters(DriveConstants.kWheelRadiusInches));
+    return VelocityMetersPerSec;
   }
 
   @Override

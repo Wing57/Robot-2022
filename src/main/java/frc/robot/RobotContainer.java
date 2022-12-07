@@ -70,6 +70,7 @@ public class RobotContainer {
   public static TurnCommand turnCommand;
   public static TwoBall twoBall;
   public static DriveTimedCommand driveTimedCommand;
+  public static FourRareFish fourRareFish;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -99,6 +100,8 @@ public class RobotContainer {
     twoBall = new TwoBall(this);
 
     driveTimedCommand = new DriveTimedCommand(driveTrain, 4);
+
+    fourRareFish = new FourRareFish(this);
 
     configureButtonBindings();
   }
@@ -211,7 +214,7 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
 
-    return driveTimedCommand;
+    return fourRareFish;
   }
 
   private Command setIntakeCommand(double speed) {

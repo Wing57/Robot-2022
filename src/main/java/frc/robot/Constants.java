@@ -11,6 +11,11 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.math.numbers.N2;
+import edu.wpi.first.math.system.LinearSystem;
+import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.system.plant.LinearSystemId;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Filesystem;
 import java.nio.file.Path;
 
@@ -38,6 +43,22 @@ public final class Constants {
     public static final int SHIFTER_FORWARD_CHANNEL = 8;
     public static final int SHIFTER_REVERSE_CHANNEL = 9;
 
+    public static final double kvVoltSecondsPerRadian = 1.5;
+    public static final double kaVoltSecondsSquaredPerRadian = 0.3;
+    public static final double kvVoltSecondsPerMeter = 3.4335;
+    public static final double kaVoltSecondsSquaredPerMeter = 0.171;
+
+    public static final LinearSystem<N2, N2, N2> kDrivetrainPlant =
+        LinearSystemId.identifyDrivetrainSystem(
+            kvVoltSecondsPerMeter,
+            kaVoltSecondsSquaredPerMeter,
+            kvVoltSecondsPerRadian,
+            kaVoltSecondsSquaredPerRadian);
+
+    // Example values only -- use what's on your physical robot!
+    public static final DCMotor kDriveGearbox = DCMotor.getFalcon500(3);
+    public static final double kDriveGearing = 8;
+
     // Drivetrain Speed
     public static final double DRIVETRAINSPEED = 1;
 
@@ -47,25 +68,22 @@ public final class Constants {
     // Speed During AUTO
     public static final double AUTONOMOUS_SPEED = 0.4;
 
-    public static Boolean USING_GYRO = true;
+    public static final boolean kGyroReversed = true;
 
     /////////////// SYSID VALUES ///////////////
 
     public static final double ksVolts = 0.558;
-    public static final double kvVoltSecondsPerMeter = 3.4335;
-    public static final double kaVoltSecondsSquaredPerMeter = 0.171;
 
     public static final double kPDriveVel = 3.2137;
 
-    public static final int kCountsPerRev = 2048;
-
-    //TODO: WTF IS THIS MELODY
+    // TODO: WTF IS THIS MELODY
     public static final int k100msPerSec = 10;
 
     // Low gear for drivetrain
     public static final double kGearRatio = 15.32;
 
     public static final double kWheelRadiusInches = 3.0;
+    public static final double kWheelDiameterMeters = Units.inchesToMeters(6.0);
 
     public static final double kTrackwidthMeters = 0.74551;
     public static final DifferentialDriveKinematics kDriveKinematics =
@@ -73,6 +91,11 @@ public final class Constants {
 
     public static final double kMaxSpeedMetersPerSecond = 3;
     public static final double kMaxAccelerationMetersPerSecondSquared = 3;
+
+    public static final int kCountsPerRev = 2048;
+    public static final int kEncoderResolution = 8192;
+    public static final double kEncoderDPP =
+        (kWheelDiameterMeters * Math.PI) / (double) kEncoderResolution;
   }
 
   // *****************************************

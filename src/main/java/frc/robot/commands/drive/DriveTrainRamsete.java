@@ -4,6 +4,8 @@
 
 package frc.robot.commands.drive;
 
+import com.rambots4571.rampage.util.TrajectoryInjectory;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -13,7 +15,6 @@ import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.utils.Trajectoryinjectory;
 
 public class DriveTrainRamsete extends RamseteCommand {
 
@@ -43,11 +44,11 @@ public class DriveTrainRamsete extends RamseteCommand {
   }
 
   public DriveTrainRamsete(DriveTrain driveTrain, String path) {
-    this(driveTrain, Trajectoryinjectory.getTrajectory(path));
+    this(driveTrain, TrajectoryInjectory.getTrajectory(path));
   }
 
   public DriveTrainRamsete(DriveTrain driveTrain, String... paths) {
-    this(driveTrain, Trajectoryinjectory.getTrajectory(paths));
+    this(driveTrain, TrajectoryInjectory.getTrajectory(paths));
   }
 
   public DriveTrainRamsete robotRelative() {

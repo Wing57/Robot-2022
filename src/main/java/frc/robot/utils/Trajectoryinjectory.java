@@ -40,7 +40,7 @@ public final class Trajectoryinjectory {
       System.out.print(exception.getStackTrace());
       System.exit(4571);
 
-      return NPC_TRAJECTORY;
+      return null;
     }
   }
 

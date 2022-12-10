@@ -41,8 +41,13 @@ public class Intake extends SubsystemBase {
     comp.enableDigital();
   }
 
-  @Override
-  public void periodic() {}
+  public double getIntakeMotor() {
+    return intakeMotor.get();
+  }
+
+  public DoubleSolenoid getPiston() {
+    return this.piston;
+  }
 
   public void togglePiston() {
     Value oppositeValue = piston.get() == Value.kForward ? Value.kReverse : Value.kForward;
@@ -63,5 +68,10 @@ public class Intake extends SubsystemBase {
 
   public void stop() {
     intakeMotor.set(0);
+  }
+
+  public void close() throws Exception {
+    piston.close();
+    intakeMotor.close();
   }
 }

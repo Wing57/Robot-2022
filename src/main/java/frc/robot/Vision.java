@@ -18,7 +18,7 @@ public class Vision implements Sendable {
   private static final Limelight limelight = Limelight.getInstance();
   private static Vision instance = new Vision();
 
-  private Vision() {
+  public Vision() {
     SendableRegistry.addLW(this, "Vision");
   }
 

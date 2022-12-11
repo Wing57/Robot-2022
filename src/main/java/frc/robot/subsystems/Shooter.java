@@ -99,6 +99,10 @@ public class Shooter extends SubsystemBase {
     return rpm * 2048.0 / 600.0;
   }
 
+  public double getShooterRPM() {
+    return convertRawToRPM(getShooterRawVelocity());
+  }
+
   public void resetSensors() {
     shooterMotor.setSelectedSensorPosition(0, 0, timeoutMs);
     backSpinMotor.setSelectedSensorPosition(0, 0, timeoutMs);
@@ -132,6 +136,11 @@ public class Shooter extends SubsystemBase {
   public void stop() {
     shooterMotor.set(0);
     backSpinMotor.set(0);
+  }
+
+  public void shutdown() throws Exception {
+    shooterMotor.close();
+    backSpinMotor.close();
   }
 
   @Override

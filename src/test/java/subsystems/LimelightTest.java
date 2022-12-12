@@ -14,7 +14,7 @@ public class LimelightTest {
 
   @Before
   public void setup() {
-    vision = new Vision();
+    vision = Vision.getInstance();
   }
 
   @Test

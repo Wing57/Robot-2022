@@ -44,10 +44,7 @@
         }
       },
       "/SmartDashboard/Field Sim": {
-        "image": "C:\\Users\\games\\Downloads\\2022-field.png",
-        "window": {
-          "visible": true
-        }
+        "image": "C:\\Users\\games\\Downloads\\2022-field.png"
       }
     }
   },
